@@ -1,0 +1,17 @@
+name: Build And Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Echo the PR number
+        run: |
+          echo "PR number is ${{ github.event.pull_request.number }}"

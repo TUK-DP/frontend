@@ -1,0 +1,15 @@
+name: Testing
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Echo Commit Message
+        run: |
+          echo "Commit Message: ${{ github.event.pull_request.title }}"

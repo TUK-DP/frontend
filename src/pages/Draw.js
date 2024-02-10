@@ -1,15 +1,16 @@
 import Canvas from "../component/ImageDiary/Canvas";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Right from "../assets/Right.png";
 import Left from "../assets/Left.png";
 import Palette from "../component/ImageDiary/Palette";
 import { connect } from "react-redux";
 import { brushSize } from "../redux/modules/ImageDiary";
-
+import { useNavigate } from "react-router-dom";
 const Draw = ({ lineWidth, dispatch }) => {
   //추출된 키워드
   const data = ["바다", "가족", "여행", "과일", "강아지"];
   const [index, setIndex] = useState(0);
+  const [savedImages, setSavedImages] = useState([]);
 
   //다음 키워드 제시
   const getNextKeyword = () => {
@@ -28,6 +29,26 @@ const Draw = ({ lineWidth, dispatch }) => {
   };
 
   const canvasRefs = useRef(data.map(() => React.createRef()));
+  const navigate = useNavigate();
+
+  const saveImage = async () => {
+    const images = await Promise.all(
+      canvasRefs.current.map(async (canvasRef) => {
+        return await canvasRef.current.toDataURL();
+      })
+    );
+    // 1. toDataURL 실행 후
+    // 2. setSavedImages의 값을 업데이트
+    setSavedImages(images);
+  };
+
+  useEffect(() => {
+    // 3. savedImages의 값을 photodiary 페이지에 넘겨주면서 페이지를 불러옴
+    if (savedImages.length > 0) {
+      console.log("Images saved:", savedImages);
+      navigate("/photoedit", { state: { data, savedImages } });
+    }
+  }, [savedImages]);
 
   return (
     <div>
@@ -62,7 +83,9 @@ const Draw = ({ lineWidth, dispatch }) => {
             canvasRef={canvasRefs.current[i]}
           />
         ))}
-        {data.length - 1 === index ? <button>종료</button> : null}
+        {data.length - 1 === index ? (
+          <button onClick={saveImage}>종료</button>
+        ) : null}
       </div>
     </div>
   );

@@ -12,25 +12,34 @@ code {
     monospace;
 }
 
-.content{
+#home{
   display: flex;
   flex-direction: column;
   justify-content: center;
   flex: 1;
-  margin-top: 40px;
-  padding-bottom: 50px;
+  margin-top: 80px;
+  padding-bottom: 100px;
+}
+
+#game{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  margin-top: 120px;
 }
 
 #dementia{
-  width: 330px;
+  width: 350px;
   height: 170px;
   margin: 20px;
-  font-size: 22px;
+  font-size: 23px;
   font-weight: bold;
   background-color: #E0F4FF;
-  color: gray;
+  color: rgb(170, 170, 170);
   border-radius: 40px;
-  box-shadow: 3px 3px 3px gray;
+  box-shadow: 3px 3px 3px rgb(200, 200, 200);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -53,11 +62,12 @@ code {
 }
 
 .mainBtn{
-  width: 150px;
+  width: 148px;
   height: 140px;
-  border-radius: 10px;
+  border-radius: 20px;
   margin: 20px;
-  box-shadow: 3px 3px 3px gray;
+  box-shadow: 5px 5px 5px rgb(200, 200, 200);
+  border: 4px solid rgb(220, 220, 220);
 }
 
 #btns {
@@ -68,23 +78,50 @@ code {
 .btn_text{
   color: white;
   background-color: #82AAE3;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 16px 16px;
   bottom: 0;
-  width: 149px;
+  width: 148px;
   height: 35px;
   text-align: center;
   font-weight: bold;
   font-size: 23px;
-  border-left: 1px solid rgb(184, 184, 184);
-  border-right: 1px solid rgb(184, 184, 184);
-  border-bottom: 1px solid rgb(184, 184, 184);
 }
 
 .btn_icon{
-  width: 149px;
+  width: 148px;
   height: 105px;
-  border-radius: 10px 10px 0 0;
-  border-left: 1px solid rgb(184, 184, 184);
-  border-top: 1px solid rgb(184, 184, 184);
-  border-right: 1px solid rgb(184, 184, 184);
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mainBtn img{
+  width: 100px;
+  height: 100px;
+}
+
+.btn_games{
+  width: 330px;
+  height: 75px;
+  background-color: #E0F4FF;
+  border-radius: 25px;
+  margin-bottom: 25px;
+  box-shadow: 3px 3px 3px rgb(180, 180, 180);
+  font-size: 25px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+#game img{
+  width: 55px;
+  height: 53px;
+  margin-left: 25px;
+}
+
+.game_text{
+  width: 200px;
+  text-align: right;
+  margin-left: 25px;
 }

@@ -11,6 +11,17 @@ function App() {
     setCurrentPage(page);
   };
 
+  const getPageName = () => {
+    switch (currentPage) {
+      case "home":
+        return "Re-Memory";
+      case "games":
+        return "게임 선택화면";
+      default:
+        return "Re-Memory";
+    }
+  };
+
   const renderContent = () => {
     switch (currentPage) {
       case "home":
@@ -31,7 +42,7 @@ function App() {
         flexDirection: "column",
       }}
     >
-      <Header pageName="Re-Memory" />
+      <Header pageName={getPageName()} />
       <div className="content">{renderContent()}</div>
       <Navbar onIconClick={handleIconClick} />
     </div>

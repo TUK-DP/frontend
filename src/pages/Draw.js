@@ -1,7 +1,7 @@
 import Canvas from "../component/ImageDiary/Canvas";
 import React, { useRef, useState, useEffect } from "react";
-import Right from "../assets/Right.png";
-import Left from "../assets/Left.png";
+import Right from "../assets/right.png";
+import Left from "../assets/left.png";
 import Palette from "../component/ImageDiary/Palette";
 import { connect } from "react-redux";
 import { brushSize } from "../redux/modules/ImageDiary";
@@ -51,7 +51,7 @@ const Draw = ({ lineWidth, dispatch }) => {
   }, [savedImages]);
 
   return (
-    <div>
+    <div style={{ marginTop: "80px" }}>
       {/* 키워드 */}
       <div style={{ display: "flex" }}>
         <img src={Left} height="30" onClick={getPrevKeyword} />

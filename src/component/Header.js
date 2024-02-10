@@ -11,12 +11,15 @@ const Header = ({ pageName }) => {
         boxShadow: "0 4px 2px -2px #D9D9D9",
         padding: "15px 15px",
         position: "fixed",
-        width: "393px",
         top: 0,
+        width: "380px",
         backgroundColor: "white",
+        height: "40px",
       }}
     >
-      {pageName !== "Re-Memory" && <img src={backBtn} />}
+      {pageName !== "Re-Memory" && (
+        <img src={backBtn} style={{ marginRight: "-10px" }} />
+      )}
       <div
         style={{
           fontSize: "25px",

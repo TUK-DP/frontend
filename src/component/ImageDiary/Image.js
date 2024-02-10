@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
 
 const Image = ({ image, isSelected, onSelect }) => {
   const [size, setSize] = useState({
-    width: image.width,
-    height: image.height,
+    width: "150px",
+    height: "150px",
   });
-  const [position, setPosition] = useState({ x: 10, y: 10 });
+
+  const [position, setPosition] = useState({ x: 0, y: 80 });
 
   const handleDragStop = (e, d) => {
     setPosition({ x: d.x, y: d.y });
@@ -39,6 +40,7 @@ const Image = ({ image, isSelected, onSelect }) => {
       minHeight="50px"
       maxHeight="500px"
       onClick={onSelect}
+      bounds="#limit"
     >
       <img
         src={image}

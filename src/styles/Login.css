@@ -1,0 +1,53 @@
+#screen {
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 10px 20px;
+  gap: 5px;
+}
+
+.inputField {
+  padding: 5px 10px;
+}
+
+label {
+  font-size: 22px;
+  line-height: 40px;
+}
+input {
+  width: 333px;
+  display: block;
+  align-items: flex-start;
+  border: none;
+  border-bottom: 3px solid #82aae3;
+  outline: none;
+  padding: 10px 5px;
+  font-size: 18px;
+}
+
+#loginBtn {
+  width: 333px;
+  height: 50px;
+  background: #82aae3;
+  margin-top: 80px;
+  border-radius: 20px;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+#container {
+  width: 333px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px 10px;
+
+  font-size: 20px;
+  font-weight: 600;
+  color: #7d7d7d;
+}

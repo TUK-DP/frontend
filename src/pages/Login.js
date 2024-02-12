@@ -7,11 +7,7 @@ const Login = () => {
       <form>
         <div className="inputField">
           <label>이름</label>
-          <input
-            type="text"
-            placeholder="이름을 입력하세요."
-            style={{ marginBottom: "5px" }}
-          />
+          <input type="text" placeholder="이름을 입력하세요." />
         </div>
         <div className="inputField">
           <label>비밀번호</label>

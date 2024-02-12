@@ -1,16 +1,14 @@
 #screen {
-  margin-top: 70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding: 10px 20px;
-  gap: 5px;
 }
 
 .inputField {
   padding: 5px 10px;
+  margin-bottom: 5px;
 }
 
 label {

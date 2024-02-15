@@ -17,7 +17,9 @@ const Header = ({ pageName }) => {
         height: "40px",
       }}
     >
-      {pageName !== "Re-Memory" && <img src={backBtn} style={{ marginRight: "-10px" }}/>}
+      {pageName !== "Re-Memory" && (
+        <img src={backBtn} style={{ marginRight: "-10px" }} />
+      )}
       <div
         style={{
           fontSize: "25px",

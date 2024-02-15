@@ -1,6 +1,7 @@
 import DiaryIcon from "../assets/DiaryIcon.png";
 import HomeIcon from "../assets/HomeIcon.png";
 import GameIcon from "../assets/GameIcon.png";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ onIconClick }) => {
   return (
@@ -17,9 +18,19 @@ const Navbar = ({ onIconClick }) => {
         width: "393px",
       }}
     >
-      <img src={DiaryIcon} height="62" />
-      <img src={HomeIcon} height="62" onClick={() => onIconClick("home")} />
-      <img src={GameIcon} height="62" onClick={() => onIconClick("games")} />
+      <Link to="/diary">
+        <img
+          src={DiaryIcon}
+          height="62"
+          onClick={() => onIconClick("/diary")}
+        />
+      </Link>
+      <Link to="/">
+        <img src={HomeIcon} height="62" onClick={() => onIconClick("/")} />
+      </Link>
+      <Link to="/games">
+        <img src={GameIcon} height="62" onClick={() => onIconClick("/games")} />
+      </Link>
     </div>
   );
 };

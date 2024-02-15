@@ -30,8 +30,8 @@ code {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex: 1;
-  /* margin-top: 120px; */
+  margin-top: 120px;
+  text-decoration: none;
 }
 
 #dementia {

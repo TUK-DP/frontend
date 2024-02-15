@@ -23,13 +23,14 @@ const Navbar = ({ onIconClick }) => {
           src={DiaryIcon}
           height="62"
           onClick={() => onIconClick("/diary")}
+          alt="DiaryIcon"
         />
       </Link>
       <Link to="/">
-        <img src={HomeIcon} height="62" onClick={() => onIconClick("/")} />
+        <img src={HomeIcon} height="62" onClick={() => onIconClick("/")} alt="HomeIcon"/>
       </Link>
       <Link to="/games">
-        <img src={GameIcon} height="62" onClick={() => onIconClick("/games")} />
+        <img src={GameIcon} height="62" onClick={() => onIconClick("/games")} alt="GameIcon"/>
       </Link>
     </div>
   );

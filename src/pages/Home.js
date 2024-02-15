@@ -15,24 +15,24 @@ const Home = () => {
       </div>
       <div id="btns">
         <div className="mainBtn">
-          <div className="btn_icon"><img src={mainBtn1}></img></div>
+          <div className="btn_icon"><img src={mainBtn1} alt="체조"></img></div>
           <div className="btn_text">체조</div>
         </div>
         <div className="mainBtn">
-          <div className="btn_icon"><img src={mainBtn2}></img></div>
+          <div className="btn_icon"><img src={mainBtn2} alt="게임"></img></div>
           <div className="btn_text">게임</div>
         </div>
         <div className="mainBtn">
-          <div className="btn_icon"><img src={mainBtn3}></img></div>
+          <div className="btn_icon"><img src={mainBtn3} alt="일기"></img></div>
           <div className="btn_text">일기</div>
         </div>
         <div className="mainBtn">
-          <div className="btn_icon"><img src={mainBtn4}></img></div>
+          <div className="btn_icon"><img src={mainBtn4} alt="진단"></img></div>
           <div className="btn_text">진단</div>
         </div>
         <div className="mainBtn">
-          <div className="btn_icon"><img src={mainBtn5}></img></div>
-          <div className="btn_text">치매진단</div>
+          <div className="btn_icon"><img src={mainBtn5} alt="치매센터"></img></div>
+          <div className="btn_text">치매센터</div>
         </div>
       </div>
     </div>

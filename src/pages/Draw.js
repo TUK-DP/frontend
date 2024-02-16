@@ -1,6 +1,6 @@
 import Canvas from "../component/ImageDiary/Canvas";
 import React, { useRef, useState, useEffect } from "react";
-import Right from "../assets/Right.png";
+import Right from "../assets/right.png";
 import Left from "../assets/left.png";
 import Palette from "../component/ImageDiary/Palette";
 import { connect } from "react-redux";

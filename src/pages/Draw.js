@@ -51,7 +51,7 @@ const Draw = ({ lineWidth, dispatch }) => {
   }, [savedImages]);
 
   return (
-    <div style={{ marginTop: "80px" }}>
+    <div>
       {/* 키워드 */}
       <div style={{ display: "flex" }}>
         <img src={Left} height="30" onClick={getPrevKeyword} />

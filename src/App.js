@@ -1,4 +1,3 @@
-import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Draw from "./pages/Draw";
 import PhotoEdit from "./pages/PhotoEdit";
@@ -39,7 +38,7 @@ function App() {
       }}
     >
       <Header pageName={getPageName()} />
-      <Routes className="content">
+      <Routes>
         <Route path={"/"} element={<Home />} />
         <Route path={"/games"} element={<Games />} />
         <Route path={"/diary"} element={<Draw />} />

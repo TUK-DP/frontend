@@ -4,21 +4,21 @@ const Header = ({ pageName }) => {
   return (
     <div
       style={{
+        minWidth: "393px",
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",
         boxShadow: "0 4px 2px -2px #D9D9D9",
-        padding: "15px 15px",
-        position: "fixed",
-        top: 0,
-        width: "380px",
+        // height: "70px",
         backgroundColor: "white",
-        height: "40px",
+        position: "sticky",
+        top: "0",
+        padding: "20px 0px",
       }}
     >
       {pageName !== "Re-Memory" && (
-        <img src={backBtn} style={{ marginRight: "-10px" }} />
+        <img src={backBtn} style={{ marginLeft: "15px" }} />
       )}
       <div
         style={{

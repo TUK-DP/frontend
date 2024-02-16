@@ -8,6 +8,8 @@ import Navbar from "./component/Navbar.js";
 import Home from "./pages/Home.js";
 import Games from "./pages/Games.js";
 import DiaryShow from "./pages/DiaryShow.js";
+import Login from "./pages/Login.js";
+import Signup from "./pages/Signup.js";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -43,6 +45,8 @@ function App() {
         <Route path={"/diary"} element={<Draw />} />
         <Route path={"/photoedit"} element={<PhotoEdit />} />
         <Route path={"/diary/show"} element={<DiaryShow />} />
+        <Route path={"/login"} element={<Login />} />
+        <Route path={"/signup"} element={<Signup />} />
       </Routes>
       <Navbar onIconClick={handleIconClick} />
     </div>

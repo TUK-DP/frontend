@@ -5,8 +5,12 @@ import mainBtn2 from "../assets/mainBtn2.png";
 import mainBtn3 from "../assets/mainBtn3.png";
 import mainBtn4 from "../assets/mainBtn4.png";
 import mainBtn5 from "../assets/mainBtn5.png";
+import mainBtn6 from "../assets/mainBtn6.png";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div id="home">
       <div id="dementia">
@@ -20,7 +24,12 @@ const Home = () => {
           </div>
           <div className="btn_text">체조</div>
         </div>
-        <div className="mainBtn">
+        <div
+          className="mainBtn"
+          onClick={() => {
+            navigate("/games");
+          }}
+        >
           <div className="btn_icon">
             <img src={mainBtn2}></img>
           </div>
@@ -43,6 +52,12 @@ const Home = () => {
             <img src={mainBtn5}></img>
           </div>
           <div className="btn_text">치매진단</div>
+        </div>
+        <div className="mainBtn" onClick={() => navigate("/login")}>
+          <div className="btn_icon">
+            <img src={mainBtn6}></img>
+          </div>
+          <div className="btn_text">마이페이지</div>
         </div>
       </div>
     </div>

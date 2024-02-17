@@ -31,22 +31,32 @@ function App() {
   return (
     <div
       style={{
-        width: "393px",
-        height: "852px",
         display: "flex",
         flexDirection: "column",
+        height: "100vh",
+        minHeight: "852px",
+        maxHeight: "852px",
+        width: "100vw",
+        maxWidth: "393px",
+        minWidth: "393px",
       }}
     >
       <Header pageName={getPageName()} />
-      <Routes>
-        <Route path={"/"} element={<Home />} />
-        <Route path={"/games"} element={<Games />} />
-        <Route path={"/diary"} element={<Draw />} />
-        <Route path={"/photoedit"} element={<PhotoEdit />} />
-        <Route path={"/diary/show"} element={<DiaryShow />} />
-        <Route path={"/login"} element={<Login />} />
-        <Route path={"/signup"} element={<Signup />} />
-      </Routes>
+      <div
+        style={{
+          flex: 1,
+        }}
+      >
+        <Routes>
+          <Route path={"/"} element={<Home />} />
+          <Route path={"/games"} element={<Games />} />
+          <Route path={"/diary"} element={<Draw />} />
+          <Route path={"/photoedit"} element={<PhotoEdit />} />
+          <Route path={"/diary/show"} element={<DiaryShow />} />
+          <Route path={"/login"} element={<Login />} />
+          <Route path={"/signup"} element={<Signup />} />
+        </Routes>
+      </div>
       <Navbar onIconClick={handleIconClick} />
     </div>
   );

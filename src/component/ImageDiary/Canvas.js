@@ -86,9 +86,19 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
   };
 
   return (
-    <div style={{ display: isVisible ? "block" : "none" }}>
+    <div
+      style={{
+        display: isVisible ? "block" : "none",
+      }}
+    >
       {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}
-      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          marginBottom: "5px",
+        }}
+      >
         <img src={Trash} onClick={clearCanvas} />
         <img src={Back} onClick={unDo} />
         <img src={Brush} onClick={() => setErasing(false)} />
@@ -108,6 +118,7 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
         style={{
           border: "4px solid #D9D9D9",
           borderRadius: "40px",
+          marginLeft: "17.5px",
         }}
       ></canvas>
     </div>

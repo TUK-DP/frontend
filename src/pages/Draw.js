@@ -93,7 +93,13 @@ const Draw = ({ lineWidth, dispatch }) => {
         />
       </div>
       {/* Canvas */}
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         {data.map((keyword, i) => (
           <Canvas
             key={i}
@@ -102,22 +108,22 @@ const Draw = ({ lineWidth, dispatch }) => {
           />
         ))}
         {data.length - 1 === index ? (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button
-              onClick={saveImage}
-              style={{
-                backgroundColor: "#D9D9D9",
-                borderRadius: "10px",
-                border: "none",
-                fontSize: "20px",
-                fontWeight: "600",
-                margin: "5px 17.5px",
-                padding: "5px 20px",
-              }}
-            >
-              완료
-            </button>
-          </div>
+          <button
+            onClick={saveImage}
+            style={{
+              backgroundColor: "#82AAE3",
+              borderRadius: "10px",
+              border: "none",
+              fontSize: "20px",
+              fontWeight: "600",
+              margin: "5px 0px",
+              color: "white",
+              width: "350px",
+              height: "40px",
+            }}
+          >
+            완료
+          </button>
         ) : null}
       </div>
     </div>

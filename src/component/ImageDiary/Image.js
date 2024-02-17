@@ -1,53 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { Rnd } from "react-rnd";
+import React, { useState, useRef, useEffect } from "react";
+import Draggable from "react-draggable";
 
-const Image = ({ image, isSelected, onSelect }) => {
-  const [size, setSize] = useState({
-    width: "150px",
-    height: "150px",
-  });
+const Image = ({ image, initialPo }) => {
+  const nodeRef = useRef(null);
+  const [position, setPosition] = useState({ x: initialPo.x, y: initialPo.y });
 
-  const [position, setPosition] = useState({ x: 0, y: 80 });
-
-  const handleDragStop = (e, d) => {
-    setPosition({ x: d.x, y: d.y });
-  };
-
-  const handleResizeStop = (e, direction, ref, delta, newPosition) => {
-    setSize({
-      width: parseInt(ref.style.width, 10),
-      height: parseInt(ref.style.height, 10),
+  const trackPos = (data) => {
+    setPosition({
+      x: initialPo.x + data.x,
+      y: initialPo.y + data.y,
     });
-    setPosition(newPosition);
   };
 
-  const borderStyle = isSelected ? "2px solid #D9D9D9" : "none";
+  useEffect(() => {
+    if (
+      position.x < 0 ||
+      position.y < 0 ||
+      position.x > 250 ||
+      position.y > 250
+    ) {
+      alert("캔버스 안에서만 움직여주세요.");
+    }
+    console.log("x: ", position.x, "y: ", position.y);
+  }, [position.x, position.y]);
 
   return (
-    <Rnd
-      style={{
-        border: borderStyle,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-      size={size}
-      position={position}
-      onDragStop={handleDragStop}
-      onResizeStop={handleResizeStop}
-      minWidth="50px"
-      maxWidth="500px"
-      minHeight="50px"
-      maxHeight="500px"
-      onClick={onSelect}
-      bounds="#limit"
-    >
-      <img
-        src={image}
-        alt="diary-image"
-        style={{ width: "100%", height: "100%" }}
-      />
-    </Rnd>
+    <Draggable nodeRef={nodeRef} onDrag={(e, data) => trackPos(data)}>
+      <div ref={nodeRef} style={{ width: "100px", height: "100px" }}>
+        <img src={image} width="100px" height="100px" />
+      </div>
+    </Draggable>
   );
 };
 

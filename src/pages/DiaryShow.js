@@ -5,11 +5,21 @@ const DiaryShow = () => {
   const image = location.state?.imageDataUrl || null;
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       {image && (
         <img
           src={image}
-          style={{ width: "350px", height: "350px", marginTop: "80px" }}
+          style={{
+            width: "350px",
+            height: "350px",
+            margin: "50px auto",
+          }}
           alt="Captured"
         />
       )}

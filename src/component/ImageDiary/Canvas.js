@@ -118,7 +118,6 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
         style={{
           border: "4px solid #D9D9D9",
           borderRadius: "40px",
-          marginLeft: "17.5px",
         }}
       ></canvas>
     </div>

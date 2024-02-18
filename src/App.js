@@ -1,7 +1,9 @@
 import { Route, Routes } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { saveUrl } from "./redux/modules/urlSave.js";
 import Draw from "./pages/Draw";
 import PhotoEdit from "./pages/PhotoEdit";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Header from "./component/Header.js";
 import Navbar from "./component/Navbar.js";
 import Home from "./pages/Home.js";
@@ -9,25 +11,16 @@ import Games from "./pages/Games.js";
 import DiaryShow from "./pages/DiaryShow.js";
 import Login from "./pages/Login.js";
 import Signup from "./pages/Signup.js";
+import { useLocation } from "react-router-dom";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState("home");
-  const handleIconClick = (page) => {
-    setCurrentPage(page);
-  };
+  const dispatch = useDispatch();
+  const location = useLocation();
 
-  const getPageName = () => {
-    switch (currentPage) {
-      case "/":
-        return "Re-Memory";
-      case "/games":
-        return "게임 선택화면";
-      case "/diary": //나중에 일기장으로 변경
-        return "그림일기";
-      default:
-        return "Re-Memory";
-    }
-  };
+  useEffect(() => {
+    dispatch(saveUrl(location.pathname));
+  }, [dispatch, location.pathname]);
+
   return (
     <div
       style={{
@@ -41,7 +34,7 @@ function App() {
         minWidth: "393px",
       }}
     >
-      <Header pageName={getPageName()} />
+      <Header />
       <div
         style={{
           flex: 1,
@@ -57,7 +50,7 @@ function App() {
           <Route path={"/signup"} element={<Signup />} />
         </Routes>
       </div>
-      <Navbar onIconClick={handleIconClick} />
+      <Navbar />
     </div>
   );
 }

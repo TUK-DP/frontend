@@ -1,6 +1,6 @@
 import Canvas from "../component/ImageDiary/Canvas";
 import React, { useRef, useState, useEffect } from "react";
-import Right from "../assets/Right.png";
+import Right from "../assets/right.png";
 import Left from "../assets/left.png";
 import Palette from "../component/ImageDiary/Palette";
 import { connect } from "react-redux";
@@ -51,9 +51,18 @@ const Draw = ({ lineWidth, dispatch }) => {
   }, [savedImages]);
 
   return (
-    <div style={{ marginTop: "80px" }}>
+    <div>
       {/* 키워드 */}
-      <div style={{ display: "flex" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          border: "1px solid black",
+          margin: "5px",
+          borderRadius: "20px",
+          height: "60px",
+        }}
+      >
         <img src={Left} height="30" onClick={getPrevKeyword} />
         <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
           {data[index]}
@@ -63,7 +72,15 @@ const Draw = ({ lineWidth, dispatch }) => {
       {/* 색상팔레트 */}
       <Palette />
       {/* 브러쉬 크기 조정 */}
-      <div style={{ fontSize: "20px", margin: "10px" }}>
+      <div
+        style={{
+          fontSize: "20px",
+          margin: "5px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         브러쉬 크기 {lineWidth}
         <input
           type="range"
@@ -72,10 +89,17 @@ const Draw = ({ lineWidth, dispatch }) => {
           max="20"
           step="1"
           onChange={changeLineWidth}
+          style={{ width: "230px" }}
         />
       </div>
       {/* Canvas */}
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         {data.map((keyword, i) => (
           <Canvas
             key={i}
@@ -84,7 +108,22 @@ const Draw = ({ lineWidth, dispatch }) => {
           />
         ))}
         {data.length - 1 === index ? (
-          <button onClick={saveImage}>종료</button>
+          <button
+            onClick={saveImage}
+            style={{
+              backgroundColor: "#82AAE3",
+              borderRadius: "10px",
+              border: "none",
+              fontSize: "20px",
+              fontWeight: "600",
+              margin: "5px 0px",
+              color: "white",
+              width: "350px",
+              height: "40px",
+            }}
+          >
+            완료
+          </button>
         ) : null}
       </div>
     </div>

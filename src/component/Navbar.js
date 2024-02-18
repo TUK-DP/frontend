@@ -3,33 +3,31 @@ import HomeIcon from "../assets/HomeIcon.png";
 import GameIcon from "../assets/GameIcon.png";
 import { Link } from "react-router-dom";
 
-const Navbar = ({ onIconClick }) => {
+const Navbar = ({}) => {
   return (
     <div
       style={{
         backgroundColor: "#82AAE3",
+        minWidth: "393px",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
-        height: "91px",
+        // height: "90px",
         alignItems: "center",
-        position: "fixed",
-        bottom: 0,
-        width: "393px",
+        position: "sticky",
+        bottom: "0",
+        padding: "12px 0px",
+        fontSize: "24px",
       }}
     >
       <Link to="/diary">
-        <img
-          src={DiaryIcon}
-          height="62"
-          onClick={() => onIconClick("/diary")}
-        />
+        <img src={DiaryIcon} height="62" />
       </Link>
       <Link to="/">
-        <img src={HomeIcon} height="62" onClick={() => onIconClick("/")} />
+        <img src={HomeIcon} height="62" />
       </Link>
       <Link to="/games">
-        <img src={GameIcon} height="62" onClick={() => onIconClick("/games")} />
+        <img src={GameIcon} height="62" />
       </Link>
     </div>
   );

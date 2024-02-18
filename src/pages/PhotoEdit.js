@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Image from "../component/ImageDiary/Image.js";
 import html2canvas from "html2canvas";
@@ -27,23 +27,56 @@ const PhotoEdit = ({}) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <div
         id="limit"
         style={{
-          border: "2px solid #D9D9D9",
-          marginTop: "80px",
           width: "350px",
           height: "350px",
+          border: "4px solid #D9D9D9",
+          borderRadius: "40px",
+          display: "flex",
+          flexWrap: "wrap",
+          alignContent: "flex-start",
+          margin: "50px auto",
         }}
       >
         {images.length > 0 ? (
-          images.map((image, index) => <Image key={index} image={image} />)
+          images.map((image, index) => (
+            <Image
+              key={index}
+              image={image}
+              initialPo={{
+                x: (index % 3) * 100,
+                y: Math.floor(index / 3) * 100,
+              }}
+            />
+          ))
         ) : (
           <p>No Image</p>
         )}
       </div>
-      <button onClick={captureImage}>완료</button>
+      <button
+        onClick={captureImage}
+        style={{
+          backgroundColor: "#82AAE3",
+          borderRadius: "10px",
+          border: "none",
+          fontSize: "20px",
+          fontWeight: "600",
+          color: "white",
+          width: "350px",
+          height: "40px",
+        }}
+      >
+        완료
+      </button>
     </div>
   );
 };

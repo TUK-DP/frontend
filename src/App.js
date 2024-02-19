@@ -11,6 +11,11 @@ import Games from "./pages/Games.js";
 import DiaryShow from "./pages/DiaryShow.js";
 import Login from "./pages/Login.js";
 import Signup from "./pages/Signup.js";
+import Game1 from "./pages/gamePages/game1.js";
+import Game2 from "./pages/gamePages/game2.js";
+import Game3 from "./pages/gamePages/game3.js";
+import Game4 from "./pages/gamePages/game4.js";
+import Game5 from "./pages/gamePages/game5.js";
 import { useLocation } from "react-router-dom";
 
 function App() {
@@ -48,6 +53,11 @@ function App() {
           <Route path={"/diary/show"} element={<DiaryShow />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/signup"} element={<Signup />} />
+          <Route path={"/game1"} element={<Game1/>} />
+          <Route path={"/game2"} element={<Game2/>} />
+          <Route path={"/game3"} element={<Game3/>} />
+          <Route path={"/game4"} element={<Game4/>} />
+          <Route path={"/game5"} element={<Game5/>} />
         </Routes>
       </div>
       <Navbar />

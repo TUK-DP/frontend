@@ -1,0 +1,9 @@
+import React from "react";
+
+const Game2 = () =>{
+  return(
+    <div>Game2 page</div>
+  );
+};
+
+export default Game2;

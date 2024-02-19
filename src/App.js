@@ -11,6 +11,7 @@ import Games from "./pages/Games.js";
 import DiaryShow from "./pages/DiaryShow.js";
 import Login from "./pages/Login.js";
 import Signup from "./pages/Signup.js";
+import Calendar from "./pages/Calendar.js";
 import { useLocation } from "react-router-dom";
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
         <Routes>
           <Route path={"/"} element={<Home />} />
           <Route path={"/games"} element={<Games />} />
-          <Route path={"/diary"} element={<Draw />} />
+          <Route path={"/diary"} element={<Calendar />} />
           <Route path={"/photoedit"} element={<PhotoEdit />} />
           <Route path={"/diary/show"} element={<DiaryShow />} />
           <Route path={"/login"} element={<Login />} />

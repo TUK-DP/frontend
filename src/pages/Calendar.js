@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../index.css';
+import '../styles/Calendar.css';
 import left from "../assets/left.png";
 import Right from "../assets/Right.png";
 
@@ -76,27 +76,35 @@ const Calendar = () => {
 
   return (
     <div className="calendar-container">
-      <div className="month-nav">
-        <img src={left} onClick={prevMonth} height="20"/>
-        <span style={{fontSize:"20px", fontWeight:"bold"}}>{currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
-        <img src={Right} onClick={nextMonth} height="20"/>
+      <div className="calendar-header">
+        <div className="month-nav">
+          <img src={left} onClick={prevMonth} height="20" style={{paddingLeft:"25px"}}/>
+          <span style={{fontSize:"20px", fontWeight:"bold", color:"#999999"}}>{currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+          <img src={Right} onClick={nextMonth} height="20" style={{paddingRight:"25px"}}/>
+        </div>
+        <table className="calendar">
+          <thead>
+            <tr>
+              <th>SUN</th>
+              <th>MON</th>
+              <th>TUE</th>
+              <th>WED</th>
+              <th>THR</th>
+              <th>FRI</th>
+              <th>SAT</th>
+            </tr>
+          </thead>
+        </table>
       </div>
       <table className="calendar">
-        <thead>
-          <tr>
-            <th>일</th>
-            <th>월</th>
-            <th>화</th>
-            <th>수</th>
-            <th>목</th>
-            <th>금</th>
-            <th>토</th>
-          </tr>
-        </thead>
         <tbody>
           {renderDays()}
         </tbody>
       </table>
+      <hr style={{borderColor:"#f8f8f8"}}/>
+      <div id='btnBox'>
+        <div id='btn_diary'>일기작성</div>
+      </div>
     </div>
   );
 };

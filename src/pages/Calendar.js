@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import '../styles/Calendar.css';
 import left from "../assets/left.png";
 import Right from "../assets/Right.png";
+import { useNavigate } from "react-router-dom";
 
 const Calendar = () => {
+  const navigate = useNavigate();
+
   // 현재 날짜 상태
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -103,7 +106,7 @@ const Calendar = () => {
       </table>
       <hr style={{borderColor:"#f8f8f8"}}/>
       <div id='btnBox'>
-        <div id='btn_diary'>일기작성</div>
+        <div id='btn_diary' onClick={() => {navigate("/diarywrite");}}>일기작성</div>
       </div>
     </div>
   );

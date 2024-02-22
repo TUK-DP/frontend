@@ -12,6 +12,7 @@ import DiaryShow from "./pages/DiaryShow.js";
 import Login from "./pages/Login.js";
 import Signup from "./pages/Signup.js";
 import Calendar from "./pages/Calendar.js";
+import Diary from "./pages/Diary.js";
 import { useLocation } from "react-router-dom";
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           <Route path={"/diary/show"} element={<DiaryShow />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/signup"} element={<Signup />} />
+          <Route path={"/diarywrite"} element={<Diary />} />
         </Routes>
       </div>
       <Navbar />

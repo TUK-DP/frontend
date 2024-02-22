@@ -1,12 +1,19 @@
 import React from "react";
 import '../styles/diary.css'
+import { useNavigate } from "react-router-dom";
 
 const Diary = () => {
+  const navigate = useNavigate();
+
   return(
     <div id="diary">
       <div id="date">2월 22일</div>
-      <div id="draw"></div>
+      <div id="draw">
+        <div id="btn_paint" onClick={() => {navigate("/draw");}}>그림 그리기</div>
+      </div>
       <div id="content">
+        <div style={{fontSize:"23px", fontWeight:"bold", margin:"20px 0", textAlign:"left", width:"85%"}}>오늘의 일기</div>
+        <textarea id="inputField" placeholder="일기를 작성해주세요."></textarea>
       </div>
     </div>
   );

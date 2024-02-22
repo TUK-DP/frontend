@@ -61,13 +61,7 @@
   align-items: center;
   font-size: 20px;
   font-weight: bold;
-}
-
-#btnBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 55px;
+  margin: 50px auto 0 auto;
 }
 
 .calendar td.empty {

@@ -69,3 +69,8 @@
   align-items: center;
   margin-top: 55px;
 }
+
+.calendar td.empty {
+  pointer-events: none; /* hover 이벤트 비활성화 */
+  background-color: transparent; /* 배경색을 투명하게 설정 */
+}

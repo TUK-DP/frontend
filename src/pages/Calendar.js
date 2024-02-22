@@ -67,11 +67,11 @@ const Calendar = () => {
 
     days.forEach((day, index) => {
       if (index % 7 !== 0) {
-        cells.push(<td key={index}>{day}</td>);
+        cells.push(<td key={index} className={day === '' ? 'empty' : ''}>{day}</td>);
       } else {
         rows.push(cells);
         cells = [];
-        cells.push(<td key={index}>{day}</td>);
+        cells.push(<td key={index} className={day === '' ? 'empty' : ''}>{day}</td>);
       }
 
       if (index === days.length - 1) {

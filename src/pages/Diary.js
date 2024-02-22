@@ -11,9 +11,9 @@ const Diary = () => {
       <div id="draw">
         <div id="btn_paint" onClick={() => {navigate("/draw");}}>그림 그리기</div>
       </div>
-      <div id="content">
+      <div id="contentBox">
         <div style={{fontSize:"23px", fontWeight:"bold", margin:"20px 0", textAlign:"left", width:"85%"}}>오늘의 일기</div>
-        <textarea id="inputField" placeholder="일기를 작성해주세요."></textarea>
+        <textarea id="writeBox" placeholder="일기를 작성해주세요."></textarea>
       </div>
       <div id="btn_save" onClick={() => {navigate("/calendar");}}>저장</div>
     </div>

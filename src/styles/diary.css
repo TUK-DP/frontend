@@ -27,7 +27,7 @@
   align-items: center;
 }
 
-#content {
+#contentBox {
   width: 90%;
   height: auto;
   background-color: white;
@@ -52,7 +52,7 @@
   align-items: center;
 }
 
-#inputField {
+#writeBox {
   margin: 0 10px;
   width: 85%;
   resize: none;

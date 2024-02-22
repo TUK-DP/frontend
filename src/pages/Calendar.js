@@ -51,6 +51,11 @@ const Calendar = () => {
       days.push(day);
     }
 
+    // 마지막 주의 빈 셀을 삽입하여 항상 6주가 표시되도록 합니다.
+    while (days.length % 42 !== 0) {
+      days.push('');
+    }
+
     return days;
   };
 

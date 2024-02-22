@@ -1,6 +1,5 @@
 import React from "react";
 import '../styles/diary.css'
-import '../index.css'
 import { useNavigate } from "react-router-dom";
 
 const Diary = () => {
@@ -16,6 +15,7 @@ const Diary = () => {
         <div style={{fontSize:"23px", fontWeight:"bold", margin:"20px 0", textAlign:"left", width:"85%"}}>오늘의 일기</div>
         <textarea id="inputField" placeholder="일기를 작성해주세요."></textarea>
       </div>
+      <div id="btn_save">저장</div>
     </div>
   );
 };

@@ -57,8 +57,23 @@
   width: 85%;
   resize: none;
   margin-bottom: 20px;
-  min-height: 300px;
+  min-height: 350px;
   overflow: hidden;
   outline: 0;
   border: 0;
+  font-size: 15px;
+}
+
+#btn_save {
+  width: 90%;
+  height: 40px;
+  background-color: #82aae3;
+  color: white;
+  margin: 20px 0 40px 0;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

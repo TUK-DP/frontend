@@ -96,11 +96,18 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
         style={{
           display: "flex",
           justifyContent: "space-evenly",
-          marginBottom: "5px",
+          margin: "10px 0px 15px 0px",
         }}
       >
         <img src={Trash} onClick={clearCanvas} />
         <img src={Back} onClick={unDo} />
+        <div
+          style={{
+            backgroundColor: `${selectedColor}`,
+            width: "100px",
+            borderRadius: "20px",
+          }}
+        ></div>
         <img src={Brush} onClick={() => setErasing(false)} />
         <img src={Eraser} onClick={() => setErasing(true)} />
       </div>

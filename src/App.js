@@ -44,7 +44,7 @@ function App() {
         }}
       >
         <Routes>
-          <Route path={"/"} element={<Home />} />
+          <Route path={"/"} element={<DiaryEdit />} />
           <Route path={"/games"} element={<Games />} />
           <Route path={"/calendar"} element={<Calendar />} />
           <Route path={"/photoedit"} element={<PhotoEdit />} />

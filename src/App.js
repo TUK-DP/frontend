@@ -16,6 +16,8 @@ import Game2 from "./pages/gamePages/game2.js";
 import Game3 from "./pages/gamePages/game3.js";
 import Game4 from "./pages/gamePages/game4.js";
 import Game5 from "./pages/gamePages/game5.js";
+import DiaryTest from "./pages/DiaryTest.js";
+import DiaryTestSubmit from "./pages/DiaryTestSubmit.js";
 import { useLocation } from "react-router-dom";
 
 function App() {
@@ -53,11 +55,13 @@ function App() {
           <Route path={"/diary/show"} element={<DiaryShow />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/signup"} element={<Signup />} />
-          <Route path={"/game1"} element={<Game1/>} />
-          <Route path={"/game2"} element={<Game2/>} />
-          <Route path={"/game3"} element={<Game3/>} />
-          <Route path={"/game4"} element={<Game4/>} />
-          <Route path={"/game5"} element={<Game5/>} />
+          <Route path={"/game1"} element={<Game1 />} />
+          <Route path={"/game2"} element={<Game2 />} />
+          <Route path={"/game3"} element={<Game3 />} />
+          <Route path={"/game4"} element={<Game4 />} />
+          <Route path={"/game5"} element={<Game5 />} />
+          <Route path={"/diary/test"} element={<DiaryTest />} />
+          <Route path={"/diary/test/submit"} element={<DiaryTestSubmit />} />
         </Routes>
       </div>
       <Navbar />

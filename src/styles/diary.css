@@ -57,8 +57,7 @@
   width: 85%;
   resize: none;
   margin-bottom: 20px;
-  min-height: 350px;
-  overflow: hidden;
+  overflow-y: hidden;
   outline: 0;
   border: 0;
   font-size: 15px;

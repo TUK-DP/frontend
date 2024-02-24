@@ -3,8 +3,12 @@ import "../styles/Calendar.css";
 import left from "../assets/left.png";
 import Right from "../assets/Right.png";
 import { useNavigate } from "react-router-dom";
+import DiaryEdit from "../pages/DiaryEdit.js";
 
 const Calendar = () => {
+  //임시데이터
+  const isDiaryWrite = true;
+
   const navigate = useNavigate();
 
   // 현재 날짜 상태
@@ -161,16 +165,21 @@ const Calendar = () => {
         <tbody>{renderDays()}</tbody>
       </table>
       <hr style={{ borderColor: "#f8f8f8" }} />
-      <div id="btnBox">
-        <div
-          id="btn_diary"
-          onClick={() => {
-            navigate("/diarywrite");
-          }}
-        >
-          일기작성
+      {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
+      {isDiaryWrite ? (
+        <DiaryEdit />
+      ) : (
+        <div id="btnBox">
+          <div
+            id="btn_diary"
+            onClick={() => {
+              navigate("/diarywrite");
+            }}
+          >
+            일기작성
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

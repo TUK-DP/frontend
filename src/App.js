@@ -11,6 +11,9 @@ import Games from "./pages/Games.js";
 import DiaryShow from "./pages/DiaryShow.js";
 import Login from "./pages/Login.js";
 import Signup from "./pages/Signup.js";
+import Calendar from "./pages/Calendar.js";
+import Diary from "./pages/Diary.js";
+import DiaryEdit from "./pages/DiaryEdit.js";
 import Game1 from "./pages/gamePages/game1.js";
 import Game2 from "./pages/gamePages/game2.js";
 import Game3 from "./pages/gamePages/game3.js";
@@ -50,11 +53,13 @@ function App() {
         <Routes>
           <Route path={"/"} element={<Home />} />
           <Route path={"/games"} element={<Games />} />
-          <Route path={"/diary"} element={<Draw />} />
+          <Route path={"/calendar"} element={<Calendar />} />
           <Route path={"/photoedit"} element={<PhotoEdit />} />
           <Route path={"/diary/show"} element={<DiaryShow />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/signup"} element={<Signup />} />
+          <Route path={"/diarywrite"} element={<Diary />} />
+          <Route path={"/draw"} element={<Draw />} />
           <Route path={"/game1"} element={<Game1 />} />
           <Route path={"/game2"} element={<Game2 />} />
           <Route path={"/game3"} element={<Game3 />} />

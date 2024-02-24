@@ -20,7 +20,7 @@ const Navbar = ({}) => {
         fontSize: "24px",
       }}
     >
-      <Link to="/diary">
+      <Link to="/calendar">
         <img src={DiaryIcon} height="62" />
       </Link>
       <Link to="/">

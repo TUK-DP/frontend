@@ -23,6 +23,7 @@ import DiaryTest from "./pages/DiaryTest.js";
 import DiaryTestSubmit from "./pages/DiaryTestSubmit.js";
 import { useLocation } from "react-router-dom";
 import Survey from "./pages/Survey";
+import SurveyStart from "./pages/SurveyStart.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ function App() {
           <Route path={"/diary/test"} element={<DiaryTest />} />
           <Route path={"/diary/test/submit"} element={<DiaryTestSubmit />} />
           <Route path={"/survey"} element={<Survey />} />
+          <Route path={"/surveyStart"} element={<SurveyStart />} />
         </Routes>
       </div>
       <Navbar />

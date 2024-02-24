@@ -15,7 +15,7 @@ const Home = () => {
     <div id="home">
       <div id="dementia">
         치매진단 기록이 없습니다
-        <div id="btn_dt">치매진단 하러 가기</div>
+        <div id="btn_dt" onClick={()=>{navigate("/surveyStart")}}>치매진단 하러 가기</div>
       </div>
       <div id="btns">
         <div className="mainBtn">
@@ -44,7 +44,7 @@ const Home = () => {
         </div>
         <div className="mainBtn">
           <div className="btn_icon" onClick={() => {
-            navigate("/survey");
+            navigate("/surveyStart");
           }}>
             <img src={mainBtn4}></img>
           </div>

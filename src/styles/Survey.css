@@ -39,12 +39,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
 }
 
 #btn_before {
   width: 90%;
   height: 64px;
-  font-size: 25px;
+  font-size: 22px;
   display: flex;
   justify-content: center;
   align-items: center;

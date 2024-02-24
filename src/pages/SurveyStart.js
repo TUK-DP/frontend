@@ -7,7 +7,7 @@ const SurveyStart = () => {
     <div>
       <div id='nameBox'>
         <img src={Check} height="95"/>
-        <p style={{fontSize:"35px"}}>치매 자가 진단법</p>
+        <p style={{fontSize:"35px", fontWeight:"bold"}}>치매 자가 진단법</p>
         <p style={{fontSize:"25px"}}>총 32문항</p>
       </div>
       <p id='txtBox'>발병 전후의 상태를 잘 아는 본인이 <br/> 치매환자의 인지기능에 대한 정보를 <br/> 제공함으로써 치매를 조기에 <br/> 발견할 수 있는 치매 선별검사</p>

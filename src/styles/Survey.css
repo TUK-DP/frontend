@@ -1,0 +1,46 @@
+#nameBox {
+  background-color: #e0f4ff;
+  height: 200px;
+}
+
+#nameBox p{
+  margin: 0;
+}
+
+#txtBox {
+  font-size: 20px;
+}
+
+#btnSurveyBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 224px;
+  border-radius: 20px;
+  border: 3px solid #d9d9d9;
+}
+
+#btn_survey {
+  width: 90%;
+  height: 64px;
+  background-color: #e0f4ff;
+  font-size: 28px;
+  font-weight: bold;
+  border-radius: 20px;
+  border: 3px solid #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#btn_before {
+  width: 90%;
+  height: 64px;
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

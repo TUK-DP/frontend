@@ -43,7 +43,9 @@ const Home = () => {
           <div className="btn_text">일기</div>
         </div>
         <div className="mainBtn">
-          <div className="btn_icon">
+          <div className="btn_icon" onClick={() => {
+            navigate("/survey");
+          }}>
             <img src={mainBtn4}></img>
           </div>
           <div className="btn_text">진단</div>

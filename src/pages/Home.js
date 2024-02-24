@@ -35,6 +35,7 @@ const Home = () => {
           </div>
           <div className="btn_text">게임</div>
         </div>
+
         <div className="mainBtn" onClick={() => {navigate("/calendar");}}>
           <div className="btn_icon">
             <img src={mainBtn3}></img>

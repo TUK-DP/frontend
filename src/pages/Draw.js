@@ -58,7 +58,7 @@ const Draw = ({ lineWidth, dispatch }) => {
           display: "flex",
           alignItems: "center",
           border: "1px solid black",
-          margin: "5px",
+          margin: "10px",
           borderRadius: "20px",
           height: "60px",
         }}

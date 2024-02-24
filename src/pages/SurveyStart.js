@@ -1,8 +1,11 @@
 import React from 'react';
 import Check from '../assets/check.png';
-import '../styles/Survey.css';
+import '../styles/SurveyStart.css';
+import { useNavigate } from "react-router-dom";
 
 const SurveyStart = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <div id='nameBox'>

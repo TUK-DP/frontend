@@ -4,49 +4,35 @@ import left from "../assets/left.png";
 import Right from "../assets/Right.png";
 import { useNavigate } from "react-router-dom";
 import DiaryEdit from "../pages/DiaryEdit.js";
+import { useDispatch, useSelector } from "react-redux";
+import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
 
 const Calendar = () => {
   //임시데이터
   const isDiaryWrite = true;
-
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   // 현재 날짜 상태
-  const [currentDate, setCurrentDate] = useState(new Date());
-
+  const { year, month, day } = useSelector((state) => state.DiaryDate);
   // 이전 달로 이동
   const prevMonth = () => {
-    setCurrentDate((prevDate) => {
-      const prevMonthDate = new Date(prevDate);
-      prevMonthDate.setMonth(prevMonthDate.getMonth() - 1);
-      return prevMonthDate;
-    });
+    dispatch({ type: CHANGE_MONTH, number: -1 });
   };
 
   // 다음 달로 이동
   const nextMonth = () => {
-    setCurrentDate((prevDate) => {
-      const nextMonthDate = new Date(prevDate);
-      nextMonthDate.setMonth(nextMonthDate.getMonth() + 1);
-      return nextMonthDate;
-    });
+    dispatch({ type: CHANGE_MONTH, number: 1 });
   };
 
   // 현재 달의 첫째 날의 요일을 반환합니다. (0: 일요일, 1: 월요일, ...)
   const getFirstDayOfMonth = () => {
-    const firstDayOfMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      1
-    );
+    const firstDayOfMonth = new Date(year, month - 1, 1);
     return firstDayOfMonth.getDay();
   };
 
   // 현재 달의 날짜 배열 생성 (날짜와 요일을 모두 포함)
   const getDaysInMonth = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInMonth = new Date(year, month - 1, 0).getDate();
     const days = [];
 
     // 빈 셀을 삽입하여 첫째 날이 올바른 요일에 위치하도록 합니다.
@@ -70,10 +56,7 @@ const Calendar = () => {
   //클릭한 날짜로 변경
   const handleDateClick = (day) => {
     if (day !== "") {
-      const newDate = new Date(currentDate);
-      newDate.setDate(day);
-      setCurrentDate(newDate);
-      console.log(newDate);
+      dispatch({ type: CHANGE_DAY, number: day });
     }
   };
 
@@ -83,19 +66,19 @@ const Calendar = () => {
     const rows = [];
     let cells = [];
 
-    days.forEach((day, index) => {
-      const isSelected = day !== "" && currentDate.getDate() === day;
+    days.forEach((selectDay, index) => {
+      const isSelected = selectDay !== "" && day === selectDay;
 
       if (index % 7 !== 0) {
         cells.push(
           <td
             key={index}
-            className={`${day === "" ? "empty" : ""} ${
+            className={`${selectDay === "" ? "empty" : ""} ${
               isSelected ? "selected" : ""
             }`}
-            onClick={() => handleDateClick(day)}
+            onClick={() => handleDateClick(selectDay)}
           >
-            {day}
+            {selectDay}
           </td>
         );
       } else {
@@ -104,12 +87,12 @@ const Calendar = () => {
         cells.push(
           <td
             key={index}
-            className={`${day === "" ? "empty" : ""} ${
+            className={`${selectDay === "" ? "empty" : ""} ${
               isSelected ? "selected" : ""
             }`}
-            onClick={() => handleDateClick(day)}
+            onClick={() => handleDateClick(selectDay)}
           >
-            {day}
+            {selectDay}
           </td>
         );
       }
@@ -135,10 +118,7 @@ const Calendar = () => {
           <span
             style={{ fontSize: "20px", fontWeight: "bold", color: "#999999" }}
           >
-            {currentDate.toLocaleString("default", {
-              month: "long",
-              year: "numeric",
-            })}
+            {`${year}/${month}`}
           </span>
           <img
             src={Right}

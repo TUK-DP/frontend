@@ -1,11 +1,15 @@
 import backBtn from "../assets/backBtn.png";
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = ({}) => {
   const location = useLocation();
   const [pageName, setPageName] = useState("Re-Memory");
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
   useEffect(() => {
     // 여기에서 URL을 가져와서 페이지 이름 설정
     const currentUrl = location.pathname;
@@ -16,15 +20,15 @@ const Header = ({}) => {
       setPageName("게임 선택화면");
     } else if (currentUrl === "/diary") {
       setPageName("그림일기");
-    } else if(currentUrl === "/game1"){
+    } else if (currentUrl === "/game1") {
       setPageName("이모티콘 찾기");
-    } else if(currentUrl === "/game2"){
+    } else if (currentUrl === "/game2") {
       setPageName("지는 가위바위보");
-    } else if(currentUrl === "/game3"){
+    } else if (currentUrl === "/game3") {
       setPageName("컬러매치");
-    } else if(currentUrl === "/game4"){
+    } else if (currentUrl === "/game4") {
       setPageName("순서대로 터치");
-    } else if(currentUrl === "/game5"){
+    } else if (currentUrl === "/game5") {
       setPageName("알맞은 글자 연결");
     }
   }, [location.pathname]);
@@ -46,7 +50,7 @@ const Header = ({}) => {
       }}
     >
       {pageName !== "Re-Memory" && (
-        <img src={backBtn} style={{ marginLeft: "15px" }} />
+        <img src={backBtn} style={{ marginLeft: "15px" }} onClick={goBack} />
       )}
       <div
         style={{

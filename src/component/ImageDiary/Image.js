@@ -25,9 +25,11 @@ const Image = ({ image, initialPo }) => {
   }, [position.x, position.y]);
 
   return (
-    <Draggable nodeRef={nodeRef} onDrag={(e, data) => trackPos(data)}>
+    <Draggable
+        bounds={{ top: -initialPo.y, left: -initialPo.x, right: 250 - initialPo.x, bottom: 250 - initialPo.y }}
+        nodeRef={nodeRef} onDrag={(e, data) => trackPos(data)}>
       <div ref={nodeRef} style={{ width: "100px", height: "100px" }}>
-        <img src={image} width="100px" height="100px" />
+        <img draggable={"false"} src={image} width="100px" height="100px" />
       </div>
     </Draggable>
   );

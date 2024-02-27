@@ -4,9 +4,9 @@ import "../App.css";
 
 function SurveyCop({question}) {
     return (
-        <div className={"bg-blue-300 my-10 p-4 text-2xl rounded-3xl"}>
+        <div className={"bg-[#e0f4ff] my-10 p-4 text-2xl rounded-3xl"}>
             <div className={"flex"}>
-                <p className={"mr-4"}>{question.index}</p>
+                <p className={"mr-4"}>{question.index}번</p>
                 {question.question}
             </div>
             <div className={"pl-4 w-full h-24 bg-white rounded-2xl mb-4 flex items-center"}>
@@ -23,9 +23,6 @@ function SurveyCop({question}) {
 function SurveyList({questionState, ...rest}) {
     return (
         <>
-            <div className={"w-full h-[52px] border-4 flex justify-center items-center"} >
-                abc
-            </div>
             {questionState.map((q, index) => {
                 return (
                     <SurveyCop key={index} question={q}/>

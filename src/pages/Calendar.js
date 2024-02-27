@@ -1,49 +1,43 @@
-import React, { useState } from 'react';
-import '../styles/Calendar.css';
+import React, { useState } from "react";
+import "../styles/Calendar.css";
 import left from "../assets/left.png";
 import Right from "../assets/Right.png";
 import { useNavigate } from "react-router-dom";
+import DiaryEdit from "../pages/DiaryEdit.js";
+import { useDispatch, useSelector } from "react-redux";
+import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
 
 const Calendar = () => {
+  //임시데이터
+  const isDiaryWrite = true;
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   // 현재 날짜 상태
-  const [currentDate, setCurrentDate] = useState(new Date());
-
+  const { year, month, day } = useSelector((state) => state.DiaryDate);
   // 이전 달로 이동
   const prevMonth = () => {
-    setCurrentDate(prevDate => {
-      const prevMonthDate = new Date(prevDate);
-      prevMonthDate.setMonth(prevMonthDate.getMonth() - 1);
-      return prevMonthDate;
-    });
+    dispatch({ type: CHANGE_MONTH, number: -1 });
   };
 
   // 다음 달로 이동
   const nextMonth = () => {
-    setCurrentDate(prevDate => {
-      const nextMonthDate = new Date(prevDate);
-      nextMonthDate.setMonth(nextMonthDate.getMonth() + 1);
-      return nextMonthDate;
-    });
+    dispatch({ type: CHANGE_MONTH, number: 1 });
   };
 
   // 현재 달의 첫째 날의 요일을 반환합니다. (0: 일요일, 1: 월요일, ...)
   const getFirstDayOfMonth = () => {
-    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const firstDayOfMonth = new Date(year, month - 1, 1);
     return firstDayOfMonth.getDay();
   };
 
   // 현재 달의 날짜 배열 생성 (날짜와 요일을 모두 포함)
   const getDaysInMonth = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInMonth = new Date(year, month - 1, 0).getDate();
     const days = [];
 
     // 빈 셀을 삽입하여 첫째 날이 올바른 요일에 위치하도록 합니다.
     for (let i = 0; i < getFirstDayOfMonth(); i++) {
-      days.push('');
+      days.push("");
     }
 
     // 실제 날짜를 삽입합니다.
@@ -53,10 +47,17 @@ const Calendar = () => {
 
     // 마지막 주의 빈 셀을 삽입하여 항상 6주가 표시되도록 합니다.
     while (days.length % 42 !== 0) {
-      days.push('');
+      days.push("");
     }
 
     return days;
+  };
+
+  //클릭한 날짜로 변경
+  const handleDateClick = (day) => {
+    if (day !== "") {
+      dispatch({ type: CHANGE_DAY, number: day });
+    }
   };
 
   // 날짜 셀을 렌더링합니다.
@@ -65,13 +66,35 @@ const Calendar = () => {
     const rows = [];
     let cells = [];
 
-    days.forEach((day, index) => {
+    days.forEach((selectDay, index) => {
+      const isSelected = selectDay !== "" && day === selectDay;
+
       if (index % 7 !== 0) {
-        cells.push(<td key={index} className={day === '' ? 'empty' : ''}>{day}</td>);
+        cells.push(
+          <td
+            key={index}
+            className={`${selectDay === "" ? "empty" : ""} ${
+              isSelected ? "selected" : ""
+            }`}
+            onClick={() => handleDateClick(selectDay)}
+          >
+            {selectDay}
+          </td>
+        );
       } else {
         rows.push(cells);
         cells = [];
-        cells.push(<td key={index} className={day === '' ? 'empty' : ''}>{day}</td>);
+        cells.push(
+          <td
+            key={index}
+            className={`${selectDay === "" ? "empty" : ""} ${
+              isSelected ? "selected" : ""
+            }`}
+            onClick={() => handleDateClick(selectDay)}
+          >
+            {selectDay}
+          </td>
+        );
       }
 
       if (index === days.length - 1) {
@@ -86,9 +109,23 @@ const Calendar = () => {
     <div className="calendar-container">
       <div className="calendar-header">
         <div className="month-nav">
-          <img src={left} onClick={prevMonth} height="20" style={{paddingLeft:"25px"}}/>
-          <span style={{fontSize:"20px", fontWeight:"bold", color:"#999999"}}>{currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
-          <img src={Right} onClick={nextMonth} height="20" style={{paddingRight:"25px"}}/>
+          <img
+            src={left}
+            onClick={prevMonth}
+            height="20"
+            style={{ paddingLeft: "25px" }}
+          />
+          <span
+            style={{ fontSize: "20px", fontWeight: "bold", color: "#999999" }}
+          >
+            {`${year}/${month}`}
+          </span>
+          <img
+            src={Right}
+            onClick={nextMonth}
+            height="20"
+            style={{ paddingRight: "25px" }}
+          />
         </div>
         <table className="calendar">
           <thead>
@@ -105,14 +142,24 @@ const Calendar = () => {
         </table>
       </div>
       <table className="calendar">
-        <tbody>
-          {renderDays()}
-        </tbody>
+        <tbody>{renderDays()}</tbody>
       </table>
-      <hr style={{borderColor:"#f8f8f8"}}/>
-      <div id='btnBox'>
-        <div id='btn_diary' onClick={() => {navigate("/diarywrite");}}>일기작성</div>
-      </div>
+      <hr style={{ borderColor: "#f8f8f8" }} />
+      {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
+      {isDiaryWrite ? (
+        <DiaryEdit />
+      ) : (
+        <div id="btnBox">
+          <div
+            id="btn_diary"
+            onClick={() => {
+              navigate("/diarywrite");
+            }}
+          >
+            일기작성
+          </div>
+        </div>
+      )}
     </div>
   );
 };

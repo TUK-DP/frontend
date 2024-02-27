@@ -23,6 +23,9 @@ function SurveyCop({question}) {
 function SurveyList({questionState, ...rest}) {
     return (
         <>
+            <div className={"w-full h-[52px] border-4 flex justify-center items-center"} >
+                abc
+            </div>
             {questionState.map((q, index) => {
                 return (
                     <SurveyCop key={index} question={q}/>

@@ -1,6 +1,10 @@
+/* index.css 📂 */
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 #root {
   min-width: 393px;

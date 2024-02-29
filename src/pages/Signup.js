@@ -40,7 +40,6 @@ const Signup = () => {
             {...register("nickname", { required: "빈 칸 없이 작성해주세요." })}
           />
           <div className="error-message">
-            {" "}
             {errors.nickname && errors.nickname.message}
           </div>
         </div>
@@ -71,7 +70,6 @@ const Signup = () => {
             })}
           />
           <div className="error-message">
-            {" "}
             {errors.email && errors.email.message}
           </div>
         </div>

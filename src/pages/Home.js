@@ -58,7 +58,7 @@ const Home = () => {
         </div>
         <div className="mainBtn" onClick={() => navigate("/login")}>
           <div className="btn_icon">
-            <img src={user}></img>
+            <img src={user} style={{width:"85px", height:"85px"}}></img>
           </div>
           <div className="btn_text">마이페이지</div>
         </div>

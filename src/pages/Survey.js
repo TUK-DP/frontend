@@ -4,10 +4,10 @@ import "../App.css";
 
 function SurveyCop({question}) {
     return (
-        <div className={"bg-[#e0f4ff] my-10 p-4 text-2xl rounded-3xl space-y-3"}>
+        <div className={"bg-[#e0f4ff] my-10 p-4 text-2xl rounded-3xl space-y-3 shadow-lg"}>
             <div className={"flex"}>
                 <p className={"w-10"}>{question.index}.</p>
-                <p className={"ml-1 break-all"}>{question.question}</p>
+                <p className={"ml-1"}>{question.question}</p>
             </div>
             <div className={"pl-4 w-full h-14 bg-white rounded-2xl mb-4 flex items-center"}>
                 1. O

@@ -50,7 +50,7 @@ const Header = ({}) => {
       }}
     >
       {pageName !== "Re-Memory" && (
-        <img src={backBtn} style={{ marginLeft: "15px" }} onClick={goBack} />
+        <img src={backBtn} style={{ marginLeft: "15px", marginRight:"-45px"}} onClick={goBack} />
       )}
       <div
         style={{

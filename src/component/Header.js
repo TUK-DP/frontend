@@ -34,6 +34,8 @@ const Header = ({}) => {
       setPageName("치매진단");
     } else if (currentUrl === "/surveyStart") {
       setPageName("치매진단");
+    } else if (currentUrl === "/diarywrite") {
+      setPageName("일기");
     }
   }, [location.pathname]);
 
@@ -54,14 +56,13 @@ const Header = ({}) => {
       }}
     >
       {pageName !== "Re-Memory" && (
-        <img src={backBtn} style={{ marginLeft: "15px" }} onClick={goBack} />
+        <img src={backBtn} style={{ marginLeft: "15px", marginRight:"-50px"}} onClick={goBack} />
       )}
       <div
         style={{
           fontSize: "25px",
           flexGrow: "1",
           textAlign: "center",
-          marginRight:"40px",
         }}
       >
         {pageName}

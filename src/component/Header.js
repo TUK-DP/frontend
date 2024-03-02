@@ -61,7 +61,7 @@ const Header = ({}) => {
           fontSize: "25px",
           flexGrow: "1",
           textAlign: "center",
-          marginRight: "40px",
+          marginRight:"40px",
         }}
       >
         {pageName}

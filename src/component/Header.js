@@ -18,8 +18,6 @@ const Header = ({}) => {
       setPageName("Re-Memory");
     } else if (currentUrl === "/games") {
       setPageName("게임 선택화면");
-    } else if (currentUrl === "/diary") {
-      setPageName("그림일기");
     } else if (currentUrl === "/game1") {
       setPageName("이모티콘 찾기");
     } else if (currentUrl === "/game2") {
@@ -30,6 +28,20 @@ const Header = ({}) => {
       setPageName("순서대로 터치");
     } else if (currentUrl === "/game5") {
       setPageName("알맞은 글자 연결");
+    } else if (currentUrl === "/diary/test") {
+      setPageName("일기회상");
+    } else if (currentUrl === "/draw") {
+      setPageName("그림일기");
+    } else if (currentUrl === "/survey") {
+      setPageName("치매진단");
+    } else if (currentUrl === "/diarywrite") {
+      setPageName("일기");
+    } else if (currentUrl === "/diary/test/submit") {
+      setPageName("제출 결과");
+    } else if (currentUrl === "/login") {
+      setPageName("로그인");
+    } else if (currentUrl === "/signup") {
+      setPageName("회원가입");
     }
   }, [location.pathname]);
 

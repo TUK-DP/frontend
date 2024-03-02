@@ -38,7 +38,9 @@ const DiaryTest = () => {
   return (
     <div id="test">
       <div id="box">
-        <h2>빈칸에 알맞은 말을 써넣으시오.</h2>
+        <h2 className={"text-2xl font-semibold"}>
+          빈칸에 알맞은 말을 써넣으시오.
+        </h2>
       </div>
       {data.length > 0 && (
         <div>

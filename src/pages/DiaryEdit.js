@@ -21,9 +21,7 @@ const DiaryEdit = () => {
       <div id="painting"></div>
       <div id="diaryContent">
         <div id="title">제목</div>
-        <div id="content">
-          일기내용dddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-        </div>
+        <div id="content">일기내용</div>
       </div>
     </div>
   );

@@ -118,7 +118,7 @@ const Calendar = () => {
           <span
             style={{ fontSize: "20px", fontWeight: "bold", color: "#999999" }}
           >
-            {`${year}/${month}`}
+            {`${year}년 ${month}월`}
           </span>
           <img
             src={Right}

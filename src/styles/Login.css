@@ -8,12 +8,12 @@
 
 .inputField {
   padding: 5px 10px;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 
 label {
-  font-size: 22px;
-  line-height: 40px;
+  font-size: large;
+  line-height: 30px;
 }
 input {
   width: 333px;
@@ -23,14 +23,12 @@ input {
   border-bottom: 3px solid #82aae3;
   outline: none;
   padding: 10px 5px;
-  font-size: 18px;
 }
 
 #loginBtn {
-  width: 333px;
+  width: 100%;
   height: 50px;
   background: #82aae3;
-  margin-top: 80px;
   border-radius: 20px;
   border: none;
   font-size: 24px;
@@ -44,8 +42,12 @@ input {
   flex-direction: row;
   justify-content: space-between;
   padding: 20px 10px;
-
   font-size: 20px;
   font-weight: 600;
   color: #7d7d7d;
+}
+
+.error-message {
+  height: 30px;
+  color: #ed4337;
 }

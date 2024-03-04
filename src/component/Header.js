@@ -30,6 +30,12 @@ const Header = ({}) => {
       setPageName("순서대로 터치");
     } else if (currentUrl === "/game5") {
       setPageName("알맞은 글자 연결");
+    } else if (currentUrl === "/survey") {
+      setPageName("치매진단");
+    } else if (currentUrl === "/surveyStart") {
+      setPageName("치매진단");
+    } else if (currentUrl === "/diarywrite") {
+      setPageName("일기");
     }
   }, [location.pathname]);
 
@@ -50,7 +56,7 @@ const Header = ({}) => {
       }}
     >
       {pageName !== "Re-Memory" && (
-        <img src={backBtn} style={{ marginLeft: "15px", marginRight:"-45px"}} onClick={goBack} />
+        <img src={backBtn} style={{ marginLeft: "15px", marginRight:"-50px"}} onClick={goBack} />
       )}
       <div
         style={{

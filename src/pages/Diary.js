@@ -5,10 +5,17 @@ import { useNavigate } from "react-router-dom";
 const Diary = () => {
   const navigate = useNavigate();
   const textRef = useRef();
+
   const handleResizeHeight = useCallback(() => {
-    textRef.current.style.height = textRef.current.scrollHeight + "px";
+    const textarea = textRef.current;
+    textarea.style.height = "auto"; // Reset height to auto
+    textarea.style.height = textarea.scrollHeight + "px";
   }, []);
 
+  const handleContentChange = () => {
+    // 내용이 변경될 때마다 높이 조정
+    handleResizeHeight();
+  };
   return (
     <div id="diary">
       <div id="date">2월 22일</div>
@@ -38,7 +45,7 @@ const Diary = () => {
           id="writeBox"
           placeholder="일기를 작성해주세요."
           ref={textRef}
-          onInput={handleResizeHeight}
+          onChange={handleContentChange}
         ></textarea>
       </div>
       <div

@@ -43,7 +43,9 @@ const Header = ({}) => {
     } else if (currentUrl === "/surveyStart") {
       setPageName("치매진단");
     } else if (currentUrl === "/diarywrite") {
-      setPageName("일기");
+      setPageName("일기작성");
+    } else if (currentUrl === "/calendar") {
+      setPageName("캘린더");
     }
   }, [location.pathname]);
 

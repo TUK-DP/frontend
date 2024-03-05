@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const DiaryTest = () => {
   const navigate = useNavigate();
   const data = [
-    "___을 먹었는데 맛있었다dddddddddddddddddddddddddddddddd.",
+    "___을 먹었는데 맛있었다.",
     "나는 오늘 ___에 갔다.",
     "나는 어제 ___를 했다.",
   ];

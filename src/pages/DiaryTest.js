@@ -8,7 +8,7 @@ const DiaryTest = () => {
   const navigate = useNavigate();
   const data = [
     "___을 먹었는데 맛있었다.",
-    "나는 오늘 ___에 갔다.",
+    "나는 오늘 ___에 갔다. 문장이 길어지면 어떻게 되는지 궁금해서 적어봤습니다람쥐",
     "나는 어제 ___를 했다.",
   ];
   const [index, setIndex] = useState(0);
@@ -37,19 +37,29 @@ const DiaryTest = () => {
 
   return (
     <div id="test">
-      <div id="box">
+      <div id="box" className="relative">
         <h2 className={"text-2xl font-semibold"}>
           빈칸에 알맞은 말을 써넣으시오.
         </h2>
+        <div
+          id="arrow"
+          className={"absolute top-[600px] flex w-full justify-between px-8"}
+        >
+          {index === 0 ? (
+            <div></div>
+          ) : (
+            <img src={Left} onClick={getPrevKeyword} />
+          )}
+          {index === data.length - 1 ? (
+            <div></div>
+          ) : (
+            <img src={Right} onClick={getNextKeyword} />
+          )}
+        </div>
       </div>
       {data.length > 0 && (
         <div>
           <div id="testBox">{data[index]}</div>
-          <div id="arrow" style={{ padding: "0px 20px" }}>
-            <img src={Left} onClick={getPrevKeyword} />
-            <img src={Right} onClick={getNextKeyword} />
-          </div>
-
           <div id="answerBox">
             <input
               type="text"
@@ -60,6 +70,7 @@ const DiaryTest = () => {
                 height: "45px",
                 fontSize: "25px",
                 backgroundColor: "#e0f4ff",
+                textAlign: "center",
               }}
               value={inputValues[index]}
               onChange={handleInputChange}

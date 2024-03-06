@@ -46,8 +46,16 @@ const DiaryTest = () => {
         <div>
           <div id="testBox">{data[index]}</div>
           <div id="arrow" style={{ padding: "0px 20px" }}>
-            <img src={Left} onClick={getPrevKeyword} />
-            <img src={Right} onClick={getNextKeyword} />
+            {index === 0 ? (
+              <div></div>
+            ) : (
+              <img src={Left} onClick={getPrevKeyword} />
+            )}
+            {index === data.length - 1 ? (
+              <div></div>
+            ) : (
+              <img src={Right} onClick={getNextKeyword} />
+            )}
           </div>
 
           <div id="answerBox">

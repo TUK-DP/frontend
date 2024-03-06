@@ -60,6 +60,7 @@ const DiaryTest = () => {
                 height: "45px",
                 fontSize: "25px",
                 backgroundColor: "#e0f4ff",
+                textAlign: "center",
               }}
               value={inputValues[index]}
               onChange={handleInputChange}

@@ -3,7 +3,7 @@ import "../styles/Calendar.css";
 import left from "../assets/left.png";
 import Right from "../assets/Right.png";
 import { useNavigate } from "react-router-dom";
-import DiaryEdit from "../pages/DiaryEdit.js";
+import DiaryEdit from "./DiaryShow.js";
 import { useDispatch, useSelector } from "react-redux";
 import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
 

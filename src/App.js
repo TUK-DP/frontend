@@ -8,12 +8,12 @@ import Header from "./component/Header.js";
 import Navbar from "./component/Navbar.js";
 import Home from "./pages/Home.js";
 import Games from "./pages/Games.js";
-import DiaryShow from "./pages/DiaryShow.js";
+import DiaryImageShow from "./pages/DiaryImageShow.js";
 import Login from "./pages/Login.js";
 import Signup from "./pages/Signup.js";
 import Calendar from "./pages/Calendar.js";
 import Diary from "./pages/Diary.js";
-import DiaryEdit from "./pages/DiaryEdit.js";
+import DiaryEdit from "./pages/DiaryShow.js";
 import Game1 from "./pages/gamePages/game1.js";
 import Game2 from "./pages/gamePages/game2.js";
 import Game3 from "./pages/gamePages/game3.js";
@@ -60,7 +60,7 @@ function App() {
           <Route path={"/games"} element={<Games />} />
           <Route path={"/calendar"} element={<Calendar />} />
           <Route path={"/photoedit"} element={<PhotoEdit />} />
-          <Route path={"/diary/show"} element={<DiaryShow />} />
+          <Route path={"/diary/show"} element={<DiaryImageShow />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/signup"} element={<Signup />} />
           <Route path={"/diarywrite"} element={<Diary />} />

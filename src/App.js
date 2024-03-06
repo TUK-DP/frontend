@@ -26,6 +26,7 @@ import Survey from "./pages/Survey";
 import MyPage from "./pages/MyPage.js";
 import SurveyStart from "./pages/SurveyStart.js";
 import DementiaCenter from "./pages/DementiaCenter.js";
+import DiaryTestResult from "./pages/DiaryTestResult.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ function App() {
           <Route path={"/game5"} element={<Game5 />} />
           <Route path={"/diary/test"} element={<DiaryTest />} />
           <Route path={"/diary/test/submit"} element={<DiaryTestSubmit />} />
+          <Route path={"/diary/test/result"} element={<DiaryTestResult />} />
           <Route path={"/survey"} element={<Survey />} />
           <Route path={"/surveyStart"} element={<SurveyStart />} />
           <Route path={"/mypage"} element={<MyPage />} />

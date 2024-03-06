@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "../index.css";
 import Right from "../assets/Right.png";
 import Left from "../assets/left.png";
@@ -11,8 +11,10 @@ const DiaryTest = () => {
     "나는 오늘 ___에 갔다. 문장이 길어지면 어떻게 되는지 궁금해서 적어봤습니다람쥐",
     "나는 어제 ___를 했다.",
   ];
+  const answers = ["밥", "산", "운동"];
   const [index, setIndex] = useState(0);
   const [inputValues, setInputValues] = useState(data.map(() => ""));
+  const [correctCount, setCorrectCount] = useState(0);
 
   const getNextKeyword = () => {
     if (index === data.length - 1) return;
@@ -31,8 +33,17 @@ const DiaryTest = () => {
   };
 
   const handleSubmission = () => {
-    console.log("저장된 값:", inputValues);
-    navigate("/diary/test/submit", { state: { inputValues } });
+    // 입력한 값과 정답을 비교하여 일치하는 개수 계산
+    const newCorrectCount = inputValues.reduce(
+      (count, value, i) => (value === answers[i] ? count + 1 : count),
+      0
+    );
+    setCorrectCount(newCorrectCount);
+
+    // 결과 페이지로 이동
+    navigate("/diary/test/result", {
+      state: { correctCount: newCorrectCount, totalCount: data.length },
+    });
   };
 
   return (

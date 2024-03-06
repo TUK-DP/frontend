@@ -164,9 +164,9 @@ code {
   box-shadow: 3px 3px 3px rgb(180, 180, 180);
   margin: 0 auto;
   white-space: normal;
-  word-wrap: break-word;
   box-sizing: border-box;
   text-align: center;
+  word-break: keep-all;
 }
 
 #arrow {

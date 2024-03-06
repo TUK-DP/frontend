@@ -8,7 +8,7 @@ const DiaryTest = () => {
   const navigate = useNavigate();
   const data = [
     "___을 먹었는데 맛있었다.",
-    "나는 오늘 ___에 갔다.",
+    "나는 오늘 ___에 갔다. 문장이 길어지면 어떻게 되는지 궁금해서 적어봤습니다람쥐",
     "나는 어제 ___를 했다.",
   ];
   const [index, setIndex] = useState(0);

@@ -150,6 +150,7 @@ code {
   justify-content: center;
   align-items: center;
   height: 160px;
+  flex-direction: column;
 }
 
 #testBox {
@@ -169,11 +170,11 @@ code {
   word-break: keep-all;
 }
 
-#arrow {
+/* #arrow {
   display: flex;
   justify-content: space-between;
   margin-top: 40px;
-}
+} */
 
 #answerBox {
   background-color: #e0f4ff;

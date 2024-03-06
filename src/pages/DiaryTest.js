@@ -37,27 +37,29 @@ const DiaryTest = () => {
 
   return (
     <div id="test">
-      <div id="box">
+      <div id="box" className="relative">
         <h2 className={"text-2xl font-semibold"}>
           빈칸에 알맞은 말을 써넣으시오.
         </h2>
+        <div
+          id="arrow"
+          className={"absolute top-[600px] flex w-full justify-between px-8"}
+        >
+          {index === 0 ? (
+            <div></div>
+          ) : (
+            <img src={Left} onClick={getPrevKeyword} />
+          )}
+          {index === data.length - 1 ? (
+            <div></div>
+          ) : (
+            <img src={Right} onClick={getNextKeyword} />
+          )}
+        </div>
       </div>
       {data.length > 0 && (
         <div>
           <div id="testBox">{data[index]}</div>
-          <div id="arrow" style={{ padding: "0px 20px" }}>
-            {index === 0 ? (
-              <div></div>
-            ) : (
-              <img src={Left} onClick={getPrevKeyword} />
-            )}
-            {index === data.length - 1 ? (
-              <div></div>
-            ) : (
-              <img src={Right} onClick={getNextKeyword} />
-            )}
-          </div>
-
           <div id="answerBox">
             <input
               type="text"

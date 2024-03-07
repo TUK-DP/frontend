@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Calendar.css";
 import left from "../assets/left.png";
 import Right from "../assets/Right.png";
@@ -6,14 +6,68 @@ import { useNavigate } from "react-router-dom";
 import DiaryShow from "./DiaryShow.js";
 import { useDispatch, useSelector } from "react-redux";
 import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
+import DiaryController from "../api/diary.controller.js";
 
 const Calendar = () => {
-  //임시데이터
-  const isDiaryWrite = false;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // 현재 날짜 상태
   const { year, month, day } = useSelector((state) => state.DiaryDate);
+  const [isDiaryExist, setIsDiaryExist] = useState();
+  const [diaryInfo, setDiaryInfo] = useState({
+    id: 2,
+    user: {
+      id: 2,
+      username: "",
+      email: "",
+      nickname: "",
+      created_at: "",
+      updated_at: "",
+    },
+    created_at: "",
+    updated_at: "",
+    title: "",
+    writedate: "",
+  });
+
+  const dateFormat = () => {
+    const date = new Date(year, month - 1, day);
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1 < 9
+        ? "0" + (date.getMonth() + 1)
+        : date.getMonth() + 1) +
+      "-" +
+      (date.getDate() < 9 ? "0" + date.getDate() : date.getDate())
+    );
+  };
+  //선택한 날의 일기 가져오기
+  const getDiary = async () => {
+    try {
+      //일기가 존재함
+      const res = await DiaryController.searchDiary({
+        userId: 2,
+        date: dateFormat(),
+      });
+      console.log(res.data);
+      setIsDiaryExist(res.data.isSuccess);
+      setDiaryInfo(res.data.result.title);
+    } catch (error) {
+      //일기가 존재하지 않음
+      console.log(error.response.data);
+      setIsDiaryExist(error.response.data.isSuccess);
+    }
+  };
+
+  useEffect(() => {
+    getDiary();
+  }, [year, month, day]);
+  // const isDiaryExist = () => {
+  //   const isExist = getDiary();
+  //   console.log(isExist);
+  // };
+
   // 이전 달로 이동
   const prevMonth = () => {
     dispatch({ type: CHANGE_MONTH, number: -1 });
@@ -146,8 +200,8 @@ const Calendar = () => {
       </table>
       <hr style={{ borderColor: "#f8f8f8" }} />
       {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
-      {isDiaryWrite ? (
-        <DiaryShow />
+      {isDiaryExist ? (
+        <DiaryShow diaryInfo={diaryInfo} />
       ) : (
         <div id="btnBox">
           <div

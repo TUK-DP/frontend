@@ -2,8 +2,8 @@ import { Api } from "./common.controller";
 
 class DiaryController extends Api {
   //유저의 일기 조회
-  findById = async ({ userId = 0 }) => {
-    return await this.get(`/diary/list/userId=?${userId}`);
+  searchDiary = async ({ userId, date }) => {
+    return await this.get(`/diary/search?userId=${userId}&date=${date}`);
   };
   //일기 작성
   writeDiary = async (diaryData) => {

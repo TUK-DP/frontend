@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/DiaryEdit.css";
 import Diary from "../pages/Diary.js";
+import { useNavigate } from "react-router-dom";
 
 const DiaryEdit = () => {
   //true -> 일기열기, false -> 일기닫기
@@ -8,6 +9,7 @@ const DiaryEdit = () => {
   const toggleBtn = () => {
     setShowDiary(!showDiary);
   };
+  const navigate = useNavigate();
   return (
     <div>
       <div className={"flex justify-between items-center py-8 bg-[#e0f4ff]  "}>
@@ -16,6 +18,7 @@ const DiaryEdit = () => {
             "bg-[#82aae3] text-white w-32 h-10 flex justify-center items-center rounded-full font-bold text-lg mx-2"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+          onClick={() => navigate("/diary/test")}
         >
           일기회상
         </button>

@@ -22,18 +22,31 @@ const Diary = () => {
     console.log(diary);
   };
 
+  const dateFormat = () => {
+    const date = new Date(year, month - 1, day);
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1 < 9
+        ? "0" + (date.getMonth() + 1)
+        : date.getMonth() + 1) +
+      "-" +
+      (date.getDate() < 9 ? "0" + date.getDate() : date.getDate())
+    );
+  };
+
   const [diary, setDiary] = useState({
     userId: 2,
     title: "string",
     content: "",
-    date: `${year}-${month}-${day}`,
-    // date: "2024-03-05",
+    date: dateFormat(),
   });
 
   const saveDiary = async () => {
     await DiaryController.writeDiary(diary);
     navigate("/calendar");
   };
+
   return (
     <div id="diary">
       <div id="contentBox" className={"mt-10"}>
@@ -46,7 +59,7 @@ const Diary = () => {
             width: "85%",
           }}
         >
-          오늘의 일기
+          {diary.date}
         </div>
         <textarea
           id="writeBox"

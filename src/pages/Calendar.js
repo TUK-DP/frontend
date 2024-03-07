@@ -9,7 +9,7 @@ import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
 
 const Calendar = () => {
   //임시데이터
-  const isDiaryWrite = true;
+  const isDiaryWrite = false;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // 현재 날짜 상태

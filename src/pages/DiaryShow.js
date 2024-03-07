@@ -3,7 +3,7 @@ import "../styles/DiaryEdit.css";
 import Diary from "../pages/Diary.js";
 import { useNavigate } from "react-router-dom";
 
-const DiaryEdit = () => {
+const DiaryEdit = ({ diaryInfo }) => {
   //true -> 일기열기, false -> 일기닫기
   const [showDiary, setShowDiary] = useState(false);
   const toggleBtn = () => {
@@ -32,7 +32,7 @@ const DiaryEdit = () => {
           {showDiary ? "일기닫기" : "일기열기"}
         </button>
       </div>
-      {showDiary && <Diary />}
+      {showDiary && <Diary diaryInfo={diaryInfo} />}
     </div>
   );
 };

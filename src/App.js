@@ -12,8 +12,6 @@ import DiaryImageShow from "./pages/DiaryImageShow.js";
 import Login from "./pages/Login.js";
 import Signup from "./pages/Signup.js";
 import Calendar from "./pages/Calendar.js";
-import Diary from "./pages/Diary.js";
-import DiaryEdit from "./pages/DiaryShow.js";
 import Game1 from "./pages/gamePages/game1.js";
 import Game2 from "./pages/gamePages/game2.js";
 import Game3 from "./pages/gamePages/game3.js";
@@ -27,6 +25,7 @@ import MyPage from "./pages/MyPage.js";
 import SurveyStart from "./pages/SurveyStart.js";
 import DementiaCenter from "./pages/DementiaCenter.js";
 import DiaryTestResult from "./pages/DiaryTestResult.js";
+import DiaryWrite from "./pages/DiaryWrite.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,7 +62,6 @@ function App() {
           <Route path={"/diary/show"} element={<DiaryImageShow />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/signup"} element={<Signup />} />
-          <Route path={"/diarywrite"} element={<Diary />} />
           <Route path={"/draw"} element={<Draw />} />
           <Route path={"/game1"} element={<Game1 />} />
           <Route path={"/game2"} element={<Game2 />} />
@@ -77,6 +75,7 @@ function App() {
           <Route path={"/surveyStart"} element={<SurveyStart />} />
           <Route path={"/mypage"} element={<MyPage />} />
           <Route path={"/dementiacenter"} element={<DementiaCenter />} />
+          <Route path={"/diarywrite"} element={<DiaryWrite />} />
         </Routes>
       </div>
       <Navbar />

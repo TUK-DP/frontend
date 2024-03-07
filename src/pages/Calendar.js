@@ -3,7 +3,7 @@ import "../styles/Calendar.css";
 import left from "../assets/left.png";
 import Right from "../assets/Right.png";
 import { useNavigate } from "react-router-dom";
-import DiaryEdit from "./DiaryShow.js";
+import DiaryShow from "./DiaryShow.js";
 import { useDispatch, useSelector } from "react-redux";
 import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
 
@@ -147,7 +147,7 @@ const Calendar = () => {
       <hr style={{ borderColor: "#f8f8f8" }} />
       {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
       {isDiaryWrite ? (
-        <DiaryEdit />
+        <DiaryShow />
       ) : (
         <div id="btnBox">
           <div

@@ -1,10 +1,11 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
 
 const Diary = () => {
   const navigate = useNavigate();
   const textRef = useRef();
+  const [isImage, setIsImage] = useState(false);
 
   const handleResizeHeight = useCallback(() => {
     const textarea = textRef.current;
@@ -18,16 +19,19 @@ const Diary = () => {
   };
   return (
     <div id="diary">
-      <div id="date">2월 22일</div>
       <div id="draw">
-        <div
-          id="btn_paint"
-          onClick={() => {
-            navigate("/draw");
-          }}
-        >
-          그림 그리기
-        </div>
+        {isImage ? (
+          <div></div>
+        ) : (
+          <div
+            id="btn_paint"
+            onClick={() => {
+              navigate("/draw");
+            }}
+          >
+            그림 그리기
+          </div>
+        )}
       </div>
       <div id="contentBox">
         <div
@@ -48,14 +52,7 @@ const Diary = () => {
           onChange={handleContentChange}
         ></textarea>
       </div>
-      <div
-        id="btn_save"
-        onClick={() => {
-          navigate("/calendar");
-        }}
-      >
-        저장
-      </div>
+      <div id="btn_save">저장</div>
     </div>
   );
 };

@@ -1,29 +1,37 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import "../styles/DiaryEdit.css";
+import Diary from "../pages/Diary.js";
 
-const DiaryShow = () => {
-  const location = useLocation();
-  const image = location.state?.imageDataUrl || null;
-
+const DiaryEdit = () => {
+  //true -> 일기열기, false -> 일기닫기
+  const [showDiary, setShowDiary] = useState(false);
+  const toggleBtn = () => {
+    setShowDiary(!showDiary);
+  };
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      {image && (
-        <img
-          src={image}
-          style={{
-            width: "350px",
-            height: "350px",
-            margin: "50px auto",
-          }}
-          alt="Captured"
-        />
-      )}
+    <div>
+      <div className={"flex justify-between items-center py-8 bg-[#e0f4ff]  "}>
+        <button
+          className={
+            "bg-[#82aae3] text-white w-32 h-10 flex justify-center items-center rounded-full font-bold text-lg mx-2"
+          }
+          style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+        >
+          일기회상
+        </button>
+        <button
+          className={
+            "bg-[#82aae3] text-white w-32 h-10 flex justify-center items-center rounded-full font-bold text-lg mx-2"
+          }
+          style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+          onClick={toggleBtn}
+        >
+          {showDiary ? "일기닫기" : "일기열기"}
+        </button>
+      </div>
+      {showDiary && <Diary />}
     </div>
   );
 };
-export default DiaryShow;
+
+export default DiaryEdit;

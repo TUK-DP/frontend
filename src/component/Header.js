@@ -18,8 +18,6 @@ const Header = ({}) => {
       setPageName("Re-Memory");
     } else if (currentUrl === "/games") {
       setPageName("게임 선택화면");
-    } else if (currentUrl === "/diary") {
-      setPageName("그림일기");
     } else if (currentUrl === "/game1") {
       setPageName("이모티콘 찾기");
     } else if (currentUrl === "/game2") {
@@ -30,6 +28,24 @@ const Header = ({}) => {
       setPageName("순서대로 터치");
     } else if (currentUrl === "/game5") {
       setPageName("알맞은 글자 연결");
+    } else if (currentUrl === "/diary/test") {
+      setPageName("일기회상");
+    } else if (currentUrl === "/draw") {
+      setPageName("그림일기");
+    } else if (currentUrl === "/diary/test/submit") {
+      setPageName("제출 결과");
+    } else if (currentUrl === "/login") {
+      setPageName("로그인");
+    } else if (currentUrl === "/signup") {
+      setPageName("회원가입");
+    } else if (currentUrl === "/survey") {
+      setPageName("치매진단");
+    } else if (currentUrl === "/surveyStart") {
+      setPageName("치매진단");
+    } else if (currentUrl === "/diarywrite") {
+      setPageName("일기작성");
+    } else if (currentUrl === "/calendar") {
+      setPageName("캘린더");
     }
   }, [location.pathname]);
 
@@ -50,14 +66,17 @@ const Header = ({}) => {
       }}
     >
       {pageName !== "Re-Memory" && (
-        <img src={backBtn} style={{ marginLeft: "15px", marginRight:"-45px"}} onClick={goBack} />
+        <img
+          src={backBtn}
+          style={{ marginLeft: "15px", marginRight: "-50px", zIndex: "2" }}
+          onClick={goBack}
+        />
       )}
       <div
         style={{
           fontSize: "25px",
           flexGrow: "1",
           textAlign: "center",
-          //marginRight: "40px",
         }}
       >
         {pageName}

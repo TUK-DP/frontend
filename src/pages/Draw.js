@@ -63,11 +63,15 @@ const Draw = ({ lineWidth, dispatch }) => {
           height: "60px",
         }}
       >
-        <img src={Left} height="30" onClick={getPrevKeyword} />
+        {index === 0 ? (
+          <div style={{ width: "30px", height: "30px" }}></div>
+        ) : <img src={Left} height="30" onClick={getPrevKeyword} />}
         <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
           {data[index]}
         </p>
-        <img src={Right} height="30" onClick={getNextKeyword} />
+        {index === data.length - 1 ? (
+          <div style={{ width: "30px", height: "30px" }}></div>
+        ) : <img src={Right} height="30" onClick={getNextKeyword} />}
       </div>
       {/* 색상팔레트 */}
       <Palette />

@@ -1,19 +1,15 @@
 /* index.css 📂 */
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 #root {
   min-width: 393px;
   min-height: 852px;
   margin: 0 auto;
   box-sizing: border-box;
-  /* overflow: hidden; */
-  overflow: scroll;
-  /* overflow: auto; */
+  overflow: auto;
 }
 
 body {
@@ -154,6 +150,7 @@ code {
   justify-content: center;
   align-items: center;
   height: 160px;
+  flex-direction: column;
 }
 
 #testBox {
@@ -168,16 +165,16 @@ code {
   box-shadow: 3px 3px 3px rgb(180, 180, 180);
   margin: 0 auto;
   white-space: normal;
-  word-wrap: break-word;
   box-sizing: border-box;
   text-align: center;
+  word-break: keep-all;
 }
 
-#arrow {
+/* #arrow {
   display: flex;
   justify-content: space-between;
   margin-top: 40px;
-}
+} */
 
 #answerBox {
   background-color: #e0f4ff;

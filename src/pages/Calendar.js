@@ -52,7 +52,7 @@ const Calendar = () => {
       });
       console.log(res.data);
       setIsDiaryExist(res.data.isSuccess);
-      setDiaryInfo(res.data.result.title);
+      setDiaryInfo(res.data.result);
     } catch (error) {
       //일기가 존재하지 않음
       console.log(error.response.data);

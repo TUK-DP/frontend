@@ -3,18 +3,43 @@ import "../index.css";
 import Right from "../assets/Right.png";
 import Left from "../assets/left.png";
 import { useNavigate } from "react-router-dom";
+import DiaryController from "../api/diary.controller.js";
 
 const DiaryTest = () => {
   const navigate = useNavigate();
-  const data = [
-    "___을 먹었는데 맛있었다.",
-    "나는 오늘 ___에 갔다. 문장이 길어지면 어떻게 되는지 궁금해서 적어봤습니다람쥐",
-    "나는 어제 ___를 했다.",
-  ];
-  const answers = ["밥", "산", "운동"];
+  const [data, setData] = useState([]);
+  const [answers, setAnswers] = useState([]);
   const [index, setIndex] = useState(0);
-  const [inputValues, setInputValues] = useState(data.map(() => ""));
+  const [inputValues, setInputValues] = useState([]);
   const [correctCount, setCorrectCount] = useState(0);
+
+  useEffect(() => {
+    // 일기회상 퀴즈 데이터 가져오기
+    const fetchData = async () => {
+      try {
+        const response = await DiaryController.getQuiz({});
+        console.log("API 응답:", response.data);
+        const { isSuccess, result } = response.data;
+    
+        if (!isSuccess || !Array.isArray(result) || result.length === 0) {
+          throw new Error("Invalid response data: Missing or empty result array");
+        }
+    
+        const questions = result.map(item => item.Q);
+        const answers = result.map(item => item.A);
+    
+        setData(questions);
+        setAnswers(answers);
+        setInputValues(questions.map(() => ""));
+      } catch (error) {
+        console.error("Error fetching quiz data:", error);
+        console.error(error.stack);
+        // 오류 처리 로직 추가
+      }
+    };    
+  
+    fetchData(); // 함수 호출
+  }, []);  
 
   const getNextKeyword = () => {
     if (index === data.length - 1) return;
@@ -32,19 +57,30 @@ const DiaryTest = () => {
     setInputValues(newInputValues);
   };
 
-  const handleSubmission = () => {
-    // 입력한 값과 정답을 비교하여 일치하는 개수 계산
-    const newCorrectCount = inputValues.reduce(
-      (count, value, i) => (value === answers[i] ? count + 1 : count),
-      0
-    );
-    setCorrectCount(newCorrectCount);
-
-    // 결과 페이지로 이동
-    navigate("/diary/test/result", {
-      state: { correctCount: newCorrectCount, totalCount: data.length },
-    });
+  const handleSubmission = async () => {
+    try {
+      // 입력한 값과 서버에서 받은 정답을 비교하여 일치하는 개수 계산
+      let newCorrectCount = 0;
+      inputValues.forEach((value, i) => {
+        if (value === answers[i]) {
+          newCorrectCount++;
+        }
+      });
+  
+      // 계산된 정답 개수를 저장
+      setCorrectCount(newCorrectCount);
+  
+      // 결과 페이지로 이동
+      navigate("/diary/test/result", {
+        state: { correctCount: newCorrectCount, totalCount: inputValues.length },
+      });
+    } catch (error) {
+      console.error("Error handling submission:", error);
+      // 오류 처리
+    }
   };
+  
+  
 
   return (
     <div id="test">

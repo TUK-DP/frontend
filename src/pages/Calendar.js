@@ -15,19 +15,10 @@ const Calendar = () => {
   const { year, month, day } = useSelector((state) => state.DiaryDate);
   const [isDiaryExist, setIsDiaryExist] = useState();
   const [diaryInfo, setDiaryInfo] = useState({
-    id: 2,
-    user: {
-      id: 2,
-      username: "",
-      email: "",
-      nickname: "",
-      created_at: "",
-      updated_at: "",
-    },
-    created_at: "",
-    updated_at: "",
+    diaryId: 0,
     title: "",
-    writedate: "",
+    createDate: "",
+    content: "",
   });
 
   const dateFormat = () => {
@@ -35,11 +26,11 @@ const Calendar = () => {
     return (
       date.getFullYear() +
       "-" +
-      (date.getMonth() + 1 < 9
+      (date.getMonth() + 1 <= 9
         ? "0" + (date.getMonth() + 1)
         : date.getMonth() + 1) +
       "-" +
-      (date.getDate() < 9 ? "0" + date.getDate() : date.getDate())
+      (date.getDate() <= 9 ? "0" + date.getDate() : date.getDate())
     );
   };
   //선택한 날의 일기 가져오기
@@ -63,10 +54,6 @@ const Calendar = () => {
   useEffect(() => {
     getDiary();
   }, [year, month, day]);
-  // const isDiaryExist = () => {
-  //   const isExist = getDiary();
-  //   console.log(isExist);
-  // };
 
   // 이전 달로 이동
   const prevMonth = () => {

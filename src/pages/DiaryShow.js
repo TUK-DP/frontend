@@ -18,7 +18,7 @@ const DiaryEdit = ({ diaryInfo }) => {
             "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
-          onClick={() => navigate("/diary/test")}
+          onClick={() => navigate("/diary/test", { state: diaryInfo.diaryId })}
         >
           일기회상
         </button>

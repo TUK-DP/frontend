@@ -8,6 +8,7 @@ const Diary = () => {
   const navigate = useNavigate();
   const textRef = useRef();
   const { year, month, day } = useSelector((state) => state.DiaryDate);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleResizeHeight = useCallback(() => {
     const textarea = textRef.current;
@@ -43,6 +44,8 @@ const Diary = () => {
   });
 
   const saveDiary = async () => {
+    setIsSaving(true);
+    console.log("클릭됨");
     await DiaryController.writeDiary(diary);
     navigate("/calendar");
   };
@@ -69,9 +72,9 @@ const Diary = () => {
           value={diary.content}
         ></textarea>
       </div>
-      <div id="btn_save" onClick={saveDiary}>
+      <button id="btn_save" onClick={saveDiary} disabled={isSaving}>
         작성완료
-      </div>
+      </button>
     </div>
   );
 };

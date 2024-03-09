@@ -1,21 +1,21 @@
 import React, { useCallback, useRef, useState, useEffect } from "react";
 import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import DiaryController from "../api/diary.controller.js";
 
 const Diary = ({ diaryInfo }) => {
   const navigate = useNavigate();
   const textRef = useRef();
   const [isImage, setIsImage] = useState(false);
-  const { year, month, day } = useSelector((state) => state.DiaryDate);
+
   const handleResizeHeight = useCallback(() => {
     const textarea = textRef.current;
     textarea.style.height = "auto"; // Reset height to auto
     textarea.style.height = textarea.scrollHeight + "px";
   }, []);
-
   const [content, setContent] = useState(diaryInfo.content);
+  const [isSaving, setIsSaving] = useState(false);
 
   const diaryUpdate = {
     diaryId: diaryInfo.diaryId,
@@ -31,6 +31,7 @@ const Diary = ({ diaryInfo }) => {
     setContent(e.target.value);
   };
   const updateDiary = async () => {
+    setIsSaving(true);
     try {
       await DiaryController.updateDiary(diaryUpdate);
       console.log(diaryUpdate.content);
@@ -75,9 +76,9 @@ const Diary = ({ diaryInfo }) => {
           value={content}
         />
       </div>
-      <div id="btn_save" onClick={updateDiary}>
+      <button id="btn_save" onClick={updateDiary} disabled={isSaving}>
         저장
-      </div>
+      </button>
     </div>
   );
 };

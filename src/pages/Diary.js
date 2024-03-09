@@ -15,14 +15,14 @@ const Diary = ({ diaryInfo }) => {
     textarea.style.height = textarea.scrollHeight + "px";
   }, []);
 
-  const [content, setContent] = useState(diaryInfo.title);
+  const [content, setContent] = useState(diaryInfo.content);
 
   const diaryUpdate = {
-    diaryId: diaryInfo.id,
-    userId: diaryInfo.user.id,
+    diaryId: diaryInfo.diaryId,
+    userId: 2,
     title: diaryInfo.title,
     content: content,
-    date: diaryInfo.writedate,
+    date: diaryInfo.createDate,
   };
 
   const handleContentChange = (e) => {

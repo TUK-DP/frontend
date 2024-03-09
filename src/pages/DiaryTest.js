@@ -25,9 +25,7 @@ const DiaryTest = () => {
         const { isSuccess, result } = response.data;
 
         if (!isSuccess || !Array.isArray(result) || result.length === 0) {
-          throw new Error(
-            "Invalid response data: Missing or empty result array"
-          );
+          navigate("/error");
         }
 
         const questions = result.map((item) => item.Q);
@@ -39,7 +37,6 @@ const DiaryTest = () => {
       } catch (error) {
         console.error("Error fetching quiz data:", error);
         console.error(error.stack);
-        // 오류 처리 로직 추가
       }
     };
 

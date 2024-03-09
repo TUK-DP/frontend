@@ -26,6 +26,7 @@ import SurveyStart from "./pages/SurveyStart.js";
 import DementiaCenter from "./pages/DementiaCenter.js";
 import DiaryTestResult from "./pages/DiaryTestResult.js";
 import DiaryWrite from "./pages/DiaryWrite.js";
+import Error from "./pages/Error.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ function App() {
           <Route path={"/mypage"} element={<MyPage />} />
           <Route path={"/dementiacenter"} element={<DementiaCenter />} />
           <Route path={"/diarywrite"} element={<DiaryWrite />} />
+          <Route path={"/error"} element={<Error />} />
         </Routes>
       </div>
       <Navbar />

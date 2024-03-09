@@ -1,7 +1,6 @@
-import React, { useCallback, useRef, useState, useEffect } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import DiaryController from "../api/diary.controller.js";
 
 const Diary = ({ diaryInfo }) => {
@@ -76,9 +75,30 @@ const Diary = ({ diaryInfo }) => {
           value={content}
         />
       </div>
-      <button id="btn_save" onClick={updateDiary} disabled={isSaving}>
-        저장
-      </button>
+      <div
+        className={
+          "flex justify-between items-center py-8 bg-[#e0f4ff]  w-full "
+        }
+      >
+        <button
+          className={
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+          }
+          style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+        >
+          삭제
+        </button>
+        <button
+          className={
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+          }
+          style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+          onClick={updateDiary}
+          disabled={isSaving}
+        >
+          저장
+        </button>
+      </div>
     </div>
   );
 };

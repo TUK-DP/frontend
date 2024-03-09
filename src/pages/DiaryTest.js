@@ -1,12 +1,13 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../index.css";
 import Right from "../assets/Right.png";
 import Left from "../assets/left.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
 
 const DiaryTest = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [index, setIndex] = useState(0);
@@ -17,17 +18,21 @@ const DiaryTest = () => {
     // 일기회상 퀴즈 데이터 가져오기
     const fetchData = async () => {
       try {
-        const response = await DiaryController.getQuiz({});
+        const response = await DiaryController.getQuiz({
+          diaryId: location.state,
+        });
         console.log("API 응답:", response.data);
         const { isSuccess, result } = response.data;
-    
+
         if (!isSuccess || !Array.isArray(result) || result.length === 0) {
-          throw new Error("Invalid response data: Missing or empty result array");
+          throw new Error(
+            "Invalid response data: Missing or empty result array"
+          );
         }
-    
-        const questions = result.map(item => item.Q);
-        const answers = result.map(item => item.A);
-    
+
+        const questions = result.map((item) => item.Q);
+        const answers = result.map((item) => item.A);
+
         setData(questions);
         setAnswers(answers);
         setInputValues(questions.map(() => ""));
@@ -36,10 +41,10 @@ const DiaryTest = () => {
         console.error(error.stack);
         // 오류 처리 로직 추가
       }
-    };    
-  
+    };
+
     fetchData(); // 함수 호출
-  }, []);  
+  }, []);
 
   const getNextKeyword = () => {
     if (index === data.length - 1) return;
@@ -66,21 +71,22 @@ const DiaryTest = () => {
           newCorrectCount++;
         }
       });
-  
+
       // 계산된 정답 개수를 저장
       setCorrectCount(newCorrectCount);
-  
+
       // 결과 페이지로 이동
       navigate("/diary/test/result", {
-        state: { correctCount: newCorrectCount, totalCount: inputValues.length },
+        state: {
+          correctCount: newCorrectCount,
+          totalCount: inputValues.length,
+        },
       });
     } catch (error) {
       console.error("Error handling submission:", error);
       // 오류 처리
     }
   };
-  
-  
 
   return (
     <div id="test">

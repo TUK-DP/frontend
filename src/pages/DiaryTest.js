@@ -12,7 +12,7 @@ const DiaryTest = () => {
   const [index, setIndex] = useState(0);
   const [inputValues, setInputValues] = useState([]);
   const [correctCount, setCorrectCount] = useState(0);
-
+  
   useEffect(() => {
     // 일기회상 퀴즈 데이터 가져오기
     const fetchData = async () => {
@@ -20,26 +20,25 @@ const DiaryTest = () => {
         const response = await DiaryController.getQuiz({});
         console.log("API 응답:", response.data);
         const { isSuccess, result } = response.data;
-    
+  
         if (!isSuccess || !Array.isArray(result) || result.length === 0) {
-          throw new Error("Invalid response data: Missing or empty result array");
+          navigate("/error");
         }
-    
-        const questions = result.map(item => item.Q);
-        const answers = result.map(item => item.A);
-    
+  
+        const questions = result.map((item) => item.Q);
+        const answers = result.map((item) => item.A);
+  
         setData(questions);
         setAnswers(answers);
         setInputValues(questions.map(() => ""));
       } catch (error) {
         console.error("Error fetching quiz data:", error);
         console.error(error.stack);
-        // 오류 처리 로직 추가
       }
-    };    
+    };
   
     fetchData(); // 함수 호출
-  }, []);  
+  }, []);   
 
   const getNextKeyword = () => {
     if (index === data.length - 1) return;

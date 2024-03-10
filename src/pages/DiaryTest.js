@@ -80,6 +80,8 @@ const DiaryTest = () => {
         state: {
           correctCount: newCorrectCount,
           totalCount: inputValues.length,
+          answers: answers, // 정답 배열 전달
+          userAnswers: inputValues, // 사용자 입력 배열 전달
         },
       });
     } catch (error) {

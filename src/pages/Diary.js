@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
@@ -7,6 +7,7 @@ const Diary = ({ diaryInfo }) => {
   const navigate = useNavigate();
   const textRef = useRef();
   const [isImage, setIsImage] = useState(false);
+  const [keywords, setKeywords] = useState([]);
 
   const handleResizeHeight = useCallback(() => {
     const textarea = textRef.current;
@@ -29,6 +30,7 @@ const Diary = ({ diaryInfo }) => {
     handleResizeHeight();
     setContent(e.target.value);
   };
+
   const updateDiary = async () => {
     setIsSaving(true);
     try {
@@ -39,6 +41,17 @@ const Diary = ({ diaryInfo }) => {
     }
   };
 
+  //키워드 가져오기
+  const getKeyword = async () => {
+    const res = await DiaryController.getQuiz({ diaryId: diaryInfo.diaryId });
+    console.log(res.data.result);
+    setKeywords(res.data.result.map((item) => item.A));
+  };
+
+  useEffect(() => {
+    getKeyword();
+  }, []);
+
   return (
     <div id="diary">
       <div id="draw">
@@ -48,7 +61,7 @@ const Diary = ({ diaryInfo }) => {
           <div
             id="btn_paint"
             onClick={() => {
-              navigate("/draw");
+              navigate("/draw", { state: keywords });
             }}
           >
             그림 그리기

@@ -5,10 +5,11 @@ import Left from "../assets/left.png";
 import Palette from "../component/ImageDiary/Palette";
 import { connect } from "react-redux";
 import { brushSize } from "../redux/modules/ImageDiary";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const Draw = ({ lineWidth, dispatch }) => {
+  const location = useLocation();
   //추출된 키워드
-  const data = ["바다", "가족", "여행", "과일", "강아지"];
+  const data = location.state;
   const [index, setIndex] = useState(0);
   const [savedImages, setSavedImages] = useState([]);
 
@@ -65,13 +66,17 @@ const Draw = ({ lineWidth, dispatch }) => {
       >
         {index === 0 ? (
           <div style={{ width: "30px", height: "30px" }}></div>
-        ) : <img src={Left} height="30" onClick={getPrevKeyword} />}
+        ) : (
+          <img src={Left} height="30" onClick={getPrevKeyword} />
+        )}
         <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
           {data[index]}
         </p>
         {index === data.length - 1 ? (
           <div style={{ width: "30px", height: "30px" }}></div>
-        ) : <img src={Right} height="30" onClick={getNextKeyword} />}
+        ) : (
+          <img src={Right} height="30" onClick={getNextKeyword} />
+        )}
       </div>
       {/* 색상팔레트 */}
       <Palette />

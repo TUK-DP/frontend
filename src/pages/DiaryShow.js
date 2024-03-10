@@ -15,16 +15,16 @@ const DiaryEdit = ({ diaryInfo }) => {
       <div className={"flex justify-between items-center py-8 bg-[#e0f4ff]  "}>
         <button
           className={
-            "bg-[#82aae3] text-white w-32 h-10 flex justify-center items-center rounded-full font-bold text-lg mx-2"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
-          onClick={() => navigate("/diary/test")}
+          onClick={() => navigate("/diary/test", { state: diaryInfo.diaryId })}
         >
           일기회상
         </button>
         <button
           className={
-            "bg-[#82aae3] text-white w-32 h-10 flex justify-center items-center rounded-full font-bold text-lg mx-2"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
           onClick={toggleBtn}

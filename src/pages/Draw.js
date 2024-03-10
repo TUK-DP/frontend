@@ -5,10 +5,11 @@ import Left from "../assets/left.png";
 import Palette from "../component/ImageDiary/Palette";
 import { connect } from "react-redux";
 import { brushSize } from "../redux/modules/ImageDiary";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const Draw = ({ lineWidth, dispatch }) => {
+  const location = useLocation();
   //추출된 키워드
-  const data = ["바다", "가족", "여행", "과일", "강아지"];
+  const data = location.state;
   const [index, setIndex] = useState(0);
   const [savedImages, setSavedImages] = useState([]);
 
@@ -28,8 +29,24 @@ const Draw = ({ lineWidth, dispatch }) => {
     dispatch(brushSize(newLineWidth));
   };
 
-  const canvasRefs = useRef(data.map(() => React.createRef()));
+  const canvasRefs = useRef(
+    data.length > 0 ? data.map(() => React.createRef()) : [React.createRef()]
+  );
   const navigate = useNavigate();
+
+  // Canvas 렌더링
+  const renderCanvas = () => {
+    if (data.length === 0) {
+      return <Canvas isVisible={true} canvasRef={canvasRefs.current[0]} />;
+    }
+    return data.map((keyword, i) => (
+      <Canvas
+        key={i}
+        isVisible={i === index}
+        canvasRef={canvasRefs.current[i]}
+      />
+    ));
+  };
 
   const saveImage = async () => {
     const images = await Promise.all(
@@ -53,26 +70,48 @@ const Draw = ({ lineWidth, dispatch }) => {
   return (
     <div>
       {/* 키워드 */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          border: "1px solid black",
-          margin: "10px",
-          borderRadius: "20px",
-          height: "60px",
-        }}
-      >
-        {index === 0 ? (
-          <div style={{ width: "30px", height: "30px" }}></div>
-        ) : <img src={Left} height="30" onClick={getPrevKeyword} />}
-        <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
-          {data[index]}
-        </p>
-        {index === data.length - 1 ? (
-          <div style={{ width: "30px", height: "30px" }}></div>
-        ) : <img src={Right} height="30" onClick={getNextKeyword} />}
-      </div>
+      {data.length > 0 ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            border: "1px solid black",
+            margin: "10px",
+            borderRadius: "20px",
+            height: "60px",
+          }}
+        >
+          {index === 0 ? (
+            <div style={{ width: "30px", height: "30px" }}></div>
+          ) : (
+            <img src={Left} height="30" onClick={getPrevKeyword} />
+          )}
+          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
+            {data[index]}
+          </p>
+          {index === data.length - 1 ? (
+            <div style={{ width: "30px", height: "30px" }}></div>
+          ) : (
+            <img src={Right} height="30" onClick={getNextKeyword} />
+          )}
+        </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            border: "1px solid black",
+            margin: "10px",
+            borderRadius: "20px",
+            height: "60px",
+          }}
+        >
+          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
+            자유롭게 그려주세요
+          </p>
+        </div>
+      )}
+
       {/* 색상팔레트 */}
       <Palette />
       {/* 브러쉬 크기 조정 */}
@@ -104,14 +143,8 @@ const Draw = ({ lineWidth, dispatch }) => {
           alignItems: "center",
         }}
       >
-        {data.map((keyword, i) => (
-          <Canvas
-            key={i}
-            isVisible={i == index}
-            canvasRef={canvasRefs.current[i]}
-          />
-        ))}
-        {data.length - 1 === index ? (
+        {renderCanvas()}
+        {data.length - 1 === index || data.length === 0 ? (
           <button
             onClick={saveImage}
             style={{

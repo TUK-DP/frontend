@@ -1,13 +1,13 @@
 import React, { useCallback, useRef, useState, useEffect } from "react";
 import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import DiaryController from "../api/diary.controller.js";
 
 const Diary = ({ diaryInfo }) => {
   const navigate = useNavigate();
   const textRef = useRef();
   const [isImage, setIsImage] = useState(false);
+  const [keywords, setKeywords] = useState([]);
 
   const handleResizeHeight = useCallback(() => {
     const textarea = textRef.current;
@@ -30,6 +30,7 @@ const Diary = ({ diaryInfo }) => {
     handleResizeHeight();
     setContent(e.target.value);
   };
+
   const updateDiary = async () => {
     setIsSaving(true);
     try {
@@ -40,6 +41,17 @@ const Diary = ({ diaryInfo }) => {
     }
   };
 
+  //키워드 가져오기
+  const getKeyword = async () => {
+    const res = await DiaryController.getQuiz({ diaryId: diaryInfo.diaryId });
+    console.log(res.data.result);
+    setKeywords(res.data.result.map((item) => item.A));
+  };
+
+  useEffect(() => {
+    getKeyword();
+  }, []);
+
   return (
     <div id="diary">
       <div id="draw">
@@ -49,7 +61,7 @@ const Diary = ({ diaryInfo }) => {
           <div
             id="btn_paint"
             onClick={() => {
-              navigate("/draw");
+              navigate("/draw", { state: keywords });
             }}
           >
             그림 그리기
@@ -76,9 +88,30 @@ const Diary = ({ diaryInfo }) => {
           value={content}
         />
       </div>
-      <button id="btn_save" onClick={updateDiary} disabled={isSaving}>
-        저장
-      </button>
+      <div
+        className={
+          "flex justify-between items-center py-8 bg-[#e0f4ff]  w-full "
+        }
+      >
+        <button
+          className={
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+          }
+          style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+        >
+          삭제
+        </button>
+        <button
+          className={
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+          }
+          style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+          onClick={updateDiary}
+          disabled={isSaving}
+        >
+          저장
+        </button>
+      </div>
     </div>
   );
 };

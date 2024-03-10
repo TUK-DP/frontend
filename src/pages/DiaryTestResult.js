@@ -1,14 +1,18 @@
 import React from "react";
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DiaryTestResult = ({  }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { correctCount, totalCount } = location.state || {};
+  const { correctCount, totalCount, answers, userAnswers } = location.state || {};
 
-  const handleChange = () => {
-    navigate("/diary/test/result");
+  const handleResultCheck = () => {
+    navigate("/diary/test/submit", {
+      state: {
+        answers: answers,
+        userAnswers: userAnswers
+      }
+    });
   };
 
   return (
@@ -17,8 +21,8 @@ const DiaryTestResult = ({  }) => {
         <span className="text-3xl font-bold mt-[3rem] mb-[2rem]">일기회상 점수는</span>
         <span className="rounded-[3rem] flex justify-center items-center bg-white w-[20rem] h-[12rem] font-extrabold text-8xl">{correctCount} / {totalCount}</span>
       </div>
-      <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg mb-6 flex justify-center items-center font-bold text-xl">결과확인하기</div>
-      <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl">홈으로가기</div>
+      <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg mb-6 flex justify-center items-center font-bold text-xl" onClick={handleResultCheck}>결과확인하기</div>
+      <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl" onClick={()=>navigate('/')}>홈으로가기</div>
     </div>
   );
 };

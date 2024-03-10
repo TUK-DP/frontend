@@ -187,9 +187,7 @@ const Calendar = () => {
       </table>
       <hr style={{ borderColor: "#f8f8f8" }} />
       {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
-      {isDiaryExist ? (
-        <DiaryShow diaryInfo={diaryInfo} />
-      ) : (
+      {!isDiaryExist && day <= new Date().getDate() && (
         <div id="btnBox">
           <div
             id="btn_diary"
@@ -200,6 +198,9 @@ const Calendar = () => {
             일기작성
           </div>
         </div>
+      )}
+      {isDiaryExist && (
+        <DiaryShow diaryInfo={diaryInfo} />
       )}
     </div>
   );

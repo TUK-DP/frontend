@@ -20,7 +20,6 @@ const Diary = () => {
     // 내용이 변경될 때마다 높이 조정
     handleResizeHeight();
     setDiary({ ...diary, content: e.target.value });
-    console.log(diary);
   };
 
   const dateFormat = () => {
@@ -45,8 +44,8 @@ const Diary = () => {
 
   const saveDiary = async () => {
     setIsSaving(true);
-    console.log("클릭됨");
     await DiaryController.writeDiary(diary);
+    console.log("저장됨");
     navigate("/calendar");
   };
 

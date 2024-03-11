@@ -21,6 +21,12 @@ const Calendar = () => {
     content: "",
   });
 
+  // 현재 날짜를 가져옴
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 +1 해줌
+const currentDay = currentDate.getDate();
+
   const dateFormat = () => {
     const date = new Date(year, month - 1, day);
     return (
@@ -187,7 +193,7 @@ const Calendar = () => {
       </table>
       <hr style={{ borderColor: "#f8f8f8" }} />
       {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
-      {!isDiaryExist && day <= new Date().getDate() && (
+      {!isDiaryExist && (year < currentYear || (year === currentYear && month < currentMonth) || (year === currentYear && month === currentMonth && day <= currentDay))&& (
         <div id="btnBox">
           <div
             id="btn_diary"

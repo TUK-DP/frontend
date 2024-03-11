@@ -8,34 +8,52 @@ const Diary = ({ diaryInfo }) => {
   const textRef = useRef();
   const [isImage, setIsImage] = useState(false);
   const [keywords, setKeywords] = useState([]);
+  //diary에는 diaryId, title, createDate, content가 저장됨
+  const [diary, setDiary] = useState({
+    diaryId: diaryInfo.diaryId,
+    title: diaryInfo.title, //안변함
+    date: diaryInfo.createDate, //안변함
+    content: diaryInfo.content,
+  });
+  const [content, setContent] = useState(diary.content);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleResizeHeight = useCallback(() => {
     const textarea = textRef.current;
     textarea.style.height = "auto"; // Reset height to auto
     textarea.style.height = textarea.scrollHeight + "px";
   }, []);
-  const [content, setContent] = useState(diaryInfo.content);
-  const [isSaving, setIsSaving] = useState(false);
 
-  const diaryUpdate = {
-    diaryId: diaryInfo.diaryId,
-    userId: 2,
-    title: diaryInfo.title,
+  const [diaryUpdate, setDiaryUpdate] = useState({
+    diaryId: diary.diaryId,
+    userId: 2, //안변함
+    title: diary.title, //안변함
     content: content,
-    date: diaryInfo.createDate,
-  };
+    date: diary.date, //안변함
+  });
 
   const handleContentChange = (e) => {
     // 내용이 변경될 때마다 높이 조정
     handleResizeHeight();
     setContent(e.target.value);
   };
-
+  //content의 최신값 반영
+  useEffect(() => {
+    setDiaryUpdate({ ...diaryUpdate, content: content });
+  }, [content]);
+  //다이어리 수정
   const updateDiary = async () => {
     setIsSaving(true);
     try {
-      await DiaryController.updateDiary(diaryUpdate);
-      console.log(diaryUpdate.content);
+      const res = await DiaryController.updateDiary(diaryUpdate);
+      const result = res.data.result;
+      setDiary({ ...diary, diaryId: result.diaryId, content: result.content });
+      setDiaryUpdate({
+        ...diaryUpdate,
+        diaryId: result.diaryId,
+        content: result.content,
+      });
+      setIsSaving(false);
     } catch (error) {
       console.log(error);
     }
@@ -43,14 +61,14 @@ const Diary = ({ diaryInfo }) => {
 
   //키워드 가져오기
   const getKeyword = async () => {
-    const res = await DiaryController.getQuiz({ diaryId: diaryInfo.diaryId });
+    const res = await DiaryController.getQuiz({ diaryId: diary.diaryId });
     console.log(res.data.result);
     setKeywords(res.data.result.map((item) => item.A));
   };
 
   useEffect(() => {
     getKeyword();
-  }, []);
+  }, [diary]);
 
   return (
     <div id="diary">

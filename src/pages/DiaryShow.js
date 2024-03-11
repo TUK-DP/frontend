@@ -2,19 +2,33 @@ import React, { useState, useEffect } from "react";
 import "../styles/DiaryEdit.css";
 import Diary from "../pages/Diary.js";
 import { useNavigate } from "react-router-dom";
+import DiaryController from "../api/diary.controller.js";
+
 
 const DiaryEdit = ({ diaryInfo }) => {
   const [showDiary, setShowDiary] = useState(false);
+  const fetchData = async () => {
+    try {
+      const response = await DiaryController.getQuiz({
+        diaryId: diaryInfo.diaryId,
+      });
+      console.log("API 응답:", response.data);
+      const { isSuccess, result } = response.data;
+
+      if (result.length === 0) {
+        navigate('/error');
+      } else {
+        navigate("/diary/test", { state: diaryInfo.diaryId });
+
+      }
+    } catch (error) {
+      console.error("Error fetching quiz data:", error);
+      console.error(error.stack);
+    }
+  }
 
   const handleDiaryTestClick = () => {
-    // 여기에서 데이터가 있는지 확인하고, 없으면 에러 페이지로 이동
-    if (!diaryInfo.result || diaryInfo.result.length === 0) {
-      navigate("/error");
-      return;
-    }
-
-    // 데이터가 있으면 일기회상 페이지로 이동
-    navigate("/diary/test", { state: diaryInfo.diaryId });
+    fetchData();
   };
 
   const toggleBtn = () => {

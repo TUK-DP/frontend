@@ -24,6 +24,10 @@ const Diary = ({ diaryInfo }) => {
     textarea.style.height = textarea.scrollHeight + "px";
   }, []);
 
+  useEffect(() => {
+    handleResizeHeight();
+  }, [handleResizeHeight]);
+
   const [diaryUpdate, setDiaryUpdate] = useState({
     diaryId: diary.diaryId,
     userId: 2, //안변함

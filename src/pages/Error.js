@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Error = () => {
   const navigate = useNavigate();
   const goBack = () => {
-    navigate(-2);
+    navigate(-1);
   };
   return (
     <div>

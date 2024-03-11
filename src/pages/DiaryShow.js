@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/DiaryEdit.css";
 import Diary from "../pages/Diary.js";
 import { useNavigate } from "react-router-dom";
@@ -22,12 +22,17 @@ const DiaryEdit = ({ diaryInfo }) => {
     setShowDiary(!showDiary);
   };
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    setShowDiary(false);
+  }, [diaryInfo]);
+
   return (
     <div>
       <div className={"flex justify-between items-center py-8 bg-[#e0f4ff]  "}>
         <button
           className={
-            "bg-[#82aae3] text-white w-32 h-10 flex justify-center items-center rounded-full font-bold text-lg mx-2"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
           onClick={handleDiaryTestClick}
@@ -36,7 +41,7 @@ const DiaryEdit = ({ diaryInfo }) => {
         </button>
         <button
           className={
-            "bg-[#82aae3] text-white w-32 h-10 flex justify-center items-center rounded-full font-bold text-lg mx-2"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
           onClick={toggleBtn}

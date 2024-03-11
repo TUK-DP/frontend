@@ -8,7 +8,7 @@ export const brushSize = (lineWidth) => ({
 });
 
 const initialState = {
-  selectedColor: "#FFFFFF",
+  selectedColor: "#000000",
   lineWidth: 3,
 };
 

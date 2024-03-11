@@ -14,7 +14,7 @@ class DiaryController extends Api {
     return await this.patch("/diary/update", { data: diaryData });
   };
   //일기회상 퀴즈
-  getQuiz = async ({ diaryId = 2 }) => {
+  getQuiz = async ({ diaryId }) => {
     return await this.get(`/diary/quiz?diaryId=${diaryId}`);
   };
 }

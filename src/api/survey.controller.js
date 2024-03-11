@@ -1,6 +1,6 @@
-import {Api} from "./common.controller";
+import {SurveyApi} from "./test.controller";
 
-class Survey extends Api {
+class Survey extends SurveyApi {
     findAllSimpleSurvey = async () => {
         return await this.get(`/simple`);
     }

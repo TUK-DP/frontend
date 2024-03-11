@@ -54,7 +54,7 @@ const Home = () => {
           <div className="btn_icon">
             <img src={mainBtn5}></img>
           </div>
-          <div className="btn_text">치매진단</div>
+          <div className="btn_text">치매센터</div>
         </div>
         <div className="mainBtn" onClick={() => navigate("/login")}>
           <div className="btn_icon">

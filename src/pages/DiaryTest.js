@@ -25,7 +25,7 @@ const DiaryTest = () => {
         const { isSuccess, result } = response.data;
 
         if (!isSuccess || !Array.isArray(result) || result.length === 0) {
-          navigate("/error");
+          console.log("일기회상 문제를 생성할 수 없음");
         }
 
         const questions = result.map((item) => item.Q);

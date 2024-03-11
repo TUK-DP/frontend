@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const DiaryEdit = ({ diaryInfo }) => {
   const [showDiary, setShowDiary] = useState(false);
-  const navigate = useNavigate();
 
   const handleDiaryTestClick = () => {
     // 여기에서 데이터가 있는지 확인하고, 없으면 에러 페이지로 이동

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/DiaryEdit.css";
 import Diary from "../pages/Diary.js";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,9 @@ const DiaryEdit = ({ diaryInfo }) => {
     setShowDiary(!showDiary);
   };
   const navigate = useNavigate();
+  useEffect(() => {
+    setShowDiary(false);
+  }, [diaryInfo]);
   return (
     <div>
       <div className={"flex justify-between items-center py-8 bg-[#e0f4ff]  "}>

@@ -4,7 +4,7 @@ import Right from "../assets/Right.png";
 import Left from "../assets/left.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
-
+import { useSelector } from "react-redux";
 const DiaryTest = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,13 +13,16 @@ const DiaryTest = () => {
   const [index, setIndex] = useState(0);
   const [inputValues, setInputValues] = useState([]);
   const [correctCount, setCorrectCount] = useState(0);
+  const { userId, diaryId, title, content, date } = useSelector(
+    (state) => state.DiaryInfo
+  );
 
   useEffect(() => {
     // 일기회상 퀴즈 데이터 가져오기
     const fetchData = async () => {
       try {
         const response = await DiaryController.getQuiz({
-          diaryId: location.state,
+          diaryId: diaryId,
         });
         console.log("API 응답:", response.data);
         const { isSuccess, result } = response.data;

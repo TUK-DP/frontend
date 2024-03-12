@@ -12,55 +12,54 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div id="home">
-      <div id="dementia">
+    <div>
+      <div>
         치매진단 기록이 없습니다
-        <div id="btn_dt" onClick={()=>{navigate("/surveyStart")}}>치매진단 하러 가기</div>
+        <div onClick={()=>{navigate("/surveyStart")}}>치매진단 하러 가기</div>
       </div>
-      <div id="btns">
-        <div className="mainBtn">
-          <div className="btn_icon">
+      <div>
+        <div>
+          <div>
             <img src={mainBtn1}></img>
           </div>
-          <div className="btn_text">체조</div>
+          <div>체조</div>
         </div>
         <div
-          className="mainBtn"
           onClick={() => {
             navigate("/games");
           }}
         >
-          <div className="btn_icon">
+          <div>
             <img src={mainBtn2}></img>
           </div>
-          <div className="btn_text">게임</div>
+          <div>게임</div>
         </div>
 
-        <div className="mainBtn" onClick={() => {navigate("/calendar");}}>
-          <div className="btn_icon">
+        <div onClick={() => {navigate("/calendar");}}>
+          <div>
             <img src={mainBtn3}></img>
           </div>
-          <div className="btn_text">일기</div>
+          <div>일기</div>
         </div>
-        <div className="mainBtn">
-          <div className="btn_icon" onClick={() => {
+        <div>
+          <div onClick={() => {
             navigate("/surveyStart");
           }}>
             <img src={mainBtn4}></img>
           </div>
-          <div className="btn_text">진단</div>
+          <div>진단</div>
         </div>
-        <div className="mainBtn">
-          <div className="btn_icon">
+        <div>
+          <div>
             <img src={mainBtn5}></img>
           </div>
-          <div className="btn_text">치매센터</div>
+          <div>치매센터</div>
         </div>
-        <div className="mainBtn" onClick={() => navigate("/login")}>
-          <div className="btn_icon">
-            <img src={user} style={{width:"85px", height:"85px"}}></img>
+        <div onClick={() => navigate("/login")}>
+          <div>
+            <img src={user}></img>
           </div>
-          <div className="btn_text">마이페이지</div>
+          <div>마이페이지</div>
         </div>
       </div>
     </div>

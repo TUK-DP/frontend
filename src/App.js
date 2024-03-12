@@ -41,12 +41,12 @@ function App() {
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "100vh",
-        minHeight: "852px",
-        maxHeight: "852px",
-        width: "100vw",
-        maxWidth: "393px",
-        minWidth: "393px",
+        // height: "100vh",
+        // minHeight: "852px",
+        // maxHeight: "852px",
+        // width: "100vw",
+        // maxWidth: "393px",
+        // minWidth: "393px",
       }}
     >
       <Header />

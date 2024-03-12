@@ -52,7 +52,8 @@ const Header = ({}) => {
   return (
     <div
       style={{
-        minWidth: "393px",
+        // minWidth: "393px",
+        width:"100%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
@@ -60,9 +61,9 @@ const Header = ({}) => {
         boxShadow: "0 4px 2px -2px #D9D9D9",
         // height: "70px",
         backgroundColor: "white",
-        position: "sticky",
+        position: "fixed",
         top: "0",
-        padding: "20px 0px",
+        // padding: "20px 0px",
       }}
     >
       {pageName !== "Re-Memory" && (

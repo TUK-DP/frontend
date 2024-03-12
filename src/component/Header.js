@@ -59,6 +59,7 @@ const Header = ({}) => {
         justifyContent: "flex-start",
         alignItems: "center",
         boxShadow: "0 4px 2px -2px #D9D9D9",
+        height: "4rem",
         // height: "70px",
         backgroundColor: "white",
         position: "fixed",

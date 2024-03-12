@@ -19,8 +19,8 @@ const QuizBox = ({ order, answer, input }) => {
         </div>
       </div>
       <div className="box inputvalue">
-        <div>제출답안 : </div>
-        <div>{input}</div>
+        <div className={"w-1/3"}>제출답안 : </div>
+        <div className={"w-2/3"}>{input}</div>
       </div>
     </div>
   );

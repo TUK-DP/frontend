@@ -3,14 +3,18 @@ import "../styles/DiaryEdit.css";
 import Diary from "../pages/Diary.js";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
+import { useSelector } from "react-redux";
 
-
-const DiaryEdit = ({ diaryInfo }) => {
+const DiaryEdit = () => {
   const [showDiary, setShowDiary] = useState(false);
+  const { userId, diaryId, title, content, date } = useSelector(
+    (state) => state.DiaryInfo
+  );
+
   const fetchData = async () => {
     try {
       const response = await DiaryController.getQuiz({
-        diaryId: diaryInfo.diaryId,
+        diaryId: diaryId,
       });
       console.log("API 응답:", response.data);
       const { isSuccess, result } = response.data;
@@ -18,7 +22,7 @@ const DiaryEdit = ({ diaryInfo }) => {
       if (result.length === 0) {
         navigate('/error');
       } else {
-        navigate("/diary/test", { state: diaryInfo.diaryId });
+        navigate("/diary/test");
 
       }
     } catch (error) {
@@ -38,7 +42,7 @@ const DiaryEdit = ({ diaryInfo }) => {
   const navigate = useNavigate();
   useEffect(() => {
     setShowDiary(false);
-  }, [diaryInfo]);
+  }, [diaryId]);
 
   return (
     <div>
@@ -62,7 +66,7 @@ const DiaryEdit = ({ diaryInfo }) => {
           {showDiary ? "일기닫기" : "일기열기"}
         </button>
       </div>
-      {showDiary && <Diary diaryInfo={diaryInfo} />}
+      {showDiary && <Diary />}
     </div>
   );
 };

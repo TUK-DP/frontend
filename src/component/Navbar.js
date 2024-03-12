@@ -13,7 +13,7 @@ const Navbar = ({}) => {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
-        height:"5rem",
+        height:"6rem",
         // height: "90px",
         alignItems: "center",
         position: "fixed",

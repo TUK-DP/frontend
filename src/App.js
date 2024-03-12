@@ -41,8 +41,8 @@ function App() {
       style={{
         display: "flex",
         flexDirection: "column",
-        height: "calc(100vh - 4rem - 5rem)",
-        marginTop:"4rem",
+        height: "calc(100vh - 6rem - 5rem)",
+        marginTop:"5rem",
         // height: "100vh",
         // minHeight: "852px",
         // maxHeight: "852px",

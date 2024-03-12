@@ -6,20 +6,17 @@ import { useNavigate } from "react-router-dom";
 import DiaryShow from "./DiaryShow.js";
 import { useDispatch, useSelector } from "react-redux";
 import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
+import {CHANGE_DIARYID, CHANGE_CONTENT, CHANGE_DATE} from "../redux/modules/DiaryInfo.js"
 import DiaryController from "../api/diary.controller.js";
 
 const Calendar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // 현재 날짜 상태
   const { year, month, day } = useSelector((state) => state.DiaryDate);
+  const { userId, diaryId, title, content, date } = useSelector(
+    (state) => state.DiaryInfo
+  );
   const [isDiaryExist, setIsDiaryExist] = useState();
-  const [diaryInfo, setDiaryInfo] = useState({
-    diaryId: 0,
-    title: "",
-    createDate: "",
-    content: "",
-  });
 
   // 현재 날짜를 가져옴
 const currentDate = new Date();
@@ -39,17 +36,20 @@ const currentDay = currentDate.getDate();
       (date.getDate() <= 9 ? "0" + date.getDate() : date.getDate())
     );
   };
+  
   //선택한 날의 일기 가져오기
   const getDiary = async () => {
     try {
       //일기가 존재함
       const res = await DiaryController.searchDiary({
-        userId: 2,
+        userId: userId,
         date: dateFormat(),
       });
       console.log(res.data);
       setIsDiaryExist(res.data.isSuccess);
-      setDiaryInfo(res.data.result);
+      dispatch({type:CHANGE_DIARYID, diaryId: res.data.result.diaryId});
+      dispatch({type:CHANGE_CONTENT, content: res.data.result.content});
+      // setDiaryInfo(res.data.result);
     } catch (error) {
       //일기가 존재하지 않음
       console.log(error.response.data);
@@ -58,7 +58,10 @@ const currentDay = currentDate.getDate();
   };
 
   useEffect(() => {
+    // 일기 데이터 가져오기
     getDiary();
+    const initialFormatDate = dateFormat();
+    dispatch({ type: CHANGE_DATE, date: initialFormatDate });
   }, [year, month, day]);
 
   // 이전 달로 이동
@@ -206,7 +209,7 @@ const currentDay = currentDate.getDate();
         </div>
       )}
       {isDiaryExist && (
-        <DiaryShow diaryInfo={diaryInfo} />
+        <DiaryShow />
       )}
     </div>
   );

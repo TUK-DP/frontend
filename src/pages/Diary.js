@@ -2,20 +2,21 @@ import React, { useCallback, useRef, useState, useEffect } from "react";
 import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
+import { useDispatch, useSelector } from "react-redux";
+import {CHANGE_DIARYID, CHANGE_CONTENT, CHANGE_DATE} from "../redux/modules/DiaryInfo.js"
 
-const Diary = ({ diaryInfo }) => {
+const Diary = () => {
   const navigate = useNavigate();
+  const dispatch=useDispatch();
   const textRef = useRef();
   const [isImage, setIsImage] = useState(false);
   const [keywords, setKeywords] = useState([]);
-  //diary에는 diaryId, title, createDate, content가 저장됨
-  const [diary, setDiary] = useState({
-    diaryId: diaryInfo.diaryId,
-    title: diaryInfo.title, //안변함
-    date: diaryInfo.createDate, //안변함
-    content: diaryInfo.content,
-  });
-  const [content, setContent] = useState(diary.content);
+  
+  const { userId, diaryId, title, content, date } = useSelector(
+    (state) => state.DiaryInfo
+  );
+
+  const [newContent, setNewContent] = useState(content);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleResizeHeight = useCallback(() => {
@@ -28,35 +29,22 @@ const Diary = ({ diaryInfo }) => {
     handleResizeHeight();
   }, [handleResizeHeight]);
 
-  const [diaryUpdate, setDiaryUpdate] = useState({
-    diaryId: diary.diaryId,
-    userId: 2, //안변함
-    title: diary.title, //안변함
-    content: content,
-    date: diary.date, //안변함
-  });
 
   const handleContentChange = (e) => {
     // 내용이 변경될 때마다 높이 조정
     handleResizeHeight();
-    setContent(e.target.value);
+    setNewContent(e.target.value);
   };
-  //content의 최신값 반영
-  useEffect(() => {
-    setDiaryUpdate({ ...diaryUpdate, content: content });
-  }, [content]);
-  //다이어리 수정
+
+ // 다이어리 수정
   const updateDiary = async () => {
     setIsSaving(true);
     try {
-      const res = await DiaryController.updateDiary(diaryUpdate);
+      const res = await DiaryController.updateDiary({diaryId:diaryId, userId:userId,title:title,content:newContent,date:date});
       const result = res.data.result;
-      setDiary({ ...diary, diaryId: result.diaryId, content: result.content });
-      setDiaryUpdate({
-        ...diaryUpdate,
-        diaryId: result.diaryId,
-        content: result.content,
-      });
+      console.log(result);
+      dispatch({type:CHANGE_DIARYID, diaryId:result.diaryId});
+      dispatch({type:CHANGE_CONTENT, content:result.content});
       setIsSaving(false);
     } catch (error) {
       console.log(error);
@@ -65,14 +53,14 @@ const Diary = ({ diaryInfo }) => {
 
   //키워드 가져오기
   const getKeyword = async () => {
-    const res = await DiaryController.getQuiz({ diaryId: diary.diaryId });
+    const res = await DiaryController.getQuiz({ diaryId: diaryId });
     console.log(res.data.result);
     setKeywords(res.data.result.map((item) => item.A));
   };
 
   useEffect(() => {
     getKeyword();
-  }, [diary]);
+  }, [diaryId]);
 
   return (
     <div id="diary">
@@ -107,7 +95,7 @@ const Diary = ({ diaryInfo }) => {
           placeholder="일기를 작성해주세요."
           ref={textRef}
           onChange={handleContentChange}
-          value={content}
+          value={newContent}
         />
       </div>
       <div

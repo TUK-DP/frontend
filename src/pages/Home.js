@@ -13,53 +13,65 @@ const Home = () => {
 
   return (
     <div>
-      <div>
-        치매진단 기록이 없습니다
-        <div onClick={()=>{navigate("/surveyStart")}}>치매진단 하러 가기</div>
-      </div>
-      <div>
-        <div>
-          <div>
-            <img src={mainBtn1}></img>
-          </div>
-          <div>체조</div>
+      <div className="w-[22em] h-[11rem] bg-[#e0f4ff] mx-auto mt-5 rounded-3xl flex justify-evenly flex-col">
+        <span className="text-2xl font-bold text-[#838383] mx-auto">치매진단 기록이 없습니다</span>
+        <div className="w-[95%] flex justify-end">
+          <div className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold text-lg" onClick={()=>{navigate("/surveyStart")}}>치매진단 하러 가기</div>
         </div>
-        <div
-          onClick={() => {
-            navigate("/games");
-          }}
-        >
-          <div>
-            <img src={mainBtn2}></img>
+      </div>
+      <div className="mt-8">
+        <div className="flex justify-evenly">
+          <div className="w-[10rem] h-[10rem] rounded-xl">
+            <div className="h-[75%] w-full flex flex-col justify-center items-center rounded-tl-xl rounded-tr-xl border-l-4 border-r-4 border-t-4">
+              <img className="w-[7rem]" src={mainBtn1}></img>
+            </div>
+            <div className="h-[25%] w-full bg-[#82aae3] text-white flex justify-center items-center text-2xl font-bold rounded-bl-xl rounded-br-xl border-b-4 border-r-4 border-l-4">체조</div>
           </div>
-          <div>게임</div>
+          <div
+            className="w-[10rem] h-[10rem] rounded-xl"
+            onClick={() => {
+              navigate("/games");
+            }}
+          >
+            <div className="h-[75%] w-full flex flex-col justify-center items-center rounded-tl-xl rounded-tr-xl border-l-4 border-r-4 border-t-4">
+              <img className="w-[7rem]" src={mainBtn2}></img>
+            </div>
+            <div className="h-[25%] w-full bg-[#82aae3] text-white flex justify-center items-center text-2xl font-bold rounded-bl-xl rounded-br-xl border-b-4 border-r-4 border-l-4">게임</div>
+          </div>
         </div>
 
-        <div onClick={() => {navigate("/calendar");}}>
-          <div>
-            <img src={mainBtn3}></img>
+        <div className="flex mt-8 justify-evenly"> 
+          <div className="w-[10rem] h-[10rem] rounded-xl" onClick={() => {navigate("/calendar");}}>
+            <div className="h-[75%] w-full flex flex-col justify-center items-center rounded-tl-xl rounded-tr-xl border-l-4 border-r-4 border-t-4">
+              <img className="w-[7rem]" src={mainBtn3}></img>
+            </div>
+            <div className="h-[25%] w-full bg-[#82aae3] text-white flex justify-center items-center text-2xl font-bold rounded-bl-xl rounded-br-xl border-b-4 border-r-4 border-l-4">일기</div>
           </div>
-          <div>일기</div>
+          <div className="w-[10rem] h-[10rem] rounded-xl">
+            <div 
+              className="h-[75%] w-full flex flex-col justify-center items-center rounded-tl-xl rounded-tr-xl border-l-4 border-r-4 border-t-4"
+              onClick={() => {
+              navigate("/surveyStart");
+            }}>
+              <img className="w-[7rem]" src={mainBtn4}></img>
+            </div>
+            <div className="h-[25%] w-full bg-[#82aae3] text-white flex justify-center items-center text-2xl font-bold rounded-bl-xl rounded-br-xl border-b-4 border-r-4 border-l-4">진단</div>
+          </div>
         </div>
-        <div>
-          <div onClick={() => {
-            navigate("/surveyStart");
-          }}>
-            <img src={mainBtn4}></img>
+
+        <div className="flex mt-8 justify-evenly">
+          <div className="w-[10rem] h-[10rem] rounded-xl">
+            <div className="h-[75%] w-full flex flex-col justify-center items-center rounded-tl-xl rounded-tr-xl border-l-4 border-r-4 border-t-4">
+              <img className="w-[7rem]" src={mainBtn5}></img>
+            </div>
+            <div className="h-[25%] w-full bg-[#82aae3] text-white flex justify-center items-center text-2xl font-bold rounded-bl-xl rounded-br-xl border-b-4 border-r-4 border-l-4">치매센터</div>
           </div>
-          <div>진단</div>
-        </div>
-        <div>
-          <div>
-            <img src={mainBtn5}></img>
+          <div className="w-[10rem] h-[10rem] rounded-xl"  onClick={() => navigate("/login")}>
+            <div className="h-[75%] w-full flex flex-col justify-center items-center rounded-tl-xl rounded-tr-xl border-l-4 border-r-4 border-t-4">
+              <img className="w-[7rem]" src={user}></img>
+            </div>
+            <div className="h-[25%] w-full bg-[#82aae3] text-white flex justify-center items-center text-2xl font-bold rounded-bl-xl rounded-br-xl border-b-4 border-r-4 border-l-4">마이페이지</div>
           </div>
-          <div>치매센터</div>
-        </div>
-        <div onClick={() => navigate("/login")}>
-          <div>
-            <img src={user}></img>
-          </div>
-          <div>마이페이지</div>
         </div>
       </div>
     </div>

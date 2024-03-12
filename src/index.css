@@ -5,8 +5,11 @@
 @tailwind utilities;
 
 #root {
-  min-width: 393px;
-  min-height: 852px;
+  min-width: 375px;
+  max-width: 430px;
+  min-height: 667px;
+  max-height: 932px;
+  width: 100vw;
   margin: 0 auto;
   box-sizing: border-box;
   overflow: auto;
@@ -41,7 +44,7 @@ code {
   height: 100%;
 }
 
-#dementia {
+/* #dementia {
   width: 350px;
   height: 170px;
   margin: 20px;
@@ -112,7 +115,7 @@ code {
 .mainBtn img {
   width: 100px;
   height: 100px;
-}
+} */
 
 .btn_games {
   width: 330px;

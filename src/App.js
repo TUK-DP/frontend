@@ -38,7 +38,7 @@ function App() {
 
   window.scrollTo(0,0);
   return (
-    <div>
+    <div style={{height:"100vh"}}>
       <Header />
       <div
         style={{

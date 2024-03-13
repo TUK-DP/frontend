@@ -37,24 +37,15 @@ function App() {
   }, [dispatch, location.pathname]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "calc(100vh - 6rem - 5rem)",
-        marginTop:"5rem",
-        // height: "100vh",
-        // minHeight: "852px",
-        // maxHeight: "852px",
-        // width: "100vw",
-        // maxWidth: "393px",
-        // minWidth: "393px",
-      }}
-    >
+    <>
       <Header />
       <div
         style={{
-          flex: 1,
+          height: "100%",
+          paddingTop: "70px",
+          paddingBottom: "90px",
+          position: "relative",
+          margin: "0 auto",
         }}
       >
         <Routes>
@@ -83,7 +74,7 @@ function App() {
         </Routes>
       </div>
       <Navbar />
-    </div>
+    </>
   );
 }
 

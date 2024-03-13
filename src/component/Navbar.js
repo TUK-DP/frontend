@@ -8,19 +8,20 @@ const Navbar = ({}) => {
     <div
       style={{
         backgroundColor: "#82AAE3",
+        position: "fixed",
+        bottom: "0px",
+        left: "0px",
+        right: "0px",
+        margin: "0px auto",
+        minWidth: "360px",
+        maxWidth: "420px",
         width: "100%",
-        minWidth: "375px",
-        maxWidth: "430px",
+        height: "90px",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
-        height: "6rem",
-        // height: "90px",
         alignItems: "center",
-        position: "fixed",
-        bottom: "0",
-        // padding: "12px 0px",
-        // fontSize: "24px",
+        zIndex: "40",
       }}
     >
       <Link to="/calendar">

@@ -52,20 +52,22 @@ const Header = ({}) => {
   return (
     <div
       style={{
-        minWidth: "375px",
-        maxWidth: "430px",
+        position: "fixed",
+        top: "0px",
+        left: "0px",
+        right: "0px",
+        margin: "0px auto",
+        minWidth: "360px",
+        maxWidth: "420px",
         width: "100%",
+        height: "70px",
+        zIndex: "40",
+        backgroundColor: "#FFFFFF",
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",
         boxShadow: "0 4px 2px -2px #D9D9D9",
-        height: "5rem",
-        // height: "70px",
-        backgroundColor: "white",
-        position: "fixed",
-        top: "0",
-        // padding: "20px 0px",
       }}
     >
       {pageName !== "Re-Memory" && (

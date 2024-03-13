@@ -4,15 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  height: 100%;
+}
+
 #root {
-  min-width: 375px;
-  max-width: 430px;
-  min-height: 667px;
-  max-height: 932px;
-  width: 100vw;
+  position: relative;
   margin: 0 auto;
-  box-sizing: border-box;
-  overflow: auto;
+  height: 100%;
+  min-width: 360px;
+  max-width: 420px;
 }
 
 body {
@@ -29,12 +31,34 @@ code {
     monospace;
 }
 
-/* #home {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1;
-} */
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+select,
+textarea,
+p,
+blockquote,
+address {
+  margin: 0;
+  padding: 0;
+}
 
 #game {
   display: flex;

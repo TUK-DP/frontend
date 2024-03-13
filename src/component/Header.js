@@ -52,8 +52,9 @@ const Header = ({}) => {
   return (
     <div
       style={{
-        // minWidth: "393px",
-        width:"100%",
+        minWidth: "375px",
+        maxWidth: "430px",
+        width: "100%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",

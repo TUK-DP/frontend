@@ -8,12 +8,13 @@ const Navbar = ({}) => {
     <div
       style={{
         backgroundColor: "#82AAE3",
-        width:"100%",
-        // minWidth: "393px",
+        width: "100%",
+        minWidth: "375px",
+        maxWidth: "430px",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
-        height:"6rem",
+        height: "6rem",
         // height: "90px",
         alignItems: "center",
         position: "fixed",

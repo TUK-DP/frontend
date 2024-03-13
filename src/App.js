@@ -36,9 +36,9 @@ function App() {
     dispatch(saveUrl(location.pathname));
   }, [dispatch, location.pathname]);
 
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
   return (
-    <div>
+    <div style={{ height: "100%" }}>
       <Header />
       <div
         style={{
@@ -47,6 +47,7 @@ function App() {
           paddingBottom: "90px",
           position: "relative",
           margin: "0 auto",
+          overflow: "scroll",
         }}
       >
         <Routes>

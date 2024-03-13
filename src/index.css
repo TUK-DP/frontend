@@ -8,7 +8,13 @@ html,
 body {
   height: 100%;
 }
+body {
+  -ms-overflow-style: none;
+}
 
+::-webkit-scrollbar {
+  display: none;
+}
 #root {
   position: relative;
   margin: 0 auto;

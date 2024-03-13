@@ -3,15 +3,19 @@ import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
 import { useDispatch, useSelector } from "react-redux";
-import {CHANGE_DIARYID, CHANGE_CONTENT, CHANGE_DATE} from "../redux/modules/DiaryInfo.js"
+import {
+  CHANGE_DIARYID,
+  CHANGE_CONTENT,
+  CHANGE_DATE,
+} from "../redux/modules/DiaryInfo.js";
 
 const Diary = () => {
   const navigate = useNavigate();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const textRef = useRef();
   const [isImage, setIsImage] = useState(false);
   const [keywords, setKeywords] = useState([]);
-  
+
   const { userId, diaryId, title, content, date } = useSelector(
     (state) => state.DiaryInfo
   );
@@ -29,22 +33,30 @@ const Diary = () => {
     handleResizeHeight();
   }, [handleResizeHeight]);
 
-
   const handleContentChange = (e) => {
     // 내용이 변경될 때마다 높이 조정
     handleResizeHeight();
     setNewContent(e.target.value);
   };
 
- // 다이어리 수정
+  // 다이어리 수정
   const updateDiary = async () => {
     setIsSaving(true);
     try {
-      const res = await DiaryController.updateDiary({diaryId:diaryId, userId:userId,title:title,content:newContent,date:date});
+      if (newContent == "") {
+        return alert("내용을 작성해주세요.");
+      }
+      const res = await DiaryController.updateDiary({
+        diaryId: diaryId,
+        userId: userId,
+        title: title,
+        content: newContent,
+        date: date,
+      });
       const result = res.data.result;
       console.log(result);
-      dispatch({type:CHANGE_DIARYID, diaryId:result.diaryId});
-      dispatch({type:CHANGE_CONTENT, content:result.content});
+      dispatch({ type: CHANGE_DIARYID, diaryId: result.diaryId });
+      dispatch({ type: CHANGE_CONTENT, content: result.content });
       setIsSaving(false);
     } catch (error) {
       console.log(error);

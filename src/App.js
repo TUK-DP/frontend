@@ -36,6 +36,7 @@ function App() {
     dispatch(saveUrl(location.pathname));
   }, [dispatch, location.pathname]);
 
+  window.scrollTo(0,0);
   return (
     <div>
       <Header />

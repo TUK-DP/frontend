@@ -43,6 +43,9 @@ const Diary = () => {
   });
 
   const saveDiary = async () => {
+    if (diary.content === "") {
+      return alert("내용을 작성해주세요.");
+    }
     setIsSaving(true);
     await DiaryController.writeDiary(diary);
     console.log("저장됨");

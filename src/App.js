@@ -37,7 +37,7 @@ function App() {
   }, [dispatch, location.pathname]);
 
   return (
-    <>
+    <div>
       <Header />
       <div
         style={{
@@ -74,7 +74,7 @@ function App() {
         </Routes>
       </div>
       <Navbar />
-    </>
+    </div>
   );
 }
 

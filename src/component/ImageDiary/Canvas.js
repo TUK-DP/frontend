@@ -35,22 +35,15 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
   }, [lineWidth, selectedColor]);
 
   //그리기, 지우기 기능
-  const drawFn = (e) => {
-    //마우스 좌표 값
-    const mouseX = e.nativeEvent.offsetX;
-    const mouseY = e.nativeEvent.offsetY;
-    //그리기 시작 안함
+  const drawFn = (x, y) => {
     if (!painting) {
       getCtx.beginPath();
-      getCtx.moveTo(mouseX, mouseY);
+      getCtx.moveTo(x, y);
     } else {
-      //그리기 시작 한 후
       if (erasing) {
-        //지우개 모드
-        getCtx.clearRect(mouseX, mouseY, lineWidth * 2, lineWidth * 2);
+        getCtx.clearRect(x, y, lineWidth * 2, lineWidth * 2);
       } else {
-        //그리기 모드
-        getCtx.lineTo(mouseX, mouseY);
+        getCtx.lineTo(x, y);
         getCtx.stroke();
       }
     }
@@ -85,6 +78,29 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
     }
   };
 
+  // 터치 이벤트 핸들러 함수
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = touch.clientX - rect.left + window.scrollX;
+    const y = touch.clientY - rect.top + window.scrollY;
+    setPainting(true);
+    drawFn(x, y);
+    updateCanvasState();
+  };
+
+  const handleTouchMove = (e) => {
+    const touch = e.touches[0];
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = touch.clientX - rect.left + window.scrollX;
+    const y = touch.clientY - rect.top + window.scrollY;
+    drawFn(x, y);
+  };
+
+  const handleTouchEnd = () => {
+    setPainting(false);
+  };
+
   return (
     <div
       style={{
@@ -113,13 +129,9 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
       </div>
       <canvas
         ref={canvasRef}
-        onMouseDown={() => setPainting(true)}
-        onMouseUp={() => {
-          setPainting(false);
-          updateCanvasState();
-        }}
-        onMouseMove={(e) => drawFn(e)}
-        onMouseLeave={() => setPainting(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         width="350"
         height="350"
         style={{

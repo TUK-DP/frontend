@@ -182,7 +182,6 @@ address {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 160px;
   flex-direction: column;
 }
 
@@ -235,4 +234,5 @@ address {
   align-items: center;
   border-radius: 20px;
   margin: 0 auto;
+  margin-bottom: 2rem;
 }

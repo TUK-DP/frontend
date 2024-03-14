@@ -1,13 +1,238 @@
+/* index.css 📂 */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+body {
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+#root {
+  position: relative;
+  margin: 0 auto;
+  height: 100%;
+  min-width: 360px;
+  max-width: 420px;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+select,
+textarea,
+p,
+blockquote,
+address {
+  margin: 0;
+  padding: 0;
+}
+
+#game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* #dementia {
+  width: 350px;
+  height: 170px;
+  margin: 20px;
+  font-size: 23px;
+  font-weight: bold;
+  background-color: #e0f4ff;
+  color: rgb(170, 170, 170);
+  border-radius: 40px;
+  box-shadow: 3px 3px 3px rgb(200, 200, 200);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#btn_dt {
+  background-color: #82aae3;
+  font-size: 20px;
+  color: white;
+  width: 220px;
+  height: 45px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.mainBtn {
+  width: 148px;
+  height: 140px;
+  border-radius: 20px;
+  margin: 20px;
+  box-shadow: 5px 5px 5px rgb(200, 200, 200);
+  border: 4px solid rgb(220, 220, 220);
+}
+
+#btns {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.btn_text {
+  color: white;
+  background-color: #82aae3;
+  border-radius: 0 0 16px 16px;
+  bottom: 0;
+  width: 140px;
+  height: 33px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 23px;
+}
+
+.btn_icon {
+  width: 148px;
+  height: 100px;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mainBtn img {
+  width: 100px;
+  height: 100px;
+} */
+
+.btn_games {
+  width: 330px;
+  height: 75px;
+  background-color: #e0f4ff;
+  border-radius: 25px;
+  margin-bottom: 25px;
+  box-shadow: 3px 3px 3px rgb(180, 180, 180);
+  font-size: 25px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+#game img {
+  width: 55px;
+  height: 53px;
+  margin-left: 25px;
+}
+
+.game_text {
+  width: 200px;
+  text-align: right;
+  margin-left: 25px;
+}
+
+#test {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 160px;
+  flex-direction: column;
+}
+
+#testBox {
+  background-color: #e0f4ff;
+  font-weight: bold;
+  font-size: 24px;
+  width: 95%;
+  height: fit-content;
+  padding: 30px 20px;
+  border-radius: 20px;
+  word-spacing: 5px;
+  box-shadow: 3px 3px 3px rgb(180, 180, 180);
+  margin: 0 auto;
+  white-space: normal;
+  box-sizing: border-box;
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* #arrow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+} */
+
+#answerBox {
+  background-color: #e0f4ff;
+  width: 95%;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: 3px 3px 3px rgb(180, 180, 180);
+  margin: 50px auto;
+  text-align: center;
+}
+
+#btn_submit {
+  color: white;
+  font-size: 20px;
+  background-color: #82aae3;
+  height: 50px;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  margin: 0 auto;
 }

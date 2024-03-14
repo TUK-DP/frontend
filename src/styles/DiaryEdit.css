@@ -1,0 +1,69 @@
+#edit {
+  background-color: #e0f4ff;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 40px;
+}
+
+#btnBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  margin-top: 0;
+}
+
+#btnBox .btn {
+  background-color: #82aae3;
+  color: white;
+  width: 120px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 10px 0 10px;
+  box-shadow: 3px 3px 3px rgb(200, 200, 200);
+}
+
+#textBox {
+  width: 100%;
+  font-size: 27px;
+  font-weight: bold;
+  text-align: center;
+  margin: 15px 0;
+}
+
+#painting {
+  background-color: white;
+  width: 90%;
+  height: 353px;
+  border-radius: 25px;
+  border: 4px solid rgb(220, 220, 220);
+  margin: 30px auto;
+}
+
+#diaryContent {
+  box-sizing: border-box;
+  background-color: white;
+  width: 90%;
+  height: fit-content;
+  min-height: 300px;
+  border-radius: 25px;
+  border: 4px solid rgb(220, 220, 220);
+  margin: 40px auto;
+  margin-bottom: 0;
+  text-align: left;
+  padding: 20px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+#title {
+  font-size: large;
+  font-weight: 600;
+  margin-bottom: 10px;
+}

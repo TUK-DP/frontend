@@ -3,6 +3,7 @@ import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
 import { useDispatch, useSelector } from "react-redux";
+import Loading from "../component/Loading.js";
 import {
   CHANGE_DIARYID,
   CHANGE_CONTENT,
@@ -15,13 +16,13 @@ const Diary = () => {
   const textRef = useRef();
   const [isImage, setIsImage] = useState(false);
   const [keywords, setKeywords] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
 
   const { userId, diaryId, title, content, date } = useSelector(
     (state) => state.DiaryInfo
   );
 
   const [newContent, setNewContent] = useState(content);
-  const [isSaving, setIsSaving] = useState(false);
 
   const handleResizeHeight = useCallback(() => {
     const textarea = textRef.current;
@@ -41,11 +42,11 @@ const Diary = () => {
 
   // 다이어리 수정
   const updateDiary = async () => {
-    setIsSaving(true);
     try {
       if (newContent == "") {
         return alert("내용을 작성해주세요.");
       }
+      setIsSaving(true);
       const res = await DiaryController.updateDiary({
         diaryId: diaryId,
         userId: userId,
@@ -76,6 +77,7 @@ const Diary = () => {
 
   return (
     <div id="diary">
+      {isSaving ? <Loading text="일기 수정 중..." /> : null}
       <div id="draw">
         {isImage ? (
           <div></div>

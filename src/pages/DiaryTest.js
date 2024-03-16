@@ -93,12 +93,13 @@ const DiaryTest = () => {
   return (
     <div id="test">
       <div id="box" className="relative">
-        <h2 className={"text-2xl font-semibold"}>
+        <h2 className={"text-2xl font-semibold h-[8rem] flex justify-center items-center"}>
           빈칸에 알맞은 말을 써넣으시오.
         </h2>
-        <div
+      </div>
+      <div
           id="arrow"
-          className={"absolute top-[600px] flex w-full justify-between px-8"}
+          className={"flex w-full justify-between px-8 mb-[2rem]"}
         >
           {index === 0 ? (
             <div></div>
@@ -111,7 +112,6 @@ const DiaryTest = () => {
             <img src={Right} onClick={getNextKeyword} />
           )}
         </div>
-      </div>
       {data.length > 0 && (
         <div>
           <div id="testBox">{data[index]}</div>

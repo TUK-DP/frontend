@@ -3,6 +3,7 @@ import "../styles/diary.css";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller";
 import { useSelector } from "react-redux";
+import Loading from "../component/Loading";
 //Diary 새롭게 작성
 const Diary = () => {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ const Diary = () => {
 
   return (
     <div id="diary">
+      {isSaving ? <Loading text="일기 저장 중..." /> : null}
       <div id="contentBox" className={"mt-10"}>
         <div
           style={{

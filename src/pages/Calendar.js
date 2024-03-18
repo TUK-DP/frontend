@@ -44,6 +44,13 @@ const Calendar = () => {
 
   //선택한 날의 일기 가져오기
   const getDiary = async () => {
+    setIsGetDiaryComplete(false);
+    if (
+      year > currentYear ||
+      (year === currentYear && month > currentMonth) ||
+      (year === currentYear && month === currentMonth && day > currentDay)
+    )
+      return;
     try {
       //일기가 존재함
       const res = await DiaryController.searchDiary({
@@ -60,14 +67,12 @@ const Calendar = () => {
       console.log(error.response.data);
       setIsDiaryExist(error.response.data.isSuccess);
     }
+    setIsGetDiaryComplete(true);
   };
 
   useEffect(() => {
     // 일기 데이터 가져오기
-    setIsGetDiaryComplete(false);
-    getDiary().then(() => {
-      setIsGetDiaryComplete(true);
-    });
+    getDiary();
     const initialFormatDate = dateFormat();
     dispatch({ type: CHANGE_DATE, date: initialFormatDate });
   }, [year, month, day]);
@@ -116,7 +121,6 @@ const Calendar = () => {
     if (day !== "") {
       dispatch({ type: CHANGE_DAY, number: day });
     }
-    // isGetDiaryComplete(false);
   };
 
   // 날짜 셀을 렌더링합니다.
@@ -228,7 +232,19 @@ const Calendar = () => {
       </table>
       <hr style={{ borderColor: "#f8f8f8" }} />
       {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
-      {renderButton()}
+      {isGetDiaryComplete && isDiaryExist && <DiaryShow />}
+      {isGetDiaryComplete && !isDiaryExist && (
+        <div id="btnBox">
+          <div
+            id="btn_diary"
+            onClick={() => {
+              navigate("/diarywrite");
+            }}
+          >
+            일기작성
+          </div>
+        </div>
+      )}
     </div>
   );
 };

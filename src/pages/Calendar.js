@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import DiaryShow from "./DiaryShow.js";
 import { useDispatch, useSelector } from "react-redux";
 import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
-import {CHANGE_DIARYID, CHANGE_CONTENT, CHANGE_DATE} from "../redux/modules/DiaryInfo.js"
+import {
+  CHANGE_DIARYID,
+  CHANGE_CONTENT,
+  CHANGE_DATE,
+} from "../redux/modules/DiaryInfo.js";
 import DiaryController from "../api/diary.controller.js";
 
 const Calendar = () => {
@@ -17,12 +21,13 @@ const Calendar = () => {
     (state) => state.DiaryInfo
   );
   const [isDiaryExist, setIsDiaryExist] = useState();
+  const [isGetDiaryComplete, setIsGetDiaryComplete] = useState(false);
 
   // 현재 날짜를 가져옴
-const currentDate = new Date();
-const currentYear = currentDate.getFullYear();
-const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 +1 해줌
-const currentDay = currentDate.getDate();
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 +1 해줌
+  const currentDay = currentDate.getDate();
 
   const dateFormat = () => {
     const date = new Date(year, month - 1, day);
@@ -36,7 +41,7 @@ const currentDay = currentDate.getDate();
       (date.getDate() <= 9 ? "0" + date.getDate() : date.getDate())
     );
   };
-  
+
   //선택한 날의 일기 가져오기
   const getDiary = async () => {
     try {
@@ -47,9 +52,9 @@ const currentDay = currentDate.getDate();
       });
       console.log(res.data);
       setIsDiaryExist(res.data.isSuccess);
-      dispatch({type:CHANGE_DIARYID, diaryId: res.data.result.diaryId});
-      dispatch({type:CHANGE_CONTENT, content: res.data.result.content});
-      // setDiaryInfo(res.data.result);
+
+      dispatch({ type: CHANGE_DIARYID, diaryId: res.data.result.diaryId });
+      dispatch({ type: CHANGE_CONTENT, content: res.data.result.content });
     } catch (error) {
       //일기가 존재하지 않음
       console.log(error.response.data);
@@ -59,7 +64,10 @@ const currentDay = currentDate.getDate();
 
   useEffect(() => {
     // 일기 데이터 가져오기
-    getDiary();
+    setIsGetDiaryComplete(false);
+    getDiary().then(() => {
+      setIsGetDiaryComplete(true);
+    });
     const initialFormatDate = dateFormat();
     dispatch({ type: CHANGE_DATE, date: initialFormatDate });
   }, [year, month, day]);
@@ -108,6 +116,7 @@ const currentDay = currentDate.getDate();
     if (day !== "") {
       dispatch({ type: CHANGE_DAY, number: day });
     }
+    // isGetDiaryComplete(false);
   };
 
   // 날짜 셀을 렌더링합니다.
@@ -155,6 +164,29 @@ const currentDay = currentDate.getDate();
     return rows.map((row, index) => <tr key={index}>{row}</tr>);
   };
 
+  const renderButton = () => {
+    if (
+      year > currentYear ||
+      (year === currentYear && month > currentMonth) ||
+      (year === currentYear && month === currentMonth && day > currentDay)
+    )
+      return null; // 미래의 날짜인 경우 아무것도 렌더링하지 않음
+    if (!isGetDiaryComplete) return null; // 일기 데이터를 가져오는 중인 경우 아무것도 렌더링하지 않음
+    if (isDiaryExist) return <DiaryShow />; // 일기가 존재하는 경우 일기 내용 렌더링
+    return (
+      <div id="btnBox">
+        <div
+          id="btn_diary"
+          onClick={() => {
+            navigate("/diarywrite");
+          }}
+        >
+          일기작성
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="calendar-container">
       <div className="calendar-header">
@@ -196,21 +228,7 @@ const currentDay = currentDate.getDate();
       </table>
       <hr style={{ borderColor: "#f8f8f8" }} />
       {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
-      {!isDiaryExist && (year < currentYear || (year === currentYear && month < currentMonth) || (year === currentYear && month === currentMonth && day <= currentDay))&& (
-        <div id="btnBox">
-          <div
-            id="btn_diary"
-            onClick={() => {
-              navigate("/diarywrite");
-            }}
-          >
-            일기작성
-          </div>
-        </div>
-      )}
-      {isDiaryExist && (
-        <DiaryShow />
-      )}
+      {renderButton()}
     </div>
   );
 };

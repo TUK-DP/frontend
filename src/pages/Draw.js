@@ -141,6 +141,7 @@ const Draw = ({ lineWidth, dispatch }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          touchAction: "none",
         }}
       >
         {renderCanvas()}

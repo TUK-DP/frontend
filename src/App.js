@@ -36,7 +36,10 @@ function App() {
     dispatch(saveUrl(location.pathname));
   }, [dispatch, location.pathname]);
 
-  window.scrollTo(0, 0);
+  window.addEventListener('DOMContentLoaded', () => {
+    window.scrollTo(0, 0);
+  });
+
   return (
     <div style={{ height: "100%" }}>
       <Header />

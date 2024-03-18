@@ -22,7 +22,7 @@ const DiaryTestResult = ({  }) => {
         <span className="rounded-[3rem] flex justify-center items-center bg-white w-[20rem] h-[12rem] font-extrabold text-8xl">{correctCount} / {totalCount}</span>
       </div>
       <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg mb-6 flex justify-center items-center font-bold text-xl" onClick={handleResultCheck}>결과확인하기</div>
-      <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl" onClick={()=>navigate('/calendar')}>캘린더로가기</div>
+      <div className="bg-[#82aae3] mb-5 text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl" onClick={()=>navigate('/calendar')}>캘린더로가기</div>
     </div>
   );
 };

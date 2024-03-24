@@ -35,11 +35,7 @@ function App() {
   useEffect(() => {
     dispatch(saveUrl(location.pathname));
   }, [dispatch, location.pathname]);
-
-  window.addEventListener('DOMContentLoaded', () => {
-    window.scrollTo(0, 0);
-  });
-
+  
   return (
     <div style={{ height: "100%" }}>
       <Header />

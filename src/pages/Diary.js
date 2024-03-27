@@ -67,11 +67,13 @@ const Diary = () => {
   // 다이어리 삭제
   const deleteDiary = async () => {
     try {
+      console.log("Deleting diary with userId:", userId, "and diaryId:", diaryId);
       const res = await DiaryController.deleteDiary({
         userId: userId,
         diaryId: diaryId,
       });
       console.log("일기가 삭제되었습니다.");
+      navigate("/calendar");
     } catch (error) {
       console.log(error);
     }

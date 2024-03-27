@@ -64,6 +64,20 @@ const Diary = () => {
     }
   };
 
+  // 다이어리 삭제
+  const deleteDiary = async () => {
+    try {
+      const res = await DiaryController.deleteDiary({
+        userId: userId,
+        diaryId: diaryId,
+      });
+      console.log("일기가 삭제되었습니다.");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   //키워드 가져오기
   const getKeyword = async () => {
     const res = await DiaryController.getQuiz({ diaryId: diaryId });
@@ -122,6 +136,7 @@ const Diary = () => {
             "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+          onClick={deleteDiary}
         >
           삭제
         </button>

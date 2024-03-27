@@ -13,6 +13,10 @@ class DiaryController extends Api {
   updateDiary = async (diaryData) => {
     return await this.patch("/diary/update", { data: diaryData });
   };
+  // 일기 삭제
+  deleteDiary = async ({ userId, diaryId }) => {
+    return await this.delete(`/diary/delete?userId=${userId}&diaryId=${diaryId}`);
+  };
   //일기회상 퀴즈
   getQuiz = async ({ diaryId }) => {
     return await this.get(`/diary/quiz?diaryId=${diaryId}`);

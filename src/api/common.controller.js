@@ -33,4 +33,8 @@ export class Api {
   async patch(url, { data, content_type = "application/json" } = {}) {
     return await this.sendRequest({ method: "patch", url, data, content_type });
   }
+
+  async delete(url, { data, content_type = "application/json" } = {}) {
+    return await this.sendRequest({ method: "delete", url, data, content_type });
+  }
 }

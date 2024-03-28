@@ -14,8 +14,8 @@ class DiaryController extends Api {
     return await this.patch("/diary/update", { data: diaryData });
   };
   // 일기 삭제
-  deleteDiary = async (diaryData) => {
-    return await this.delete("/diary/delete", { data: diaryData });
+  deleteDiary = async ({userId, diaryId}) => {
+    return await this.delete("/diary/delete", { userId, diaryId });
   };  
   //일기회상 퀴즈
   getQuiz = async ({ diaryId }) => {

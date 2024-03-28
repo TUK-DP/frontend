@@ -35,6 +35,12 @@ export class Api {
   }
 
   async delete(url, { data, content_type = "application/json" } = {}) {
-    return await this.sendRequest({ method: "delete", url, data, content_type });
+    const config = {
+      headers: {
+        "Content-Type": content_type,
+      },
+    };
+    return await this.axiosInstance.delete(url, {data: data}, config);
+    // return await this.sendRequest({ method: "delete", url, data, content_type });
   }
 }

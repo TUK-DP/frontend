@@ -95,7 +95,7 @@ const Calendar = () => {
 
   // 현재 달의 날짜 배열 생성 (날짜와 요일을 모두 포함)
   const getDaysInMonth = () => {
-    const daysInMonth = new Date(year, month - 1, 0).getDate();
+    const daysInMonth = new Date(year, month, 0).getDate();
     const days = [];
 
     // 빈 셀을 삽입하여 첫째 날이 올바른 요일에 위치하도록 합니다.

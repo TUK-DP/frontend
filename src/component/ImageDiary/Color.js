@@ -3,12 +3,14 @@ import { connect } from "react-redux";
 import { selectColor } from "../../redux/modules/ImageDiary";
 
 const Color = ({ color, dispatch }) => {
+  const borderColor = color === "#FFFFFF" ? "1px solid black" : "none";
   return (
     <div
       style={{
-        width: "30px",
-        height: "30px",
+        width: "50px",
+        height: "40px",
         backgroundColor: color,
+        border: borderColor,
       }}
       onClick={() => dispatch(selectColor(color))}
     ></div>

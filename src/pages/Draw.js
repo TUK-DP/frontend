@@ -72,43 +72,31 @@ const Draw = ({ lineWidth, dispatch }) => {
   return (
     <div className={"flex flex-col m-2 gap-2"}>
       {/* 키워드 */}
-      {data.length > 0 ? (
-        <div
-          className={"flex items-center rounded-2xl h-16 "}
-          style={{
-            border: "1px solid black",
-          }}
-        >
-          {index === 0 ? (
+      <div
+        className={"flex items-center rounded-2xl h-16 "}
+        style={{
+          border: "1px solid black",
+        }}
+      >
+        {data.length > 0 ? (
+          index === 0 ? (
             <div style={{ width: "50px" }}></div>
           ) : (
             <IoIosArrowBack size={50} onClick={getPrevKeyword} />
-          )}
-          <p className={"text-4xl flex-grow text-center"}>{data[index]}</p>
-          {index === data.length - 1 ? (
-            <div style={{ width: "50px" }}></div>
-          ) : (
-            <IoIosArrowForward size={50} onClick={getNextKeyword} />
-          )}
-        </div>
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid black",
-            margin: "10px",
-            borderRadius: "20px",
-            height: "60px",
-          }}
-        >
-          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
-            자유롭게 그려주세요
-          </p>
-        </div>
-      )}
-
-      <div className={"border-4 border-[#D9D9D9] w-full h-40 "}></div>
+          )
+        ) : null}
+        <p className={"text-4xl flex-grow text-center"}>
+          {data.length > 0 ? data[index] : "자유롭게 그려주세요"}
+        </p>
+        {data.length > 0 && index !== data.length - 1 && (
+          <IoIosArrowForward size={50} onClick={getNextKeyword} />
+        )}
+        {data.length > 0 && index === data.length - 1 && (
+          <div style={{ width: "50px" }}></div>
+        )}
+      </div>
+      {/* 사진 띄워줄 부분 */}
+      <div className={"border-4 border-[#D9D9D9] h-40 w-full"}></div>
       {/* Canvas */}
       <div
         style={{
@@ -120,7 +108,6 @@ const Draw = ({ lineWidth, dispatch }) => {
       >
         {renderCanvas()}
       </div>
-
       {/* 브러쉬 크기 조정 */}
       <div
         style={{
@@ -145,7 +132,6 @@ const Draw = ({ lineWidth, dispatch }) => {
       {/* 색상팔레트 */}
       <Palette />
       <div>
-        {" "}
         {data.length - 1 === index || data.length === 0 ? (
           <button
             onClick={saveImage}

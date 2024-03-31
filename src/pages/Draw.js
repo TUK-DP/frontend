@@ -1,16 +1,19 @@
 import Canvas from "../component/ImageDiary/Canvas";
 import React, { useRef, useState, useEffect } from "react";
-import Right from "../assets/Right.png";
-import Left from "../assets/left.png";
 import Palette from "../component/ImageDiary/Palette";
 import { connect } from "react-redux";
 import { brushSize } from "../redux/modules/ImageDiary";
 import { useNavigate, useLocation } from "react-router-dom";
+import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
+import Button from "../component/Button";
+
 const Draw = ({ lineWidth, dispatch }) => {
   const location = useLocation();
   //추출된 키워드
   const data = location.state;
   const [index, setIndex] = useState(0);
+  //키워드별 저장
   const [savedImages, setSavedImages] = useState([]);
 
   //다음 키워드 제시
@@ -28,7 +31,7 @@ const Draw = ({ lineWidth, dispatch }) => {
     const newLineWidth = parseInt(event.target.value, 10);
     dispatch(brushSize(newLineWidth));
   };
-
+  //단어 개수만큼 캔버스 렌더링
   const canvasRefs = useRef(
     data.length > 0 ? data.map(() => React.createRef()) : [React.createRef()]
   );
@@ -47,16 +50,15 @@ const Draw = ({ lineWidth, dispatch }) => {
       />
     ));
   };
-
   const saveImage = async () => {
-    const images = await Promise.all(
-      canvasRefs.current.map(async (canvasRef) => {
-        return await canvasRef.current.toDataURL();
+    const imagesWithKeywords = await Promise.all(
+      canvasRefs.current.map(async (canvasRef, i) => {
+        const image = await canvasRef.current.toDataURL();
+        const keyword = data[i];
+        return { image, keyword };
       })
     );
-    // 1. toDataURL 실행 후
-    // 2. setSavedImages의 값을 업데이트
-    setSavedImages(images);
+    setSavedImages(imagesWithKeywords);
   };
 
   useEffect(() => {
@@ -68,73 +70,33 @@ const Draw = ({ lineWidth, dispatch }) => {
   }, [savedImages]);
 
   return (
-    <div>
+    <div className={"flex flex-col m-2 gap-2"}>
       {/* 키워드 */}
-      {data.length > 0 ? (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid black",
-            margin: "10px",
-            borderRadius: "20px",
-            height: "60px",
-          }}
-        >
-          {index === 0 ? (
-            <div style={{ width: "30px", height: "30px" }}></div>
-          ) : (
-            <img src={Left} height="30" onClick={getPrevKeyword} />
-          )}
-          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
-            {data[index]}
-          </p>
-          {index === data.length - 1 ? (
-            <div style={{ width: "30px", height: "30px" }}></div>
-          ) : (
-            <img src={Right} height="30" onClick={getNextKeyword} />
-          )}
-        </div>
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid black",
-            margin: "10px",
-            borderRadius: "20px",
-            height: "60px",
-          }}
-        >
-          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
-            자유롭게 그려주세요
-          </p>
-        </div>
-      )}
-
-      {/* 색상팔레트 */}
-      <Palette />
-      {/* 브러쉬 크기 조정 */}
       <div
+        className={"flex items-center rounded-2xl h-16 overflow-x-scroll"}
         style={{
-          fontSize: "20px",
-          margin: "5px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          border: "1px solid black",
         }}
       >
-        브러쉬 크기 {lineWidth}
-        <input
-          type="range"
-          value={lineWidth}
-          min="1"
-          max="20"
-          step="1"
-          onChange={changeLineWidth}
-          style={{ width: "230px" }}
-        />
+        {data.length > 0 ? (
+          index === 0 ? (
+            <div style={{ width: "50px" }}></div>
+          ) : (
+            <IoIosArrowBack size={50} onClick={getPrevKeyword} />
+          )
+        ) : null}
+        <p className={"text-4xl flex-grow text-center"}>
+          {data.length > 0 ? data[index] : "자유롭게 그려주세요"}
+        </p>
+        {data.length > 0 && index !== data.length - 1 && (
+          <IoIosArrowForward size={50} onClick={getNextKeyword} />
+        )}
+        {data.length > 0 && index === data.length - 1 && (
+          <div style={{ width: "50px" }}></div>
+        )}
       </div>
+      {/* 사진 띄워줄 부분 */}
+      <div className={"border-4 border-[#D9D9D9] h-40 w-full"}></div>
       {/* Canvas */}
       <div
         style={{
@@ -145,23 +107,33 @@ const Draw = ({ lineWidth, dispatch }) => {
         }}
       >
         {renderCanvas()}
+      </div>
+      {/* 브러쉬 크기 조정 */}
+      <div className={"flex flex-row justify-center items-center"}>
+        <p className={"text-2xl w-2/5 text-nowrap text-center"}>
+          브러쉬 크기 {lineWidth}
+        </p>
+        <input
+          type="range"
+          value={lineWidth}
+          min="1"
+          max="20"
+          step="1"
+          onChange={changeLineWidth}
+          className={"w-3/5"}
+        />
+      </div>
+      {/* 색상팔레트 */}
+      <Palette />
+      <div>
         {data.length - 1 === index || data.length === 0 ? (
-          <button
+          <Button
+            width="100%"
+            height="60px"
+            text="완료"
+            fontSize="30px"
             onClick={saveImage}
-            style={{
-              backgroundColor: "#82AAE3",
-              borderRadius: "10px",
-              border: "none",
-              fontSize: "20px",
-              fontWeight: "600",
-              margin: "5px 0px",
-              color: "white",
-              width: "350px",
-              height: "40px",
-            }}
-          >
-            완료
-          </button>
+          />
         ) : null}
       </div>
     </div>

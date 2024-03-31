@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Image from "../component/ImageDiary/Image.js";
 import html2canvas from "html2canvas";
+import Button from "../component/Button.js";
 
 const PhotoEdit = ({}) => {
   const location = useLocation();
@@ -34,49 +35,34 @@ const PhotoEdit = ({}) => {
         alignItems: "center",
       }}
     >
-      <div
-        id="limit"
-        style={{
-          width: "350px",
-          height: "350px",
-          border: "4px solid #D9D9D9",
-          borderRadius: "40px",
-          display: "flex",
-          flexWrap: "wrap",
-          alignContent: "flex-start",
-          margin: "50px auto",
-        }}
-      >
-        {images.length > 0 ? (
-          images.map((image, index) => (
-            <Image
-              key={index}
-              image={image}
-              initialPo={{
-                x: (index % 3) * 100,
-                y: Math.floor(index / 3) * 100,
-              }}
-            />
-          ))
-        ) : (
-          <p>No Image</p>
-        )}
+      <div className={"border-4 border-[#D9D9D9] my-10 p-1"}>
+        <div
+          id="limit"
+          style={{
+            width: "350px",
+            height: "350px",
+            display: "flex",
+            flexWrap: "wrap",
+            alignContent: "flex-start",
+          }}
+        >
+          {images.length > 0 ? (
+            images.map((image, index) => (
+              <Image
+                key={index}
+                image={image.image}
+                initialPo={{
+                  x: (index % 3) * 100,
+                  y: Math.floor(index / 3) * 100,
+                }}
+              />
+            ))
+          ) : (
+            <p>No Image</p>
+          )}
+        </div>
       </div>
-      <button
-        onClick={captureImage}
-        style={{
-          backgroundColor: "#82AAE3",
-          borderRadius: "10px",
-          border: "none",
-          fontSize: "20px",
-          fontWeight: "600",
-          color: "white",
-          width: "350px",
-          height: "40px",
-        }}
-      >
-        완료
-      </button>
+      <Button width="350px" height="50px" text="완료" onClick={captureImage} />
     </div>
   );
 };

@@ -1,7 +1,8 @@
-import Trash from "../../assets/ImageDiary/Trash.png";
-import Back from "../../assets/ImageDiary/Back.png";
-import Brush from "../../assets/ImageDiary/Brush.png";
-import Eraser from "../../assets/ImageDiary/Eraser.png";
+import { IoTrashOutline } from "react-icons/io5";
+import { AiOutlineRollback } from "react-icons/ai";
+import { HiOutlinePaintBrush } from "react-icons/hi2";
+import { TfiEraser } from "react-icons/tfi";
+
 import { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 
@@ -101,44 +102,56 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
     setPainting(false);
   };
 
+  const [width, setWidth] = useState(window.innerWidth * 0.9);
+
+  useEffect(() => {
+    setWidth(window.innerWidth * 0.9);
+  }, [window.innerWidth]);
+
   return (
     <div
       style={{
         display: isVisible ? "block" : "none",
       }}
     >
-      {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          margin: "10px 0px 15px 0px",
-        }}
-      >
-        <img src={Trash} onClick={clearCanvas} />
-        <img src={Back} onClick={unDo} />
-        <div
-          style={{
-            backgroundColor: `${selectedColor}`,
-            width: "100px",
-            borderRadius: "20px",
-          }}
-        ></div>
-        <img src={Brush} onClick={() => setErasing(false)} />
-        <img src={Eraser} onClick={() => setErasing(true)} />
-      </div>
       <canvas
         ref={canvasRef}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        width="350"
-        height="350"
+        width={width}
+        height={width}
         style={{
           border: "4px solid #D9D9D9",
-          borderRadius: "40px",
         }}
       ></canvas>
+      {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          margin: "10px 0px 15px 0px",
+          alignItems: "center",
+        }}
+      >
+        <IoTrashOutline size={55} onClick={clearCanvas} />
+        <AiOutlineRollback size={55} onClick={unDo} />
+        <div
+          style={{
+            backgroundColor: `${selectedColor}`,
+            width: "120px ",
+            borderRadius: "30px",
+            height: "40px",
+          }}
+        ></div>
+        <HiOutlinePaintBrush
+          size={55}
+          onClick={() => {
+            setErasing(false);
+          }}
+        />
+        <TfiEraser size={55} onClick={() => setErasing(true)} />
+      </div>
     </div>
   );
 };

@@ -2,36 +2,34 @@ import DiaryIcon from "../assets/DiaryIcon.png";
 import HomeIcon from "../assets/HomeIcon.png";
 import GameIcon from "../assets/GameIcon.png";
 import { Link } from "react-router-dom";
+import { BsJournalCheck } from "react-icons/bs";
+import { GoHome } from "react-icons/go";
+import { IoGameControllerOutline } from "react-icons/io5";
 
 const Navbar = ({}) => {
   return (
     <div
-      style={{
-        backgroundColor: "#82AAE3",
-        position: "fixed",
-        bottom: "0px",
-        left: "0px",
-        right: "0px",
-        margin: "0px auto",
-        minWidth: "360px",
-        maxWidth: "420px",
-        width: "100%",
-        height: "90px",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
-        zIndex: "40",
-      }}
+      className={
+        "min-w-[360px] max-w-[420px] bg-[#82AAE3] fixed bottom-0 left-0 right-0 h-24 mx-auto flex flex-row justify-between items-center pt-1 px-12"
+      }
     >
       <Link to="/calendar">
-        <img src={DiaryIcon} height="62" />
+        <div className={"flex flex-col justify-center items-center"}>
+          <BsJournalCheck size={50} color="white" style={{ padding: "5px" }} />
+          <p className={"text-white text-xl"}>일기장</p>
+        </div>
       </Link>
       <Link to="/">
-        <img src={HomeIcon} height="62" />
+        <div className={"flex flex-col justify-center items-center"}>
+          <GoHome size={50} color="white" />
+          <p className={"text-white text-xl"}>홈</p>
+        </div>
       </Link>
       <Link to="/games">
-        <img src={GameIcon} height="62" />
+        <div className={"flex flex-col justify-center items-center"}>
+          <IoGameControllerOutline size={50} color="white" />
+          <p className={"text-white text-xl"}>게임</p>
+        </div>
       </Link>
     </div>
   );

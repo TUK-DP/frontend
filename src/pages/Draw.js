@@ -69,11 +69,11 @@ const Draw = ({ lineWidth, dispatch }) => {
   }, [savedImages]);
 
   return (
-    <div>
+    <div className={"p-1 flex flex-col my-2 mx-1 gap-2"}>
       {/* 키워드 */}
       {data.length > 0 ? (
         <div
-          className={"flex items-center m-2 rounded-2xl h-16 "}
+          className={"flex items-center rounded-2xl h-16 "}
           style={{
             border: "1px solid black",
           }}
@@ -91,6 +91,7 @@ const Draw = ({ lineWidth, dispatch }) => {
           )}
         </div>
       ) : (
+        // 키워드가 없는 경우
         <div
           style={{
             display: "flex",
@@ -101,25 +102,18 @@ const Draw = ({ lineWidth, dispatch }) => {
             height: "60px",
           }}
         >
-          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
+          <p className={"text-4xl flex-grow text-center"}>
             자유롭게 그려주세요
           </p>
         </div>
       )}
-
-      {/* 색상팔레트 */}
-      <Palette />
+      {/* 다른 사람의 그림 */}
+      <div className={"border-4 border-[#D9D9D9] h-40"}></div>
+      {/* Canvas */}
+      {renderCanvas()}
       {/* 브러쉬 크기 조정 */}
-      <div
-        style={{
-          fontSize: "20px",
-          margin: "5px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        브러쉬 크기 {lineWidth}
+      <div className={"flex items-center text-xl justify-center text-center"}>
+        <p className={"w-1/3"}>브러쉬 크기 {lineWidth}</p>
         <input
           type="range"
           value={lineWidth}
@@ -127,38 +121,30 @@ const Draw = ({ lineWidth, dispatch }) => {
           max="20"
           step="1"
           onChange={changeLineWidth}
-          style={{ width: "230px" }}
+          className={"w-2/3"}
         />
       </div>
-      {/* Canvas */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          touchAction: "none",
-        }}
-      >
-        {renderCanvas()}
-        {data.length - 1 === index || data.length === 0 ? (
-          <button
-            onClick={saveImage}
-            style={{
-              backgroundColor: "#82AAE3",
-              borderRadius: "10px",
-              border: "none",
-              fontSize: "20px",
-              fontWeight: "600",
-              margin: "5px 0px",
-              color: "white",
-              width: "350px",
-              height: "40px",
-            }}
-          >
-            완료
-          </button>
-        ) : null}
-      </div>
+
+      {/* 색상팔레트 */}
+      <Palette />
+      {data.length - 1 === index || data.length === 0 ? (
+        <button
+          onClick={saveImage}
+          style={{
+            backgroundColor: "#82AAE3",
+            borderRadius: "10px",
+            border: "none",
+            fontSize: "20px",
+            fontWeight: "600",
+            margin: "5px 0px",
+            color: "white",
+            width: "350px",
+            height: "40px",
+          }}
+        >
+          완료
+        </button>
+      ) : null}
     </div>
   );
 };

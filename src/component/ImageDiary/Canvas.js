@@ -106,14 +106,22 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
     <div
       style={{
         display: isVisible ? "block" : "none",
+        touchAction: "none",
       }}
     >
+      <canvas
+        ref={canvasRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        height="300px"
+        className={"border-4 border-[#D9D9D9] w-full mb-2"}
+      ></canvas>
       {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          margin: "10px 0px 15px 0px",
           alignItems: "center",
         }}
       >
@@ -135,18 +143,6 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
         />
         <TfiEraser size={55} onClick={() => setErasing(true)} />
       </div>
-      <canvas
-        ref={canvasRef}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        width="350"
-        height="350"
-        style={{
-          border: "4px solid #D9D9D9",
-          borderRadius: "40px",
-        }}
-      ></canvas>
     </div>
   );
 };

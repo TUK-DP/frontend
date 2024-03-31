@@ -7,8 +7,8 @@ const Color = ({ color, dispatch }) => {
   return (
     <div
       style={{
-        width: "50px",
-        height: "40px",
+        width: "60px",
+        height: "50px",
         backgroundColor: color,
         border: borderColor,
       }}

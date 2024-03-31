@@ -133,22 +133,13 @@ const Draw = ({ lineWidth, dispatch }) => {
       <Palette />
       <div>
         {data.length - 1 === index || data.length === 0 ? (
-          <button
+          <Button
+            width="100%"
+            height="60px"
+            text="완료"
+            fontSize="30px"
             onClick={saveImage}
-            style={{
-              backgroundColor: "#82AAE3",
-              borderRadius: "10px",
-              border: "none",
-              fontSize: "20px",
-              fontWeight: "600",
-              margin: "5px 0px",
-              color: "white",
-              width: "350px",
-              height: "40px",
-            }}
-          >
-            완료
-          </button>
+          />
         ) : null}
       </div>
     </div>

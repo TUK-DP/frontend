@@ -51,7 +51,7 @@ const PhotoEdit = ({}) => {
           images.map((image, index) => (
             <Image
               key={index}
-              image={image}
+              image={image.image}
               initialPo={{
                 x: (index % 3) * 100,
                 y: Math.floor(index / 3) * 100,

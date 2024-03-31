@@ -13,6 +13,7 @@ const Draw = ({ lineWidth, dispatch }) => {
   //추출된 키워드
   const data = location.state;
   const [index, setIndex] = useState(0);
+  //키워드별 저장
   const [savedImages, setSavedImages] = useState([]);
 
   //다음 키워드 제시
@@ -49,16 +50,15 @@ const Draw = ({ lineWidth, dispatch }) => {
       />
     ));
   };
-
   const saveImage = async () => {
-    const images = await Promise.all(
-      canvasRefs.current.map(async (canvasRef) => {
-        return await canvasRef.current.toDataURL();
+    const imagesWithKeywords = await Promise.all(
+      canvasRefs.current.map(async (canvasRef, i) => {
+        const image = await canvasRef.current.toDataURL();
+        const keyword = data[i];
+        return { image, keyword };
       })
     );
-    // 1. toDataURL 실행 후
-    // 2. setSavedImages의 값을 업데이트
-    setSavedImages(images);
+    setSavedImages(imagesWithKeywords);
   };
 
   useEffect(() => {
@@ -129,7 +129,13 @@ const Draw = ({ lineWidth, dispatch }) => {
       {/* 색상팔레트 */}
       <Palette />
       {data.length - 1 === index || data.length === 0 ? (
-        <Button width="100%" height="60px" text="완료" fontSize="30px" />
+        <Button
+          width="100%"
+          height="60px"
+          text="완료"
+          fontSize="30px"
+          onClick={saveImage}
+        />
       ) : null}
     </div>
   );

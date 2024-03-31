@@ -6,6 +6,7 @@ import { brushSize } from "../redux/modules/ImageDiary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
+import Button from "../component/Button";
 
 const Draw = ({ lineWidth, dispatch }) => {
   const location = useLocation();
@@ -128,22 +129,7 @@ const Draw = ({ lineWidth, dispatch }) => {
       {/* 색상팔레트 */}
       <Palette />
       {data.length - 1 === index || data.length === 0 ? (
-        <button
-          onClick={saveImage}
-          style={{
-            backgroundColor: "#82AAE3",
-            borderRadius: "10px",
-            border: "none",
-            fontSize: "20px",
-            fontWeight: "600",
-            margin: "5px 0px",
-            color: "white",
-            width: "350px",
-            height: "40px",
-          }}
-        >
-          완료
-        </button>
+        <Button width="100%" height="60px" text="완료" fontSize="30px" />
       ) : null}
     </div>
   );

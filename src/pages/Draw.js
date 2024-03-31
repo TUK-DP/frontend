@@ -73,7 +73,7 @@ const Draw = ({ lineWidth, dispatch }) => {
     <div className={"flex flex-col m-2 gap-2"}>
       {/* 키워드 */}
       <div
-        className={"flex items-center rounded-2xl h-16 "}
+        className={"flex items-center rounded-2xl h-16 overflow-x-scroll"}
         style={{
           border: "1px solid black",
         }}
@@ -109,16 +109,10 @@ const Draw = ({ lineWidth, dispatch }) => {
         {renderCanvas()}
       </div>
       {/* 브러쉬 크기 조정 */}
-      <div
-        style={{
-          fontSize: "20px",
-          margin: "5px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        브러쉬 크기 {lineWidth}
+      <div className={"flex flex-row justify-center items-center"}>
+        <p className={"text-2xl w-2/5 text-nowrap text-center"}>
+          브러쉬 크기 {lineWidth}
+        </p>
         <input
           type="range"
           value={lineWidth}
@@ -126,7 +120,7 @@ const Draw = ({ lineWidth, dispatch }) => {
           max="20"
           step="1"
           onChange={changeLineWidth}
-          style={{ width: "230px" }}
+          className={"w-3/5"}
         />
       </div>
       {/* 색상팔레트 */}

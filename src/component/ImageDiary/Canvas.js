@@ -102,7 +102,11 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
     setPainting(false);
   };
 
-  const width = window.innerWidth * 0.9;
+  const [width, setWidth] = useState(window.innerWidth * 0.9);
+
+  useEffect(() => {
+    setWidth(window.innerWidth * 0.9);
+  }, [window.innerWidth]);
 
   return (
     <div

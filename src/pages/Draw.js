@@ -70,11 +70,11 @@ const Draw = ({ lineWidth, dispatch }) => {
   }, [savedImages]);
 
   return (
-    <div>
+    <div className={"flex flex-col m-2 gap-2"}>
       {/* 키워드 */}
       {data.length > 0 ? (
         <div
-          className={"flex items-center m-2 rounded-2xl h-16 "}
+          className={"flex items-center rounded-2xl h-16 "}
           style={{
             border: "1px solid black",
           }}
@@ -108,8 +108,19 @@ const Draw = ({ lineWidth, dispatch }) => {
         </div>
       )}
 
-      {/* 색상팔레트 */}
-      <Palette />
+      <div className={"border-4 border-[#D9D9D9] w-full h-40 "}></div>
+      {/* Canvas */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          touchAction: "none",
+        }}
+      >
+        {renderCanvas()}
+      </div>
+
       {/* 브러쉬 크기 조정 */}
       <div
         style={{
@@ -131,16 +142,10 @@ const Draw = ({ lineWidth, dispatch }) => {
           style={{ width: "230px" }}
         />
       </div>
-      {/* Canvas */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          touchAction: "none",
-        }}
-      >
-        {renderCanvas()}
+      {/* 색상팔레트 */}
+      <Palette />
+      <div>
+        {" "}
         {data.length - 1 === index || data.length === 0 ? (
           <button
             onClick={saveImage}

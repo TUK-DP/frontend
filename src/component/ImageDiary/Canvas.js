@@ -102,6 +102,8 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
     setPainting(false);
   };
 
+  const width = window.innerWidth * 0.9;
+
   return (
     <div
       style={{
@@ -113,11 +115,10 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        width="350"
-        height="350"
+        width={width}
+        height={width}
         style={{
           border: "4px solid #D9D9D9",
-          borderRadius: "40px",
         }}
       ></canvas>
       {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}

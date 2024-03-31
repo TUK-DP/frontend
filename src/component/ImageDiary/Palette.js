@@ -14,7 +14,7 @@ const Palette = ({}) => {
           key={setIndex}
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-evenly",
             margin: "5px",
           }}
         >

@@ -1,11 +1,12 @@
 import Canvas from "../component/ImageDiary/Canvas";
 import React, { useRef, useState, useEffect } from "react";
-import Right from "../assets/Right.png";
-import Left from "../assets/left.png";
 import Palette from "../component/ImageDiary/Palette";
 import { connect } from "react-redux";
 import { brushSize } from "../redux/modules/ImageDiary";
 import { useNavigate, useLocation } from "react-router-dom";
+import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
+
 const Draw = ({ lineWidth, dispatch }) => {
   const location = useLocation();
   //추출된 키워드
@@ -28,7 +29,7 @@ const Draw = ({ lineWidth, dispatch }) => {
     const newLineWidth = parseInt(event.target.value, 10);
     dispatch(brushSize(newLineWidth));
   };
-
+  //단어 개수만큼 캔버스 렌더링
   const canvasRefs = useRef(
     data.length > 0 ? data.map(() => React.createRef()) : [React.createRef()]
   );
@@ -72,27 +73,23 @@ const Draw = ({ lineWidth, dispatch }) => {
       {/* 키워드 */}
       {data.length > 0 ? (
         <div
+          className={"flex items-center m-2 rounded-2xl h-16"}
           style={{
-            display: "flex",
-            alignItems: "center",
             border: "1px solid black",
-            margin: "10px",
-            borderRadius: "20px",
-            height: "60px",
           }}
         >
           {index === 0 ? (
-            <div style={{ width: "30px", height: "30px" }}></div>
+            <div style={{ width: "50px" }}></div>
           ) : (
-            <img src={Left} height="30" onClick={getPrevKeyword} />
+            <IoIosArrowBack size={50} onClick={getPrevKeyword} />
           )}
           <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
             {data[index]}
           </p>
           {index === data.length - 1 ? (
-            <div style={{ width: "30px", height: "30px" }}></div>
+            <div style={{ width: "50px" }}></div>
           ) : (
-            <img src={Right} height="30" onClick={getNextKeyword} />
+            <IoIosArrowForward size={50} onClick={getNextKeyword} />
           )}
         </div>
       ) : (

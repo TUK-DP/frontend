@@ -73,7 +73,7 @@ const Draw = ({ lineWidth, dispatch }) => {
       {/* 키워드 */}
       {data.length > 0 ? (
         <div
-          className={"flex items-center m-2 rounded-2xl h-16"}
+          className={"flex items-center m-2 rounded-2xl h-16 "}
           style={{
             border: "1px solid black",
           }}
@@ -83,9 +83,7 @@ const Draw = ({ lineWidth, dispatch }) => {
           ) : (
             <IoIosArrowBack size={50} onClick={getPrevKeyword} />
           )}
-          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
-            {data[index]}
-          </p>
+          <p className={"text-4xl flex-grow text-center"}>{data[index]}</p>
           {index === data.length - 1 ? (
             <div style={{ width: "50px" }}></div>
           ) : (

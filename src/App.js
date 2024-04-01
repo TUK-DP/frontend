@@ -27,6 +27,7 @@ import DementiaCenter from "./pages/DementiaCenter.js";
 import DiaryTestResult from "./pages/DiaryTestResult.js";
 import DiaryWrite from "./pages/DiaryWrite.js";
 import Error from "./pages/Error.js";
+import BeforeGame from "./component/BeforeGame.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ function App() {
     dispatch(saveUrl(location.pathname));
   }, [dispatch, location.pathname]);
 
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
   });
 
@@ -76,6 +77,7 @@ function App() {
           <Route path={"/dementiacenter"} element={<DementiaCenter />} />
           <Route path={"/diarywrite"} element={<DiaryWrite />} />
           <Route path={"/error"} element={<Error />} />
+          <Route path={"/beforegame"} element={<BeforeGame />} />
         </Routes>
       </div>
       <Navbar />

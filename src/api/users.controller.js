@@ -14,4 +14,4 @@ class UserController extends Api {
   // 회원탈퇴
 }
 
-export default UserController;
+export default new UserController();

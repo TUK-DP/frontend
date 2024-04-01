@@ -1,6 +1,7 @@
 import "../styles/Login.css";
 import { useForm } from "react-hook-form";
 import Button from "../component/Button";
+import UserController from "../api/users.controller";
 const Signup = () => {
   const {
     register,
@@ -8,10 +9,23 @@ const Signup = () => {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // 나머지 제출 로직
     console.log(data);
+    try {
+      const res = await UserController.signUp({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        nickname: data.nickname,
+        //birth: data.birth
+      });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div className={"flex flex-col justify-center items-center my-4"}>
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -73,7 +73,7 @@ const Diary = () => {
         diaryId: diaryId,
       });
       console.log("일기가 삭제되었습니다.");
-      navigate("/calendar");
+      window.location.href = "/calendar";  //페이지 새로고침
     } catch (error) {
       console.log(error);
     }

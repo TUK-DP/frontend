@@ -12,7 +12,7 @@ const Signup = () => {
     console.log(data);
   };
   return (
-    <div id="screen">
+    <div className={"flex flex-col justify-center items-center my-4"}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="inputField">
           <label>이름</label>
@@ -59,7 +59,7 @@ const Signup = () => {
         <div className="inputField">
           <label>이메일</label>
           <input
-            type="email"
+            type="text"
             placeholder="이메일을 입력하세요."
             {...register("email", {
               required: "빈 칸 없이 작성해주세요.",

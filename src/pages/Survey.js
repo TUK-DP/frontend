@@ -13,7 +13,6 @@ function SurveyCop({question}) {
             <div className={"pl-4 w-full h-14 bg-white rounded-2xl flex items-center"}>
                 2. X
             </div>
-
         </div>
     );
 }

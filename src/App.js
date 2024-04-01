@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, BrowserRouter, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { saveUrl } from "./redux/modules/urlSave.js";
 import Draw from "./pages/Draw";
@@ -46,7 +46,7 @@ function App() {
           paddingBottom: "90px",
           position: "relative",
           margin: "0 auto",
-          overflow: "scroll",
+          overflow: "auto",
         }}
       >
         <Routes>

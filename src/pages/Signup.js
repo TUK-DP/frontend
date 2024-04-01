@@ -1,5 +1,6 @@
 import "../styles/Login.css";
 import { useForm } from "react-hook-form";
+import Button from "../component/Button";
 const Signup = () => {
   const {
     register,
@@ -34,11 +35,17 @@ const Signup = () => {
         {/* 중복확인 추가해야 됨 */}
         <div className="inputField">
           <label>닉네임</label>
-          <input
-            type="text"
-            placeholder="닉네임을 입력하세요."
-            {...register("nickname", { required: "빈 칸 없이 작성해주세요." })}
-          />
+          <div className={"flex flex-row justify-center items-center"}>
+            <input
+              type="text"
+              placeholder="닉네임을 입력하세요."
+              {...register("nickname", {
+                required: "빈 칸 없이 작성해주세요.",
+              })}
+              style={{ width: "283px" }}
+            />
+            <Button width="50px" height="30px" text="확인" fontSize="15px" />
+          </div>
           <div className="error-message">
             {errors.nickname && errors.nickname.message}
           </div>

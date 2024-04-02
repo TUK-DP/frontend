@@ -7,7 +7,7 @@ function SurveyCop({ question, onVote }) {
 
     const handleVote = (option) => {
         setSelectedOption(option);
-        onVote(question.id, option); // question의 id, 선택된 option을 전달
+        onVote(question.index, option); // question의 id, 선택된 option을 전달
     };
 
     return (
@@ -57,9 +57,9 @@ function Survey() {
         get_survey();
     }, []);
 
-    const handleVote = (questionId, option) => {
+    const handleVote = (questionIndex, option) => {
         // 투표 처리 로직 추가 필요
-        console.log(`Question ID: ${questionId}, Selected Option: ${option}`);
+        console.log(`Question ID: ${questionIndex}, Selected Option: ${option}`);
     };
 
     return (

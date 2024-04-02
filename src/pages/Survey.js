@@ -7,7 +7,7 @@ function SurveyCop({ question, onVote }) {
 
     const handleVote = (option) => {
         setSelectedOption(option);
-        onVote(question.id, option); //question의 id, 선택된 option을 전달
+        onVote(question.id, option); // question의 id, 선택된 option을 전달
     };
 
     return (
@@ -16,17 +16,15 @@ function SurveyCop({ question, onVote }) {
                 <p>{question.index}. {question.question}</p>
             </div>
             <div
-                className={`pl-4 w-full h-14 bg-white rounded-2xl mb-4 flex items-center ${
-                    selectedOption === 'O' ? 'bg-green-200' : ''
-                }`}
+                className={"pl-4 w-full h-14 bg-white rounded-2xl mb-4 flex items-center"}
+                style={{ backgroundColor: selectedOption === 'O' ? '#C6F6D5' : 'white' }}
                 onClick={() => handleVote('O')}
             >
                 1. O
             </div>
             <div
-                className={`pl-4 w-full h-14 bg-white rounded-2xl flex items-center ${
-                    selectedOption === 'X' ? 'bg-green-200' : ''
-                }`}
+                className={"pl-4 w-full h-14 bg-white rounded-2xl flex items-center"}
+                style={{ backgroundColor: selectedOption === 'X' ? '#C6F6D5' : 'white' }}
                 onClick={() => handleVote('X')}
             >
                 2. X
@@ -60,7 +58,7 @@ function Survey() {
     }, []);
 
     const handleVote = (questionId, option) => {
-        //투표 처리 로직 추가 필요 
+        // 투표 처리 로직 추가 필요
         console.log(`Question ID: ${questionId}, Selected Option: ${option}`);
     };
 

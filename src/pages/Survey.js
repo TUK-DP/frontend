@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SurveyController from "../api/survey.controller";
 import Button from "../component/Button";
+import { useNavigate } from "react-router-dom";
 
 function SurveyCop({ question, onVote }) {
     const [selectedOption, setSelectedOption] = useState(null);
@@ -46,6 +47,7 @@ function SurveyList({ questionState, onVote }) {
 }
 
 function Survey() {
+    const navigate = useNavigate();
     const [questionState, setQuestionState] = useState([]);
 
     const get_survey = async () => {
@@ -62,10 +64,14 @@ function Survey() {
         console.log(`Question ID: ${questionIndex}, Selected Option: ${option}`);
     };
 
+    const handleSubmit = () => {
+      navigate("/surveyresult");
+    };
+
     return (
         <div className={"px-4 mb-10"}>
             <SurveyList questionState={questionState} onVote={handleVote} />
-            <Button height={"60px"} text={"제출하기"} fontSize={"24px"} />
+            <Button height={"60px"} text={"제출하기"} fontSize={"24px"} onClick={handleSubmit} />
         </div>
     );
 }

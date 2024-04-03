@@ -2,6 +2,7 @@ import backBtn from "../assets/backBtn.png";
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const Header = ({}) => {
   const location = useLocation();
@@ -71,9 +72,9 @@ const Header = ({}) => {
       }}
     >
       {pageName !== "Re-Memory" && (
-        <img
-          src={backBtn}
-          style={{ marginLeft: "15px", marginRight: "-50px", zIndex: "2" }}
+        <IoIosArrowRoundBack
+          size={60}
+          className={"z-10 ml-4"}
           onClick={goBack}
         />
       )}
@@ -86,6 +87,7 @@ const Header = ({}) => {
       >
         {pageName}
       </div>
+      {pageName !== "Re-Memory" && <div style={{ width: "75px" }}></div>}
     </div>
   );
 };

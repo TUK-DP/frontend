@@ -3,8 +3,10 @@ import Graph from "../component/Graph";
 
 const Surveyresult = () => {
   return(
-    <div>
-      <Graph />
+    <div className="w-full">
+      <div className="w-full">
+        <Graph/>
+      </div>
     </div>
   )
 }

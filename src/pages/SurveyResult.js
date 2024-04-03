@@ -1,9 +1,10 @@
 import React from "react";
+import Graph from "../component/Graph";
 
 const Surveyresult = () => {
   return(
     <div>
-      <h1>result</h1>
+      <Graph />
     </div>
   )
 }

@@ -47,6 +47,10 @@ const Header = ({}) => {
       setPageName("일기작성");
     } else if (currentUrl === "/calendar") {
       setPageName("캘린더");
+    } else if (currentUrl === "/gymnastics") {
+      setPageName("체조영상");
+    } else if (currentUrl === "gymvideo") {
+      setPageName("체조영상");
     }
   }, [location.pathname]);
 

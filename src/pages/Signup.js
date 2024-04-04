@@ -1,7 +1,8 @@
-import "../styles/Login.css";
+import React, { useState } from "react";
+import UserController from "../api/users.controller";
 import { useForm } from "react-hook-form";
 import Button from "../component/Button";
-import UserController from "../api/users.controller";
+
 const Signup = () => {
   const {
     register,
@@ -9,17 +10,39 @@ const Signup = () => {
     watch,
     formState: { errors },
   } = useForm();
+
   const onSubmit = async (data) => {
-    // 나머지 제출 로직
-    console.log(data);
     try {
       const res = await UserController.signUp({
         username: data.username,
         email: data.email,
         password: data.password,
         nickname: data.nickname,
-        //birth: data.birth
+        birth: data.birth,
       });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [nickname, setNickname] = useState("");
+
+  const nicknameRegister = register("nickname", {
+    required: "빈 칸 없이 작성해주세요.",
+  });
+
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    setNickname(event.target.value);
+    nicknameRegister.onChange(event);
+  };
+
+  const checkNickname = async () => {
+    console.log(nickname);
+    try {
+      const res = await UserController.checkNickname({ nickname: nickname });
+      console.log(nickname);
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -46,24 +69,32 @@ const Signup = () => {
             {errors.username && errors.username.message}
           </div>
         </div>
-        {/* 중복확인 추가해야 됨 */}
         <div className="inputField">
           <label>닉네임</label>
           <div className={"flex flex-row justify-center items-center"}>
             <input
+              value={nickname}
+              {...nicknameRegister}
+              onChange={handleChange}
               type="text"
               placeholder="닉네임을 입력하세요."
-              {...register("nickname", {
-                required: "빈 칸 없이 작성해주세요.",
-              })}
               style={{ width: "283px" }}
             />
-            <Button width="50px" height="30px" text="확인" fontSize="15px" />
+            <Button
+              width="50px"
+              height="30px"
+              text="확인"
+              fontSize="15px"
+              onClick={() => {
+                checkNickname();
+              }}
+            />
           </div>
           <div className="error-message">
             {errors.nickname && errors.nickname.message}
           </div>
         </div>
+
         <div className="inputField">
           <label>생년월일</label>
           <input
@@ -72,11 +103,10 @@ const Signup = () => {
             {...register("birth", { required: "빈 칸 없이 작성해주세요." })}
           />
           <div className="error-message">
-            {" "}
             {errors.birth && errors.birth.message}
           </div>
         </div>
-        {/* 이메일 형식 확인 */}
+
         <div className="inputField">
           <label>이메일</label>
           <input
@@ -94,7 +124,7 @@ const Signup = () => {
             {errors.email && errors.email.message}
           </div>
         </div>
-        {/* 비밀번호 형식 확인 */}
+
         <div className="inputField">
           <label>비밀번호</label>
           <input
@@ -112,7 +142,7 @@ const Signup = () => {
             {errors.password && errors.password.message}
           </div>
         </div>
-        {/* 비밀번호 일치 확인 */}
+
         <div className="inputField">
           <label>비밀번호 확인</label>
           <input
@@ -128,6 +158,7 @@ const Signup = () => {
             {errors.passwordChk && errors.passwordChk.message}
           </div>
         </div>
+
         <button id="loginBtn" type="submit">
           완료
         </button>
@@ -135,4 +166,5 @@ const Signup = () => {
     </div>
   );
 };
+
 export default Signup;

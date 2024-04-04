@@ -18,12 +18,12 @@ const Graph = () => {
             'rgba(255, 255, 255 ,1)',
             'rgba(255, 255, 255 ,1)'
           ],
-          borderWidth: 5
+          borderWidth: 5,
+          circumference: 180,
+          rotation: 270,
+          cutout: "80%"
         }]
       },
-      options: {
-        cutoutPercentage: 80,
-      }
     });
 
     return () => {

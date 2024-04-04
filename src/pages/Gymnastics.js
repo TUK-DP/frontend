@@ -63,6 +63,24 @@ const Gymnastics = () => {
       time: "0:38",
       content: "안면신경 및 설하신경 자극",
     },
+    {
+      src: "https://www.youtube.com/embed/bWgxkKvq3Q0?si=ouMA9Gq_cNNctn8M",
+      title: "소리내기",
+      time: "1:34",
+      content: "삼차신경, 안면신경, 설인신경 및 설하신경 자극",
+    },
+    {
+      src: "https://www.youtube.com/embed/aYwnd0ETcRY?si=CPtjTXPpAzdt-x-g",
+      title: "눈돌리기",
+      time: "0:49",
+      content: "동안신경, 활차신경 및 외전신경 자극",
+    },
+    {
+      src: "https://www.youtube.com/embed/SWNweJwXWMU?si=RnOlul5D2C4l66Vp",
+      title: "얼굴 두드리기",
+      time: "0:43",
+      content: "삼차신경 및 안면신경 자극",
+    },
   ];
   return (
     <div

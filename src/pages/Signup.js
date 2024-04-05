@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import UserController from "../api/users.controller";
 import { useForm } from "react-hook-form";
 import Button from "../component/Button";
+import Modal from "../component/Modal";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const {
@@ -10,7 +12,8 @@ const Signup = () => {
     watch,
     formState: { errors },
   } = useForm();
-
+  const navigate = useNavigate();
+  //form 제출
   const onSubmit = async (data) => {
     try {
       const res = await UserController.signUp({
@@ -21,33 +24,41 @@ const Signup = () => {
         birth: data.birth,
       });
       console.log(res);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
-
   const [nickname, setNickname] = useState("");
-
   const nicknameRegister = register("nickname", {
     required: "빈 칸 없이 작성해주세요.",
   });
-
+  //onChange 두 번 호출
   const handleChange = (event) => {
     console.log(event.target.value);
     setNickname(event.target.value);
     nicknameRegister.onChange(event);
   };
-
+  //닉네임 중복확인
   const checkNickname = async () => {
-    console.log(nickname);
+    if (nickname == "") return;
     try {
       const res = await UserController.checkNickname({ nickname: nickname });
       console.log(nickname);
       console.log(res);
+      setIsNicknameExist(false);
     } catch (error) {
       console.log(error);
+      setIsNicknameExist(true);
     }
+    setIsModalOpen(true);
   };
+  //닉네임 중복확인 결과 표시
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const [isNicknameExist, setIsNicknameExist] = useState();
 
   return (
     <div className={"flex flex-col justify-center items-center my-4"}>
@@ -94,7 +105,6 @@ const Signup = () => {
             {errors.nickname && errors.nickname.message}
           </div>
         </div>
-
         <div className="inputField">
           <label>생년월일</label>
           <input
@@ -106,7 +116,6 @@ const Signup = () => {
             {errors.birth && errors.birth.message}
           </div>
         </div>
-
         <div className="inputField">
           <label>이메일</label>
           <input
@@ -124,7 +133,6 @@ const Signup = () => {
             {errors.email && errors.email.message}
           </div>
         </div>
-
         <div className="inputField">
           <label>비밀번호</label>
           <input
@@ -142,7 +150,6 @@ const Signup = () => {
             {errors.password && errors.password.message}
           </div>
         </div>
-
         <div className="inputField">
           <label>비밀번호 확인</label>
           <input
@@ -158,11 +165,16 @@ const Signup = () => {
             {errors.passwordChk && errors.passwordChk.message}
           </div>
         </div>
-
         <button id="loginBtn" type="submit">
           완료
         </button>
       </form>
+      {isModalOpen && isNicknameExist && (
+        <Modal onClose={closeModal} content="다른 닉네임을 입력해주세요." />
+      )}
+      {isModalOpen && !isNicknameExist && (
+        <Modal onClose={closeModal} content="사용 가능한 닉네임입니다." />
+      )}
     </div>
   );
 };

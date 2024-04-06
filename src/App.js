@@ -28,6 +28,8 @@ import DiaryTestResult from "./pages/DiaryTestResult.js";
 import DiaryWrite from "./pages/DiaryWrite.js";
 import Error from "./pages/Error.js";
 import BeforeGame from "./component/BeforeGame.js";
+import Gymnastics from "./pages/Gymnastics.js";
+import GymnasticsVideo from "./pages/GymnasticsVideo.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -78,6 +80,8 @@ function App() {
           <Route path={"/diarywrite"} element={<DiaryWrite />} />
           <Route path={"/error"} element={<Error />} />
           <Route path={"/beforegame"} element={<BeforeGame />} />
+          <Route path={"/gymnastics"} element={<Gymnastics />} />
+          <Route path={"/gymvideo"} element={<GymnasticsVideo />} />
         </Routes>
       </div>
       <Navbar />

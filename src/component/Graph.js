@@ -9,7 +9,7 @@ const Graph = () => {
       type: 'doughnut',
       data: {
         datasets: [{
-          data: [17,15],
+          data: [17, 15],
           backgroundColor: [
             'rgba(46, 204, 113, 1)',
             'rgba(231, 76, 60, 1)'
@@ -24,6 +24,28 @@ const Graph = () => {
           cutout: "80%"
         }]
       },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: false
+          },
+          doughnutlabel: {
+            labels: [
+              {
+                text: '32%',
+                font: {
+                  size: '20'
+                },
+                color: '#000',
+                position: 'center'
+              }
+            ]
+          }
+        }
+      }
     });
 
     return () => {

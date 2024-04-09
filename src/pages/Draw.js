@@ -7,8 +7,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import Button from "../component/Button";
+import photo1 from "../assets/mainBtn1.png";
+import photo2 from "../assets/mainBtn2.png";
+import photo3 from "../assets/mainBtn3.png";
+import photo4 from "../assets/mainBtn4.png";
+import photo5 from "../assets/mainBtn5.png";
 
 const Draw = ({ lineWidth, dispatch }) => {
+  //임시로 보여줄 사진들
+  const photos = [photo1, photo2, photo3, photo4, photo5];
   const location = useLocation();
   //추출된 키워드
   const data = location.state;
@@ -96,7 +103,11 @@ const Draw = ({ lineWidth, dispatch }) => {
         )}
       </div>
       {/* 사진 띄워줄 부분 */}
-      <div className={"border-4 border-[#D9D9D9] h-40 w-full"}></div>
+      <div className={"h-40 w-full flex flex-row overflow-x-auto"}>
+        {photos.map((item, index) => (
+          <img src={item} key={index} />
+        ))}
+      </div>
       {/* Canvas */}
       <div
         style={{

@@ -16,6 +16,7 @@ import photo5 from "../assets/mainBtn5.png";
 const Draw = ({ lineWidth, dispatch }) => {
   //임시로 보여줄 사진들
   const photos = [photo1, photo2, photo3, photo4, photo5];
+  // const photos = [];
   const location = useLocation();
   //추출된 키워드
   const data = location.state;
@@ -103,10 +104,14 @@ const Draw = ({ lineWidth, dispatch }) => {
         )}
       </div>
       {/* 사진 띄워줄 부분 */}
-      <div className={"h-40 w-full flex flex-row overflow-x-auto"}>
-        {photos.map((item, index) => (
-          <img src={item} key={index} />
-        ))}
+      <div className={"h-40 w-full flex flex-row overflow-x-auto text-2xl"}>
+        {photos.length == 0 ? (
+          <div className={"w-full flex justify-center items-center"}>
+            그림이 존재하지 않습니다.
+          </div>
+        ) : (
+          photos.map((item, index) => <img src={item} key={index} />)
+        )}
       </div>
       {/* Canvas */}
       <div

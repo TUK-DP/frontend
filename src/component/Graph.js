@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart } from 'chart.js/auto';
 
-const Graph = () => {
+const Graph = ({ number }) => { // number prop 추가
   const chartRef = useRef(null);
 
   useEffect(() => {
     const data = {
       datasets: [{
         label: 'Weekly Sales',
-        data: [17, 15],
+        data: [number, 32 - number], // number prop을 사용하여 데이터 동적으로 설정
         backgroundColor: [
           'rgba(255, 26, 104, 0.2)',
           'rgba(0, 0, 0, 0.2)'
@@ -37,7 +37,7 @@ const Graph = () => {
         ctx.font = '120px sans-serif';
         ctx.textAlign='center';
         ctx.textBaseLine = 'bottom';
-        ctx.fillText('850',xCoor, yCoor);
+        ctx.fillText(`${number}`, xCoor, yCoor); // number prop을 사용하여 텍스트 동적으로 설정
       }
     };
 
@@ -55,7 +55,7 @@ const Graph = () => {
           },
         }
       },
-      plugins: [gaugeChartText]
+      plugins: [gaugeChartText] // gaugeChartText 플러그인 추가
     };
 
     const chartInstance = new Chart(chartRef.current, config);
@@ -63,7 +63,7 @@ const Graph = () => {
     return () => {
       chartInstance.destroy();
     };
-  }, []);
+  }, [number]); // number prop을 의존성 배열에 추가하여 변경될 때마다 useEffect 재실행
 
   return <canvas ref={chartRef} />;
 };

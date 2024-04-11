@@ -208,7 +208,11 @@ const Graph = (
         // link text
         let linkText = linkGroup.append("text")
             .text(d => {
-                return d.tfidf
+                if (d.type === "CONNECTED") {
+                    let value = Math.floor(d.tfidf * 100) / 100
+                    return value
+                }
+                return ""
             })
             .style("color", "#000")
             .style('fontWeight', '900')

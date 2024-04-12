@@ -1,9 +1,9 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, BrowserRouter, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { saveUrl } from "./redux/modules/urlSave.js";
 import Draw from "./pages/Draw";
 import PhotoEdit from "./pages/PhotoEdit";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Header from "./component/Header.js";
 import Navbar from "./component/Navbar.js";
 import Home from "./pages/Home.js";
@@ -34,8 +34,10 @@ import GymnasticsVideo from "./pages/GymnasticsVideo.js";
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const div = useRef();
 
   useEffect(() => {
+      div.current.scrollTo(0, 0);
     dispatch(saveUrl(location.pathname));
   }, [dispatch, location.pathname]);
 
@@ -47,13 +49,14 @@ function App() {
     <div style={{ height: "100%" }}>
       <Header />
       <div
+        ref ={div}
         style={{
           height: "100%",
           paddingTop: "70px",
           paddingBottom: "90px",
           position: "relative",
           margin: "0 auto",
-          overflow: "scroll",
+          overflow: "auto",
         }}
       >
         <Routes>

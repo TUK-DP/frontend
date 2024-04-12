@@ -2,7 +2,6 @@ import { IoTrashOutline } from "react-icons/io5";
 import { AiOutlineRollback } from "react-icons/ai";
 import { HiOutlinePaintBrush } from "react-icons/hi2";
 import { TfiEraser } from "react-icons/tfi";
-
 import { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 
@@ -101,12 +100,21 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
   const handleTouchEnd = () => {
     setPainting(false);
   };
-
-  const [width, setWidth] = useState(window.innerWidth * 0.9);
+  // 캔버스 크기를 반응형으로 조절하기 위해 화면의 크기를 받아와서 조정
+  const [width, setWidth] = useState();
+  const resizeListener = () => {
+    const size = window.innerWidth > 450 ? 450 : window.innerWidth;
+    console.log(size);
+    setWidth(Math.ceil(size * 0.9));
+  };
 
   useEffect(() => {
-    setWidth(window.innerWidth * 0.9);
-  }, [window.innerWidth]);
+    resizeListener();
+    window.addEventListener("resize", resizeListener);
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, []);
 
   return (
     <div

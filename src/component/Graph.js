@@ -10,14 +10,9 @@ const Graph = ({ number }) => { // number prop 추가
         label: 'Weekly Sales',
         data: [number, 32 - number], // number prop을 사용하여 데이터 동적으로 설정
         backgroundColor: [
-          'rgba(255, 26, 104, 0.2)',
+          '#e15449',
           'rgba(0, 0, 0, 0.2)'
         ],
-        borderColor: [
-          'rgba(255, 26, 104, 1)',
-          'rgba(0, 0, 0, 1)'
-        ],
-        borderWidth: 1,
         cutout: "90%",
         circumference: 180,
         rotation: 270
@@ -65,7 +60,7 @@ const Graph = ({ number }) => { // number prop 추가
     };
   }, [number]); // number prop을 의존성 배열에 추가하여 변경될 때마다 useEffect 재실행
 
-  return <canvas ref={chartRef} />;
+  return <canvas ref={chartRef} style={{width:"90%"}}/>;
 };
 
 export default Graph;

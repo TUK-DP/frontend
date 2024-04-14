@@ -149,6 +149,7 @@ const Draw = ({ lineWidth, dispatch }) => {
             text="완료"
             fontSize="30px"
             onClick={saveImage}
+            className={"mb-3"}
           />
         ) : null}
       </div>

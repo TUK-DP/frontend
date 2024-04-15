@@ -27,6 +27,7 @@ import DementiaCenter from "./pages/DementiaCenter.js";
 import DiaryTestResult from "./pages/DiaryTestResult.js";
 import DiaryWrite from "./pages/DiaryWrite.js";
 import Error from "./pages/Error.js";
+import Surveyresult from "./pages/SurveyResult.js";
 import BeforeGame from "./component/BeforeGame.js";
 import Gymnastics from "./pages/Gymnastics.js";
 import GymnasticsVideo from "./pages/GymnasticsVideo.js";
@@ -82,6 +83,7 @@ function App() {
           <Route path={"/dementiacenter"} element={<DementiaCenter />} />
           <Route path={"/diarywrite"} element={<DiaryWrite />} />
           <Route path={"/error"} element={<Error />} />
+          <Route path={"/surveyresult"} element={<Surveyresult />} />
           <Route path={"/beforegame"} element={<BeforeGame />} />
           <Route path={"/gymnastics"} element={<Gymnastics />} />
           <Route path={"/gymvideo"} element={<GymnasticsVideo />} />

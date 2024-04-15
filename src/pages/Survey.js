@@ -88,7 +88,7 @@ function Survey() {
             <SurveyList questionState={questionState} onVote={handleVote} />
             <Button height={"60px"} text={"제출하기"} fontSize={"24px"} onClick={handleSubmit} />
             {
-              !checkList ? <div className='text-[#e15449] mt-2'>모든 문항을 체크해주세요.</div>: <div></div>
+              !checkList ? <div className='text-[#e15449] mt-2 text-xl'>모든 문항을 체크해주세요.</div>: <div></div>
             }
         </div>
     );

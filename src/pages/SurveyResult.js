@@ -19,7 +19,7 @@ const Surveyresult = () => {
         <div className="text-3xl h-[7rem] bg-[#e0f4ff] w-full flex justify-center items-center border-b-2">
           내 진단 결과
         </div>
-        <div className="bg-white w-full flex items-center justify-center">
+        <div className="bg-white w-[90%] flex items-center justify-center">
           <ChartGraph number={count} />
         </div>
         <div

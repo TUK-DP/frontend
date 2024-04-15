@@ -10,7 +10,9 @@ const Surveyresult = () => {
   const navigate = useNavigate();
   const handleSubmit = () => {
     navigate("/");
-};
+  };
+  const backgroundColor = count >= 17 ? '#e15449' : '#5fc25f';
+  
   return (
     <div className="w-full">
       <div className="w-full  flex items-center flex-col">
@@ -18,8 +20,16 @@ const Surveyresult = () => {
         <div className="bg-white w-full flex items-center justify-center">
         <Graph number={count}  />
         </div>
-        <div className="text-3xl bg-[#f86d63] text-white w-full h-16 flex justify-center items-center rounded-ss-lg rounded-tr-lg border-t-2">치매 의심</div>
-        <div className="h-[8rem] flex text-2xl justify-center items-center border-b-2 w-full">치매 정밀 진단을 받아보시기를 <br/>권장합니다.</div>
+        <div className="text-3xl text-white w-full h-16 flex justify-center items-center rounded-ss-lg rounded-tr-lg border-t-2" style={{backgroundColor:backgroundColor}}>
+          {
+            count>= 17 ? <div>치매 의심</div> : <div>저위험 단계</div>
+          }
+        </div>
+        <div className="h-[8rem] flex text-2xl justify-center items-center border-b-2 w-full">
+          {
+            count>= 17 ? <div>치매 정밀 진단을 받아보시기를 <br/>권장합니다.</div> : <div>치매 예방법을 통해 <br/> 치매를 예방하세요. </div>
+          }
+        </div>
         <div className="w-full pt-10 pb-8 bg-[#e0f4ff] flex justify-center items-center flex-col">
           <div className="text-xl mb-5">치매 예방법</div>
           <div className="bg-white w-[90%] p-5 rounded-xl border-2 mb-7">

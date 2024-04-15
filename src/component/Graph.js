@@ -1,16 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart } from 'chart.js/auto';
 
-const Graph = ({ number }) => { // number prop 추가
+const Graph = ({ number }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
+    const backgroundColor = number >= 17 ? '#e15449' : '#5fc25f';
     const data = {
       datasets: [{
         label: 'Weekly Sales',
-        data: [number, 32 - number], // number prop을 사용하여 데이터 동적으로 설정
+        data: [number, 32 - number],
         backgroundColor: [
-          '#e15449',
+          backgroundColor,
           'rgba(0, 0, 0, 0.2)'
         ],
         cutout: "90%",
@@ -32,7 +33,7 @@ const Graph = ({ number }) => { // number prop 추가
         ctx.font = '120px sans-serif';
         ctx.textAlign='center';
         ctx.textBaseLine = 'bottom';
-        ctx.fillText(`${number}`, xCoor, yCoor); // number prop을 사용하여 텍스트 동적으로 설정
+        ctx.fillText(`${number}`, xCoor, yCoor);
       }
     };
 
@@ -58,7 +59,7 @@ const Graph = ({ number }) => { // number prop 추가
     return () => {
       chartInstance.destroy();
     };
-  }, [number]); // number prop을 의존성 배열에 추가하여 변경될 때마다 useEffect 재실행
+  }, [number]); 
 
   return <canvas ref={chartRef} style={{width:"90%"}}/>;
 };

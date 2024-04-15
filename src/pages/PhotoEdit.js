@@ -63,7 +63,16 @@ const PhotoEdit = ({}) => {
   };
 
   // 배경 투명도
-  const bgOpacity = ["30%", "50%", "70%", "100%"];
+  const bgOpacityList = ["30", "50", "70", "100"];
+  const [bgOpacity, setBgOpacity] = useState("0.7");
+  const [selectedOpacityIndex, setSelectedOpacityIndex] = useState(0);
+  // 투명도 변경
+  const changeOpacity = (item, index) => {
+    setBgOpacity(1 - parseInt(item) * 0.01);
+    setSelectedOpacityIndex(index);
+    console.log(1 - parseInt(item) * 0.01);
+  };
+
   return (
     <div className={"flex flex-col w-11/12 mx-auto my-5 text-xl"}>
       {/* 배경 선택 */}
@@ -82,19 +91,22 @@ const PhotoEdit = ({}) => {
         ))}
       </div>
       {/* 배경 투명도 설정 */}
-      {/* <p className={"mb-4"}>배경 투명도 설정</p>
+      <p className={"mb-4"}>배경 투명도 설정</p>
       <div className={"whitespace-nowrap overflow-x-scroll "}>
-        {bgOpacity.map((item, index) => (
+        {bgOpacityList.map((item, index) => (
           <button
             key={index}
-            className={
-              " bg-[#EDEDED] px-5 py-2 rounded-xl h-12 mr-2 justify-center"
-            }
+            className={`${
+              selectedOpacityIndex === index ? "bg-[#B0B0B0]" : "bg-[#EDEDED]"
+            }  px-5 py-2 rounded-xl h-12 mr-2 justify-center`}
+            onClick={() => {
+              changeOpacity(item, index);
+            }}
           >
-            {item}
+            {item}%
           </button>
         ))}
-      </div> */}
+      </div>
       {/* 그림 편집기 */}
       <div className={"border-4 border-[#D9D9D9] my-10"}>
         <div
@@ -105,7 +117,7 @@ const PhotoEdit = ({}) => {
             display: "flex",
             flexWrap: "wrap",
             alignContent: "flex-start",
-            backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url(${process.env.PUBLIC_URL}/Background${backgroundUrl})`,
+            backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,${bgOpacity}), rgba(255,255,255,${bgOpacity})), url(${process.env.PUBLIC_URL}/Background${backgroundUrl})`,
             backgroundSize: "cover",
           }}
         >

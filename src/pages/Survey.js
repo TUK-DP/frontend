@@ -50,6 +50,7 @@ function Survey() {
     const navigate = useNavigate();
     const [questionState, setQuestionState] = useState([]);
     const [selectedResults, setSelectedResults] = useState([]);
+    const [checkList, setCheckList] = useState(true);
 
     const get_survey = async () => {
         const survey = await SurveyController.findAllSimpleSurvey();
@@ -74,13 +75,21 @@ function Survey() {
         const xCount = selectedResults.filter(result => result === 'X').length;
         console.log(`Total O Count: ${oCount}`);
         console.log(`Total X Count: ${xCount}`);
-        navigate("/surveyresult", { state: { oCount, xCount } });
+        if(oCount+xCount===32){
+          navigate("/surveyresult", { state: { oCount, xCount } });
+        }
+        else{
+          setCheckList(false);
+        }
     };
 
     return (
         <div className={"px-4 mb-10"}>
             <SurveyList questionState={questionState} onVote={handleVote} />
             <Button height={"60px"} text={"제출하기"} fontSize={"24px"} onClick={handleSubmit} />
+            {
+              !checkList ? <div className='text-[#e15449] mt-2'>모든 문항을 체크해주세요.</div>: <div></div>
+            }
         </div>
     );
 }

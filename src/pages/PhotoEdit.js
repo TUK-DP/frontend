@@ -43,7 +43,6 @@ const PhotoEdit = ({}) => {
     };
   }, []);
 
-  // const list = ["없음", "해", "밤", "비", "눈", "구름", "바람", "낙엽", "벚꽃"];
   const list = [
     { name: "없음", url: "/" },
     { name: "낮", url: "/day" },
@@ -56,10 +55,11 @@ const PhotoEdit = ({}) => {
     { name: "벚꽃", url: "/blossom" },
   ];
   const [backgroundUrl, setBackgroundUrl] = useState("");
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
 
-  const changeBg = (url) => {
-    console.log(url);
+  const changeBg = (url, index) => {
     setBackgroundUrl(`${url}.png`);
+    setSelectedButtonIndex(index);
   };
   return (
     <div className={"flex flex-col w-11/12 mx-auto my-5 text-xl"}>
@@ -68,10 +68,10 @@ const PhotoEdit = ({}) => {
         {list.map((item, index) => (
           <button
             key={index}
-            className={
-              "bg-[#EDEDED] px-5 py-2 rounded-xl h-12 mr-2 justify-center"
-            }
-            onClick={() => changeBg(item.url)}
+            className={`${
+              selectedButtonIndex === index ? "bg-[#B0B0B0]" : ""
+            }  bg-[#EDEDED] px-5 py-2 rounded-xl h-12 mr-2 justify-center`}
+            onClick={() => changeBg(item.url, index)}
           >
             {item.name}
           </button>

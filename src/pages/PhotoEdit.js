@@ -27,6 +27,22 @@ const PhotoEdit = ({}) => {
     });
   };
 
+  // 캔버스 크기를 반응형으로 조절하기 위해 화면의 크기를 받아와서 조정
+  const [width, setWidth] = useState();
+  const resizeListener = () => {
+    const size = window.innerWidth > 450 ? 450 : window.innerWidth;
+    console.log(size);
+    setWidth(Math.ceil(size * 0.9));
+  };
+
+  useEffect(() => {
+    resizeListener();
+    window.addEventListener("resize", resizeListener);
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, []);
+
   return (
     <div
       style={{
@@ -39,8 +55,8 @@ const PhotoEdit = ({}) => {
         <div
           id="limit"
           style={{
-            width: "350px",
-            height: "350px",
+            width: width,
+            height: width,
             display: "flex",
             flexWrap: "wrap",
             alignContent: "flex-start",

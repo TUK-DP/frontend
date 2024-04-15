@@ -1,29 +1,55 @@
 import "../styles/Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import UserController from "../api/users.controller";
+import Modal from "../component/Modal";
+import { useState } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // 나머지 제출 로직
     console.log(data);
+    try {
+      const res = await UserController.signIn({
+        nickname: data.nickname,
+        password: data.password,
+      });
+      console.log(res);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      setIsModalOpen(true);
+    }
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div id="screen">
+      {isModalOpen && (
+        <Modal
+          content={"닉네임 또는 비밀번호가 일치하지 않습니다."}
+          onClose={closeModal}
+        />
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="inputField">
-          <label>이름</label>
+          <label>닉네임</label>
           <input
             type="text"
-            placeholder="이름을 입력하세요."
-            {...register("username", { required: "이름을 입력해주세요." })}
+            placeholder="닉네임을 입력하세요."
+            {...register("nickname", { required: "닉네임을 입력해주세요." })}
           />
           <div className="error-message">
-            {errors.username && errors.username.message}
+            {errors.nickname && errors.nickname.message}
           </div>
         </div>
         <div className="inputField">

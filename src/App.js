@@ -1,9 +1,9 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, BrowserRouter, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { saveUrl } from "./redux/modules/urlSave.js";
 import Draw from "./pages/Draw";
 import PhotoEdit from "./pages/PhotoEdit";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Header from "./component/Header.js";
 import Navbar from "./component/Navbar.js";
 import Home from "./pages/Home.js";
@@ -28,16 +28,21 @@ import DiaryTestResult from "./pages/DiaryTestResult.js";
 import DiaryWrite from "./pages/DiaryWrite.js";
 import Error from "./pages/Error.js";
 import Surveyresult from "./pages/SurveyResult.js";
+import BeforeGame from "./component/BeforeGame.js";
+import Gymnastics from "./pages/Gymnastics.js";
+import GymnasticsVideo from "./pages/GymnasticsVideo.js";
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const div = useRef();
 
   useEffect(() => {
+      div.current.scrollTo(0, 0);
     dispatch(saveUrl(location.pathname));
   }, [dispatch, location.pathname]);
 
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
   });
 
@@ -45,13 +50,14 @@ function App() {
     <div style={{ height: "100%" }}>
       <Header />
       <div
+        ref ={div}
         style={{
           height: "100%",
           paddingTop: "70px",
           paddingBottom: "90px",
           position: "relative",
           margin: "0 auto",
-          overflow: "scroll",
+          overflow: "auto",
         }}
       >
         <Routes>
@@ -78,6 +84,9 @@ function App() {
           <Route path={"/diarywrite"} element={<DiaryWrite />} />
           <Route path={"/error"} element={<Error />} />
           <Route path={"/surveyresult"} element={<Surveyresult />} />
+          <Route path={"/beforegame"} element={<BeforeGame />} />
+          <Route path={"/gymnastics"} element={<Gymnastics />} />
+          <Route path={"/gymvideo"} element={<GymnasticsVideo />} />
         </Routes>
       </div>
       <Navbar />

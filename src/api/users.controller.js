@@ -6,12 +6,16 @@ class UserController extends Api {
     return await this.post("/users/signup", { data: userData });
   };
   // 로그인
-  logIn = async (loginData) => {
-    return await this.post("/users/login", { data: loginData });
+  signIn = async (loginData) => {
+    return await this.post("/users/signin", { data: loginData });
+  };
+  //닉네임 중복확인
+  checkNickname = async (nickname) => {
+    return await this.post("/users/checknickname", { data: nickname });
   };
   // 자동 로그인
   // 회원 정보 수정
   // 회원탈퇴
 }
 
-export default UserController;
+export default new UserController();

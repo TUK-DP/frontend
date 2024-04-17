@@ -5,8 +5,14 @@ import ImageDiary from "../modules/ImageDiary.js";
 // import urlSave from "../modules/urlSave.js";
 import DiaryDate from "../modules/DiaryDate.js";
 import DiaryInfo from "../modules/DiaryInfo.js";
+import UserInfo from "../modules/UserInfo.js";
 
-const rootReducer = combineReducers({ ImageDiary,  DiaryDate, DiaryInfo });
+const rootReducer = combineReducers({
+  ImageDiary,
+  DiaryDate,
+  DiaryInfo,
+  UserInfo,
+});
 const logger = createLogger();
 const store = createStore(rootReducer, applyMiddleware(logger));
 

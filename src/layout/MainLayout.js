@@ -29,7 +29,6 @@ import DiaryWrite from "../pages/DiaryWrite";
 import Error from "../pages/Error";
 
 const MainLayout = () => {
-  const dispatch = useDispatch();
   const location = useLocation();
   const div = useRef();
 
@@ -55,7 +54,7 @@ const MainLayout = () => {
         }}
       >
         <Routes>
-          <Route path={"/"} element={<Home />} />{" "}
+          <Route path={"/"} element={<Home />} />
           <Route path={"/games"} element={<Games />} />
           <Route path={"/calendar"} element={<Calendar />} />
           <Route path={"/photoedit"} element={<PhotoEdit />} />

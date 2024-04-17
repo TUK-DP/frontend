@@ -4,8 +4,11 @@ import { useForm } from "react-hook-form";
 import UserController from "../api/users.controller";
 import Modal from "../component/Modal";
 import { useState } from "react";
+import { SET_USERINFO } from "../redux/modules/UserInfo";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     register,
@@ -20,7 +23,18 @@ const Login = () => {
         nickname: data.nickname,
         password: data.password,
       });
-      console.log(res);
+      console.log(res.data.result);
+      const info = res.data.result;
+      dispatch({
+        type: SET_USERINFO,
+        userId: info.userId,
+        email: info.email,
+        password: info.password,
+        nickname: info.nickname,
+        birth: info.birth,
+        created_at: info.created_at,
+        updated_at: info.updated_at,
+      });
       navigate("/");
     } catch (error) {
       console.log(error);

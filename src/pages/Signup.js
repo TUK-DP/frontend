@@ -24,7 +24,7 @@ const Signup = () => {
         birth: data.birth,
       });
       console.log(res);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }

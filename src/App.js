@@ -1,12 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from "./layout/MainLayout.js";
 import SubLayout from "./layout/SubLayout.js";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const userInfo = useSelector((state) => state.UserInfo);
+  const navigate = useNavigate();
+
+  const isMember = () => {
+    if (userInfo.userId == "") {
+      navigate("/login");
+    } else {
+      navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    console.log(userInfo);
+    isMember();
+  }, []);
+
   return (
     <div style={{ height: "100%" }}>
-      {/* <MainLayout /> */}
-      <SubLayout />
+      {userInfo.userId == "" ? <SubLayout /> : <MainLayout />}
     </div>
   );
 }

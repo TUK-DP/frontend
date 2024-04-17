@@ -65,7 +65,7 @@ const Graph = ({ number }) => {
     };
   }, [number]);
 
-  return <canvas ref={chartRef} style={{ width: "90%" }} />;
+  return <canvas ref={chartRef} />;
 };
 
 export default Graph;

@@ -3,11 +3,10 @@ export const CHANGE_CONTENT = "CHANGE_CONTENT";
 export const CHANGE_DATE = "CHANGE_DATE";
 
 const initialState = {
-  userId: 2,
   diaryId: 0,
   title: "string",
   content: "",
-  date: 0
+  date: 0,
 };
 
 export default function DiaryInfo(state = initialState, action) {

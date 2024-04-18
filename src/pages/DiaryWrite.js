@@ -9,6 +9,7 @@ const Diary = () => {
   const navigate = useNavigate();
   const { year, month, day } = useSelector((state) => state.DiaryDate);
   const [isSaving, setIsSaving] = useState(false);
+  const userId = useSelector((state) => state.UserInfo.userId);
   //textarea의 내용을 받아오는 함수
   const handleContentChange = (event) => {
     setDiary({ ...diary, content: event.target.value });
@@ -28,14 +29,13 @@ const Diary = () => {
   };
   //api 요청 시, body 형식
   const [diary, setDiary] = useState({
-    userId: 2,
+    userId: userId,
     title: "string",
     content: "",
     date: dateFormat(),
   });
   //일기 저장 api 호출
   const saveDiary = async () => {
-    console.log("눌림");
     if (diary.content === "") {
       return alert("내용을 작성해주세요.");
     }

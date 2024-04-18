@@ -27,7 +27,7 @@ const Login = () => {
       const info = res.data.result;
       dispatch({
         type: SET_USERINFO,
-        userId: info.userId,
+        userId: info.id,
         email: info.email,
         password: info.password,
         nickname: info.nickname,

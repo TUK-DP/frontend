@@ -15,11 +15,15 @@ class DiaryController extends Api {
   };
   // 일기 삭제
   deleteDiary = async (diaryData) => {
-    return await this.delete("/diary/delete", {data: diaryData });
-  };  
+    return await this.delete("/diary/delete", { data: diaryData });
+  };
   //일기회상 퀴즈
   getQuiz = async ({ diaryId }) => {
     return await this.get(`/diary/quiz?diaryId=${diaryId}`);
+  };
+  //일기회상 답안 확인
+  checkAnswer = async (quizData) => {
+    return await this.post("/diary/checkanswer", { data: quizData });
   };
 }
 export default new DiaryController();

@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "esamanru";
-  src: url("./font/esamanru_Light.ttf");
+  font-family: "NanumBarunGothic";
+  src: url("./font/NanumBarunGothic.ttf");
 }
 
 html,

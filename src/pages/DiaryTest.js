@@ -9,7 +9,7 @@ const DiaryTest = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState([]);
-  const [answers, setAnswers] = useState([]);
+  // const [answers, setAnswers] = useState([]);
   const [index, setIndex] = useState(0);
   const [inputValues, setInputValues] = useState([]);
   const [correctCount, setCorrectCount] = useState(0);
@@ -31,11 +31,12 @@ const DiaryTest = () => {
           console.log("일기회상 문제를 생성할 수 없음");
         }
 
-        const questions = result.map((item) => item.Q);
-        const answers = result.map((item) => item.A);
+        const questions = result.map((item) => ({
+          question: item.question,
+          keywordId: item.keywordId,
+        }));
 
         setData(questions);
-        setAnswers(answers);
         setInputValues(questions.map(() => ""));
       } catch (error) {
         console.error("Error fetching quiz data:", error);
@@ -63,58 +64,72 @@ const DiaryTest = () => {
   };
 
   const handleSubmission = async () => {
+    const quizData = data.map((item, index) => ({
+      keywordId: item.keywordId,
+      answer: inputValues[index],
+    }));
     try {
-      // 입력한 값과 서버에서 받은 정답을 비교하여 일치하는 개수 계산
-      let newCorrectCount = 0;
-      inputValues.forEach((value, i) => {
-        if (value === answers[i]) {
-          newCorrectCount++;
-        }
-      });
-
-      // 계산된 정답 개수를 저장
-      setCorrectCount(newCorrectCount);
-
-      // 결과 페이지로 이동
-      navigate("/diary/test/result", {
-        state: {
-          correctCount: newCorrectCount,
-          totalCount: inputValues.length,
-          answers: answers, // 정답 배열 전달
-          userAnswers: inputValues, // 사용자 입력 배열 전달
-        },
-      });
-    } catch (error) {
-      console.error("Error handling submission:", error);
-      // 오류 처리
+      const res = DiaryController.checkAnswer({ answers: [quizData] });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
   };
+
+  // const handleSubmission = async () => {
+  //   try {
+  //     // 입력한 값과 서버에서 받은 정답을 비교하여 일치하는 개수 계산
+  //     let newCorrectCount = 0;
+  //     inputValues.forEach((value, i) => {
+  //       if (value === answers[i]) {
+  //         newCorrectCount++;
+  //       }
+  //     });
+
+  // 계산된 정답 개수를 저장
+  // setCorrectCount(newCorrectCount);
+
+  // 결과 페이지로 이동
+  //     navigate("/diary/test/result", {
+  //       state: {
+  //         correctCount: newCorrectCount,
+  //         totalCount: inputValues.length,
+  //         answers: answers, // 정답 배열 전달
+  //         userAnswers: inputValues, // 사용자 입력 배열 전달
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error handling submission:", error);
+  //     // 오류 처리
+  //   }
+  // };
 
   return (
     <div id="test">
       <div id="box" className="relative">
-        <h2 className={"text-2xl font-semibold h-[8rem] flex justify-center items-center"}>
+        <h2
+          className={
+            "text-2xl font-semibold h-[8rem] flex justify-center items-center"
+          }
+        >
           빈칸에 알맞은 말을 써넣으시오.
         </h2>
       </div>
-      <div
-          id="arrow"
-          className={"flex w-full justify-between px-8 mb-[2rem]"}
-        >
-          {index === 0 ? (
-            <div></div>
-          ) : (
-            <img src={Left} onClick={getPrevKeyword} />
-          )}
-          {index === data.length - 1 ? (
-            <div></div>
-          ) : (
-            <img src={Right} onClick={getNextKeyword} />
-          )}
-        </div>
+      <div id="arrow" className={"flex w-full justify-between px-8 mb-[2rem]"}>
+        {index === 0 ? (
+          <div></div>
+        ) : (
+          <img src={Left} onClick={getPrevKeyword} />
+        )}
+        {index === data.length - 1 ? (
+          <div></div>
+        ) : (
+          <img src={Right} onClick={getNextKeyword} />
+        )}
+      </div>
       {data.length > 0 && (
         <div>
-          <div id="testBox">{data[index]}</div>
+          <div id="testBox">{data[index].question}</div>
           <div id="answerBox">
             <input
               type="text"

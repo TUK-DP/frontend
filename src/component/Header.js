@@ -49,6 +49,9 @@ const Header = ({}) => {
         name = "회원가입";
         break;
       case "/survey":
+      case "/surveyresult":
+        name = "진단 결과";
+        break;
       case "/surveyStart":
         name = "치매진단";
         break;

@@ -72,9 +72,8 @@ const Diary = () => {
         onChange={handleContentChange}
       ></textarea>
       <div className={"flex flex-row w-11/12 gap-2 my-5"}>
-        <Button width="50%" height="50px" text="음성작성" />
         <Button
-          width="50%"
+          width="100%"
           height="50px"
           text="작성완료"
           onClick={saveDiary}

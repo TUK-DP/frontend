@@ -9,13 +9,9 @@ const DiaryTest = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState([]);
-  // const [answers, setAnswers] = useState([]);
   const [index, setIndex] = useState(0);
   const [inputValues, setInputValues] = useState([]);
-  const [correctCount, setCorrectCount] = useState(0);
-  const { userId, diaryId, title, content, date } = useSelector(
-    (state) => state.DiaryInfo
-  );
+  const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
 
   useEffect(() => {
     // 일기회상 퀴즈 데이터 가져오기
@@ -69,40 +65,17 @@ const DiaryTest = () => {
       answer: inputValues[index],
     }));
     try {
-      const res = DiaryController.checkAnswer({ answers: [quizData] });
-      console.log(res);
+      const res = await DiaryController.checkAnswer({ answers: quizData });
+      console.log(res.data.result);
+      navigate("/diary/test/result", {
+        state: {
+          result: res.data.result,
+        },
+      });
     } catch (err) {
       console.log(err);
     }
   };
-
-  // const handleSubmission = async () => {
-  //   try {
-  //     // 입력한 값과 서버에서 받은 정답을 비교하여 일치하는 개수 계산
-  //     let newCorrectCount = 0;
-  //     inputValues.forEach((value, i) => {
-  //       if (value === answers[i]) {
-  //         newCorrectCount++;
-  //       }
-  //     });
-
-  // 계산된 정답 개수를 저장
-  // setCorrectCount(newCorrectCount);
-
-  // 결과 페이지로 이동
-  //     navigate("/diary/test/result", {
-  //       state: {
-  //         correctCount: newCorrectCount,
-  //         totalCount: inputValues.length,
-  //         answers: answers, // 정답 배열 전달
-  //         userAnswers: inputValues, // 사용자 입력 배열 전달
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.error("Error handling submission:", error);
-  //     // 오류 처리
-  //   }
-  // };
 
   return (
     <div id="test">

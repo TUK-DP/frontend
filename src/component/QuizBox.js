@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import "../styles/QuizBox.css";
-const QuizBox = ({ order, answer, input }) => {
-  const isCorrect = answer == input;
+const QuizBox = ({ order, isCorrected, userInput, answer }) => {
   return (
     <div
       style={{
@@ -14,13 +14,13 @@ const QuizBox = ({ order, answer, input }) => {
           {order}
           {answer}
         </div>
-        <div style={{ color: isCorrect ? "blue" : "red" }}>
-          {isCorrect ? "O" : "X"}
+        <div style={{ color: isCorrected ? "blue" : "red" }}>
+          {isCorrected ? "O" : "X"}
         </div>
       </div>
       <div className="box inputvalue">
         <div className={"w-1/3"}>제출답안 : </div>
-        <div className={"w-2/3"}>{input}</div>
+        <div className={"w-2/3"}>{userInput}</div>
       </div>
     </div>
   );

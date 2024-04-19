@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import Navbar from "../component/Navbar";
 import Home from "../pages/Home";
 import Games from "../pages/Games";
@@ -19,33 +18,26 @@ import Survey from "../pages/Survey";
 import SurveyStart from "../pages/SurveyStart";
 import DementiaCenter from "../pages/DementiaCenter";
 import Surveyresult from "../pages/SurveyResult";
-import BeforeGame from "../component/BeforeGame";
+import BeforeGame from "../pages/gamePages/BeforeGame";
 import Gymnastics from "../pages/Gymnastics";
 import GymnasticsVideo from "../pages/GymnasticsVideo";
 import MyPage from "../pages/MyPage";
 import DiaryImageShow from "../pages/DiaryImageShow";
 import DiaryWrite from "../pages/DiaryWrite";
 import Error from "../pages/Error";
+import Header from "../component/Header";
 
 const MainLayout = () => {
-  const location = useLocation();
-  const div = useRef();
-
-  useEffect(() => {
-    div.current.scrollTo(0, 0);
-  }, [location.pathname]);
-
-  window.addEventListener("DOMContentLoaded", () => {
-    window.scrollTo(0, 0);
-  });
   return (
     <div
-      ref={div}
       style={{
         height: "100%",
-        paddingBottom: "90px",
+        paddingTop: "70px",
+        paddingBottom: "92px",
+        overflow: "auto",
       }}
     >
+      <Header />
       <Routes>
         <Route path={"/"} element={<Home />} />
         <Route path={"/games"} element={<Games />} />

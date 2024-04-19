@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainLayout from "./layout/MainLayout.js";
 import SubLayout from "./layout/SubLayout.js";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./component/Header.js";
 
 function App() {
@@ -22,17 +22,18 @@ function App() {
     isMember();
   }, []);
 
+  const location = useLocation();
+  const div = useRef();
+
+  useEffect(() => {
+    div.current.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  window.addEventListener("DOMContentLoaded", () => {
+    window.scrollTo(0, 0);
+  });
   return (
-    <div
-      style={{
-        height: "100%",
-        paddingTop: "70px",
-        position: "relative",
-        margin: "0 auto",
-        overflow: "auto",
-      }}
-    >
-      <Header />
+    <div ref={div} style={{ height: "100%" }}>
       {userInfo.userId == "" ? <SubLayout /> : <MainLayout />}
     </div>
   );

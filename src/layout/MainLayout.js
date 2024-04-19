@@ -28,6 +28,16 @@ import Error from "../pages/Error";
 import Header from "../component/Header";
 
 const MainLayout = () => {
+  const location = useLocation();
+  const div = useRef();
+
+  useEffect(() => {
+    div.current.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  window.addEventListener("DOMContentLoaded", () => {
+    window.scrollTo(0, 0);
+  });
   return (
     <div
       style={{
@@ -36,6 +46,7 @@ const MainLayout = () => {
         paddingBottom: "92px",
         overflow: "auto",
       }}
+      ref={div}
     >
       <Header />
       <Routes>

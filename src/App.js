@@ -22,18 +22,8 @@ function App() {
     isMember();
   }, []);
 
-  const location = useLocation();
-  const div = useRef();
-
-  useEffect(() => {
-    div.current.scrollTo(0, 0);
-  }, [location.pathname]);
-
-  window.addEventListener("DOMContentLoaded", () => {
-    window.scrollTo(0, 0);
-  });
   return (
-    <div ref={div} style={{ height: "100%" }}>
+    <div style={{ height: "100%" }}>
       {userInfo.userId == "" ? <SubLayout /> : <MainLayout />}
     </div>
   );

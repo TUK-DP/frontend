@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Navbar from "../component/Navbar";
-import Header from "../component/Header";
 import Home from "../pages/Home";
 import Games from "../pages/Games";
 import Calendar from "../pages/Calendar";
@@ -40,46 +39,39 @@ const MainLayout = () => {
     window.scrollTo(0, 0);
   });
   return (
-    <div style={{ height: "100%" }}>
-      <Header />
-      <div
-        ref={div}
-        style={{
-          height: "100%",
-          paddingTop: "70px",
-          paddingBottom: "90px",
-          position: "relative",
-          margin: "0 auto",
-          overflow: "auto",
-        }}
-      >
-        <Routes>
-          <Route path={"/"} element={<Home />} />
-          <Route path={"/games"} element={<Games />} />
-          <Route path={"/calendar"} element={<Calendar />} />
-          <Route path={"/photoedit"} element={<PhotoEdit />} />
-          <Route path={"/diary/show"} element={<DiaryImageShow />} />
-          <Route path={"/draw"} element={<Draw />} />
-          <Route path={"/game1"} element={<Game1 />} />
-          <Route path={"/game2"} element={<Game2 />} />
-          <Route path={"/game3"} element={<Game3 />} />
-          <Route path={"/game4"} element={<Game4 />} />
-          <Route path={"/game5"} element={<Game5 />} />
-          <Route path={"/diary/test"} element={<DiaryTest />} />
-          <Route path={"/diary/test/submit"} element={<DiaryTestSubmit />} />
-          <Route path={"/diary/test/result"} element={<DiaryTestResult />} />
-          <Route path={"/survey"} element={<Survey />} />
-          <Route path={"/surveyStart"} element={<SurveyStart />} />
-          <Route path={"/dementiacenter"} element={<DementiaCenter />} />
-          <Route path={"/diarywrite"} element={<DiaryWrite />} />
-          <Route path={"/error"} element={<Error />} />
-          <Route path={"/surveyresult"} element={<Surveyresult />} />
-          <Route path={"/beforegame"} element={<BeforeGame />} />
-          <Route path={"/gymnastics"} element={<Gymnastics />} />
-          <Route path={"/gymvideo"} element={<GymnasticsVideo />} />
-          <Route path={"/mypage"} element={<MyPage />} />
-        </Routes>
-      </div>
+    <div
+      ref={div}
+      style={{
+        height: "100%",
+        paddingBottom: "90px",
+      }}
+    >
+      <Routes>
+        <Route path={"/"} element={<Home />} />
+        <Route path={"/games"} element={<Games />} />
+        <Route path={"/calendar"} element={<Calendar />} />
+        <Route path={"/photoedit"} element={<PhotoEdit />} />
+        <Route path={"/diary/show"} element={<DiaryImageShow />} />
+        <Route path={"/draw"} element={<Draw />} />
+        <Route path={"/game1"} element={<Game1 />} />
+        <Route path={"/game2"} element={<Game2 />} />
+        <Route path={"/game3"} element={<Game3 />} />
+        <Route path={"/game4"} element={<Game4 />} />
+        <Route path={"/game5"} element={<Game5 />} />
+        <Route path={"/diary/test"} element={<DiaryTest />} />
+        <Route path={"/diary/test/submit"} element={<DiaryTestSubmit />} />
+        <Route path={"/diary/test/result"} element={<DiaryTestResult />} />
+        <Route path={"/survey"} element={<Survey />} />
+        <Route path={"/surveyStart"} element={<SurveyStart />} />
+        <Route path={"/dementiacenter"} element={<DementiaCenter />} />
+        <Route path={"/diarywrite"} element={<DiaryWrite />} />
+        <Route path={"/error"} element={<Error />} />
+        <Route path={"/surveyresult"} element={<Surveyresult />} />
+        <Route path={"/beforegame"} element={<BeforeGame />} />
+        <Route path={"/gymnastics"} element={<Gymnastics />} />
+        <Route path={"/gymvideo"} element={<GymnasticsVideo />} />
+        <Route path={"/mypage"} element={<MyPage />} />
+      </Routes>
       <Navbar />
     </div>
   );

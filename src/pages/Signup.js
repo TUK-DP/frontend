@@ -62,7 +62,7 @@ const Signup = () => {
 
   return (
     <div className={"flex flex-col justify-center items-center my-4"}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className={"mb-5"}>
         <div className="inputField">
           <label>이름</label>
           <input

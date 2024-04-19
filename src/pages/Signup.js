@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserController from "../api/users.controller";
 import { useForm } from "react-hook-form";
 import Button from "../component/Button";
 import Modal from "../component/Modal";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Signup = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "회원가입" });
+  }, []);
   const {
     register,
     handleSubmit,

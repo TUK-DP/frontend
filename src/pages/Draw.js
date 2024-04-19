@@ -1,7 +1,7 @@
 import Canvas from "../component/ImageDiary/Canvas";
 import React, { useRef, useState, useEffect } from "react";
 import Palette from "../component/ImageDiary/Palette";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { brushSize } from "../redux/modules/ImageDiary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
@@ -12,8 +12,12 @@ import photo2 from "../assets/mainBtn2.png";
 import photo3 from "../assets/mainBtn3.png";
 import photo4 from "../assets/mainBtn4.png";
 import photo5 from "../assets/mainBtn5.png";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Draw = ({ lineWidth, dispatch }) => {
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
+  }, []);
   //임시로 보여줄 사진들
   const photos = [photo1, photo2, photo3, photo4, photo5];
   // const photos = [];

@@ -2,12 +2,15 @@ import React, { useEffect } from "react";
 import Check from "../assets/check.png";
 import "../styles/SurveyStart.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const SurveyStart = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    dispatch({ type: SET_PAGENAME, pageName: "치매진단" });
   }, []);
+  const navigate = useNavigate();
 
   return (
     <div>

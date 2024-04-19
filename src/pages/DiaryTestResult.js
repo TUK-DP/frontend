@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const DiaryTestResult = ({}) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "일기회상 점수" });
+  }, []);
   const navigate = useNavigate();
   const location = useLocation();
   const { totalQuestionSize, score, answerList } =

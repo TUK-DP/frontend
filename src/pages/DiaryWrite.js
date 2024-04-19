@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../component/Loading";
 import Button from "../component/Button";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 //일기 작성 페이지
 const Diary = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "일기작성" });
+  }, []);
   const navigate = useNavigate();
   const { year, month, day } = useSelector((state) => state.DiaryDate);
   const [isSaving, setIsSaving] = useState(false);

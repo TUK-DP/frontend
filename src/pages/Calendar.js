@@ -12,10 +12,14 @@ import {
   CHANGE_DATE,
 } from "../redux/modules/DiaryInfo.js";
 import DiaryController from "../api/diary.controller.js";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Calendar = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "캘린더" });
+  }, []);
+  const navigate = useNavigate();
   const { year, month, day } = useSelector((state) => state.DiaryDate);
   const [isDiaryExist, setIsDiaryExist] = useState();
   const [isGetDiaryComplete, setIsGetDiaryComplete] = useState(false);

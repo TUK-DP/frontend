@@ -7,7 +7,9 @@ import { useSelector } from "react-redux";
 
 const DiaryEdit = () => {
   const [showDiary, setShowDiary] = useState(false);
-  const { userId, diaryId, title, content, date } = useSelector(
+
+  const userId = useSelector((state) => state.UserInfo.userId);
+  const { diaryId, title, content, date } = useSelector(
     (state) => state.DiaryInfo
   );
 
@@ -20,16 +22,15 @@ const DiaryEdit = () => {
       const { isSuccess, result } = response.data;
 
       if (result.length === 0) {
-        navigate('/error');
+        navigate("/error");
       } else {
         navigate("/diary/test");
-
       }
     } catch (error) {
       console.error("Error fetching quiz data:", error);
       console.error(error.stack);
     }
-  }
+  };
 
   const handleDiaryTestClick = () => {
     fetchData();

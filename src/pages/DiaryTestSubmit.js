@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import QuizBox from "../component/QuizBox";
+import Button from "../component/Button";
 
 const DiaryTestSubmit = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userAnswers, answers } = location.state || {}; // useLocation을 통해 상태값을 가져옴
+  const answerList = location.state || {}; // useLocation을 통해 상태값을 가져옴
+
+  useEffect(() => {
+    console.log(answerList);
+  });
 
   return (
     <div
@@ -17,18 +22,24 @@ const DiaryTestSubmit = () => {
         flexDirection: "column",
       }}
     >
-      {userAnswers && answers && userAnswers.length > 0 && answers.length > 0 && (
-        // userAnswers와 answers가 존재하고 배열의 길이가 0보다 큰 경우에만 렌더링
-        userAnswers.map((value, index) => (
-          <QuizBox
-            key={index}
-            order={`${index + 1}. `}
-            answer={answers[index]}
-            input={userAnswers[index]}
-          />
-        ))
-      )}
-      <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl mb-8" onClick={()=>navigate('/')}>홈으로가기</div>
+      {answerList.map((item, index) => (
+        <QuizBox
+          key={index}
+          order={`${index + 1}. `}
+          isCorrected={item.isCorrected}
+          userInput={item.userInput}
+          answer={item.answer}
+        />
+      ))}
+      <div className={"pb-5 w-full flex justify-center"}>
+        <Button
+          width="90%"
+          height="60px"
+          text="홈으로 가기"
+          onClick={() => navigate("/")}
+          fontSize="20px"
+        />
+      </div>
     </div>
   );
 };

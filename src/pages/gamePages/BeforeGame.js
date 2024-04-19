@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Button from "../component/Button";
+import Button from "../../component/Button";
 import { useLocation, useNavigate } from "react-router-dom";
-import Modal from "./Modal";
+import Modal from "../../component/Modal";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 
 const BeforeGame = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "게임 선택 화면" });
+  }, []);
   const location = useLocation();
   const navigate = useNavigate();
   const num = location.state.num;

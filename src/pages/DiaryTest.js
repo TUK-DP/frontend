@@ -4,10 +4,14 @@ import Right from "../assets/Right.png";
 import Left from "../assets/left.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName.js";
 const DiaryTest = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "일기회상" });
+  }, []);
   const navigate = useNavigate();
-  const location = useLocation();
   const [data, setData] = useState([]);
   const [index, setIndex] = useState(0);
   const [inputValues, setInputValues] = useState([]);

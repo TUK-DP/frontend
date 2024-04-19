@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ChartGraph from "../component/ChartGraph";
 import { useLocation } from "react-router-dom";
 import Button from "../component/Button";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Surveyresult = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "치매진단결과" });
+  }, []);
   const location = useLocation();
   const count = location.state ? location.state.oCount : 0;
   const navigate = useNavigate();

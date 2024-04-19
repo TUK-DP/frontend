@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../index.css";
 import mainBtn1 from "../assets/mainBtn1.png";
 import mainBtn2 from "../assets/mainBtn2.png";
@@ -7,8 +7,14 @@ import mainBtn4 from "../assets/mainBtn4.png";
 import mainBtn5 from "../assets/mainBtn5.png";
 import user from "../assets/user.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "Re-Memory" });
+  }, []);
   const navigate = useNavigate();
 
   return (

@@ -6,12 +6,14 @@ import ImageDiary from "../modules/ImageDiary.js";
 import DiaryDate from "../modules/DiaryDate.js";
 import DiaryInfo from "../modules/DiaryInfo.js";
 import UserInfo from "../modules/UserInfo.js";
+import PageName from "../modules/PageName.js";
 
 const rootReducer = combineReducers({
   ImageDiary,
   DiaryDate,
   DiaryInfo,
   UserInfo,
+  PageName,
 });
 const logger = createLogger();
 const store = createStore(rootReducer, applyMiddleware(logger));

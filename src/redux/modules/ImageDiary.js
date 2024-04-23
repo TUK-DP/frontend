@@ -1,15 +1,9 @@
-const SELECT_COLOR = "SELECT_COLOR";
-const BRUSH_SIZE = "BRUSH_SIZE";
+export const SELECT_COLOR = "SELECT_COLOR";
+export const BRUSH_SIZE = "BRUSH_SIZE";
 
-export const selectColor = (color) => ({ type: SELECT_COLOR, payload: color });
-export const brushSize = (lineWidth) => ({
-  type: BRUSH_SIZE,
-  payload: lineWidth,
-});
-
-const initialState = {
+export const initialState = {
   selectedColor: "#000000",
-  lineWidth: 3,
+  brushSize: 3,
 };
 
 export default function ImageDiary(state = initialState, action) {
@@ -17,12 +11,12 @@ export default function ImageDiary(state = initialState, action) {
     case SELECT_COLOR:
       return {
         ...state,
-        selectedColor: action.payload,
+        selectedColor: action.selectedColor,
       };
     case BRUSH_SIZE:
       return {
         ...state,
-        lineWidth: action.payload,
+        brushSize: action.brushSize,
       };
     default:
       return state;

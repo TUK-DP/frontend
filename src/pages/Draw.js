@@ -1,8 +1,7 @@
 import Canvas from "../component/ImageDiary/Canvas";
 import React, { useRef, useState, useEffect } from "react";
 import Palette from "../component/ImageDiary/Palette";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { brushSize } from "../redux/modules/ImageDiary";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
@@ -14,13 +13,16 @@ import photo4 from "../assets/mainBtn4.png";
 import photo5 from "../assets/mainBtn5.png";
 import { SET_PAGENAME } from "../redux/modules/PageName";
 import diaryController from "../api/diary.controller";
+import { BRUSH_SIZE } from "../redux/modules/ImageDiary";
 
-const Draw = ({ lineWidth, dispatch }) => {
+const Draw = () => {
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
   }, []);
   const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
   const [data, setData] = useState([]);
+  const brushSize = useSelector((state) => state.ImageDiary.brushSize);
 
   useEffect(() => {
     // 일기회상 퀴즈 데이터 가져오기
@@ -72,8 +74,10 @@ const Draw = ({ lineWidth, dispatch }) => {
   };
   //브러쉬 크기 변경
   const changeLineWidth = (event) => {
-    const newLineWidth = parseInt(event.target.value, 10);
-    dispatch(brushSize(newLineWidth));
+    // const newLineWidth = parseInt(event.target.value, 10);
+    // dispatch({ type: BRUSH_SIZE, brushSize: newLineWidth });
+    console.log(brushSize);
+    dispatch({ type: BRUSH_SIZE, brushSize: parseInt(event.target.value, 10) });
   };
   //단어 개수만큼 캔버스 렌더링
   const canvasRefs = useRef(
@@ -163,11 +167,11 @@ const Draw = ({ lineWidth, dispatch }) => {
       {/* 브러쉬 크기 조정 */}
       <div className={"flex flex-row justify-center items-center"}>
         <p className={"text-2xl w-2/5 text-nowrap text-center"}>
-          브러쉬 크기 {lineWidth}
+          브러쉬 크기 {brushSize}
         </p>
         <input
           type="range"
-          value={lineWidth}
+          value={brushSize}
           min="1"
           max="20"
           step="1"
@@ -192,8 +196,4 @@ const Draw = ({ lineWidth, dispatch }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  lineWidth: state.ImageDiary.brushSize,
-});
-
-export default connect(mapStateToProps)(Draw);
+export default Draw;

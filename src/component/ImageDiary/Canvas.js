@@ -2,15 +2,18 @@ import { IoTrashOutline } from "react-icons/io5";
 import { AiOutlineRollback } from "react-icons/ai";
 import { HiOutlinePaintBrush } from "react-icons/hi2";
 import { TfiEraser } from "react-icons/tfi";
-import { useEffect, useState, useRef } from "react";
-import { connect } from "react-redux";
+import { useEffect, useState, useRef, useDebugValue } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BRUSH_SIZE, SELECT_COLOR } from "../../redux/modules/ImageDiary";
 
-const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
+const Canvas = ({ isVisible, canvasRef }) => {
   const [getCtx, setGetCtx] = useState(null); //드로잉 영역
   const [painting, setPainting] = useState(false); //그리기 모드
   const [erasing, setErasing] = useState(false); //지우기 모드
   const [history, setHistory] = useState([]); //실행 취소
-
+  const brushSize = useSelector((state) => state.ImageDiary.brushSize);
+  const selectedColor = useSelector((state) => state.ImageDiary.selectedColor);
+  const dispatch = useDispatch();
   //드로잉 영역 초기 세팅
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,17 +25,22 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
     ctx.lineWidth = 3; //선의 두께
     ctx.strokeStyle = "#000000"; //선의 색
 
+    dispatch({ type: SELECT_COLOR, selectedColor: "#000000" });
+    dispatch({ type: BRUSH_SIZE, brushSize: 3 });
     setGetCtx(ctx);
     clearCanvas();
+    console.log(ctx);
+    console.log(ctx.lineWidth);
   }, []);
 
-  //브러쉬 크기, 펜 색상 변경 시 호출됨
+  // 브러쉬 크기, 펜 색상 변경 시 호출됨
   useEffect(() => {
     if (getCtx) {
-      getCtx.lineWidth = lineWidth;
+      getCtx.lineWidth = brushSize;
       getCtx.strokeStyle = selectedColor;
+      console.log(getCtx.lineWidth);
     }
-  }, [lineWidth, selectedColor]);
+  }, [brushSize, selectedColor]);
 
   //그리기, 지우기 기능
   const drawFn = (x, y) => {
@@ -41,7 +49,7 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
       getCtx.moveTo(x, y);
     } else {
       if (erasing) {
-        getCtx.clearRect(x, y, lineWidth * 2, lineWidth * 2);
+        getCtx.clearRect(x, y, brushSize * 2, brushSize * 2);
       } else {
         getCtx.lineTo(x, y);
         getCtx.stroke();
@@ -164,9 +172,4 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  lineWidth: state.ImageDiary.lineWidth,
-  selectedColor: state.ImageDiary.selectedColor,
-});
-
-export default connect(mapStateToProps)(Canvas);
+export default Canvas;

@@ -50,10 +50,10 @@ const Canvas = ({ isVisible, canvasRef }) => {
     } else {
       if (erasing) {
         getCtx.clearRect(
-          x - brushSize / 2,
-          y - brushSize / 2,
-          brushSize,
-          brushSize
+          x - brushSize,
+          y - brushSize,
+          brushSize * 2,
+          brushSize * 2
         );
       } else {
         getCtx.lineTo(x, y);
@@ -128,6 +128,28 @@ const Canvas = ({ isVisible, canvasRef }) => {
       window.removeEventListener("resize", resizeListener);
     };
   }, []);
+  // 마우스 클릭 이벤트 핸들러 함수
+  const handleMouseDown = (e) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left + window.scrollX;
+    const y = e.clientY - rect.top + window.scrollY;
+    setPainting(true);
+    drawFn(x, y);
+    updateCanvasState();
+  };
+
+  const handleMouseMove = (e) => {
+    if (painting) {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left + window.scrollX;
+      const y = e.clientY - rect.top + window.scrollY;
+      drawFn(x, y);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setPainting(false);
+  };
 
   return (
     <div
@@ -140,6 +162,9 @@ const Canvas = ({ isVisible, canvasRef }) => {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown} // 마우스 클릭 이벤트 추가
+        onMouseMove={handleMouseMove} // 마우스 이동 이벤트 추가
+        onMouseUp={handleMouseUp} // 마우스 클릭 종료 이벤트 추가
         width={width}
         height={width}
         style={{

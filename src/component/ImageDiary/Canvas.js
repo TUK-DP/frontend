@@ -49,7 +49,12 @@ const Canvas = ({ isVisible, canvasRef }) => {
       getCtx.moveTo(x, y);
     } else {
       if (erasing) {
-        getCtx.clearRect(x, y, brushSize * 2, brushSize * 2);
+        getCtx.clearRect(
+          x - brushSize / 2,
+          y - brushSize / 2,
+          brushSize,
+          brushSize
+        );
       } else {
         getCtx.lineTo(x, y);
         getCtx.stroke();

@@ -1,7 +1,7 @@
 import Canvas from "../component/ImageDiary/Canvas";
 import React, { useRef, useState, useEffect } from "react";
 import Palette from "../component/ImageDiary/Palette";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { brushSize } from "../redux/modules/ImageDiary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
@@ -13,17 +13,49 @@ import photo3 from "../assets/mainBtn3.png";
 import photo4 from "../assets/mainBtn4.png";
 import photo5 from "../assets/mainBtn5.png";
 import { SET_PAGENAME } from "../redux/modules/PageName";
+import diaryController from "../api/diary.controller";
 
 const Draw = ({ lineWidth, dispatch }) => {
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
   }, []);
+  const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // 일기회상 퀴즈 데이터 가져오기
+    const fetchData = async () => {
+      try {
+        const response = await diaryController.getQuiz({
+          diaryId: diaryId,
+        });
+        console.log("API 응답:", response.data);
+        const { isSuccess, result } = response.data;
+
+        // if (!isSuccess || !Array.isArray(result) || result.length === 0) {
+        //   console.log("일기회상 문제를 생성할 수 없음");
+        // }
+
+        const questions = result.map((item) => ({
+          question: item.question,
+          keywordId: item.keywordId,
+        }));
+
+        // setData(questions);
+      } catch (error) {
+        console.error("Error fetching quiz data:", error);
+        console.error(error.stack);
+      }
+    };
+
+    fetchData(); // 함수 호출
+  }, []);
+
   //임시로 보여줄 사진들
   const photos = [photo1, photo2, photo3, photo4, photo5];
   // const photos = [];
   const location = useLocation();
   //추출된 키워드
-  const data = location.state;
   const [index, setIndex] = useState(0);
   //키워드별 저장
   const [savedImages, setSavedImages] = useState([]);
@@ -161,7 +193,7 @@ const Draw = ({ lineWidth, dispatch }) => {
 };
 
 const mapStateToProps = (state) => ({
-  lineWidth: state.ImageDiary.lineWidth,
+  lineWidth: state.ImageDiary.brushSize,
 });
 
 export default connect(mapStateToProps)(Draw);

@@ -79,22 +79,11 @@ const Diary = () => {
         diaryId: diaryId,
       });
       console.log("일기가 삭제되었습니다.");
-      window.location.href = "/calendar"; //페이지 새로고침
+      navigate("/calendar");
     } catch (error) {
       console.log(error);
     }
   };
-
-  //키워드 가져오기
-  const getKeyword = async () => {
-    const res = await DiaryController.getQuiz({ diaryId: diaryId });
-    console.log(res.data.result);
-    setKeywords(res.data.result.map((item) => item.A));
-  };
-
-  useEffect(() => {
-    getKeyword();
-  }, [diaryId]);
 
   return (
     <div id="diary">
@@ -106,7 +95,7 @@ const Diary = () => {
           <div
             id="btn_paint"
             onClick={() => {
-              navigate("/draw", { state: keywords });
+              navigate("/draw");
             }}
           >
             그림 그리기

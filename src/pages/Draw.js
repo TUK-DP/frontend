@@ -1,70 +1,30 @@
-import Canvas from "../component/ImageDiary/Canvas";
-import React, { useRef, useState, useEffect } from "react";
-import Palette from "../component/ImageDiary/Palette";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
-import { IoIosArrowForward } from "react-icons/io";
-import { IoIosArrowBack } from "react-icons/io";
-import Button from "../component/Button";
-import photo1 from "../assets/mainBtn1.png";
-import photo2 from "../assets/mainBtn2.png";
-import photo3 from "../assets/mainBtn3.png";
-import photo4 from "../assets/mainBtn4.png";
-import photo5 from "../assets/mainBtn5.png";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
-import diaryController from "../api/diary.controller";
-import { BRUSH_SIZE } from "../redux/modules/ImageDiary";
+import { useLocation } from "react-router-dom";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Canvas from "../component/ImageDiary/Canvas";
 
 const Draw = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
   }, []);
-  const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
-  const [data, setData] = useState([]);
-  const brushSize = useSelector((state) => state.ImageDiary.brushSize);
+
+  const location = useLocation();
+  const [index, setIndex] = useState(0);
+  const [keyword, setKeyword] = useState([]);
+  const [keywordId, setKeywordId] = useState([]);
+  const canvasRefs = useRef([]);
+  const photos = [];
 
   useEffect(() => {
-    // 일기회상 퀴즈 데이터 가져오기
-    const fetchData = async () => {
-      try {
-        const response = await diaryController.getQuiz({
-          diaryId: diaryId,
-        });
-        console.log("API 응답:", response.data);
-        const { isSuccess, result } = response.data;
-
-        // if (!isSuccess || !Array.isArray(result) || result.length === 0) {
-        //   console.log("일기회상 문제를 생성할 수 없음");
-        // }
-
-        const questions = result.map((item) => ({
-          question: item.question,
-          keywordId: item.keywordId,
-        }));
-
-        // setData(questions);
-      } catch (error) {
-        console.error("Error fetching quiz data:", error);
-        console.error(error.stack);
-      }
-    };
-
-    fetchData(); // 함수 호출
+    setKeyword(location.state.map((item) => item.keyword));
+    setKeywordId(location.state.map((item) => item.keywordId));
   }, []);
-
-  //임시로 보여줄 사진들
-  const photos = [photo1, photo2, photo3, photo4, photo5];
-  // const photos = [];
-  const location = useLocation();
-  //추출된 키워드
-  const [index, setIndex] = useState(0);
-  //키워드별 저장
-  const [savedImages, setSavedImages] = useState([]);
-
   //다음 키워드 제시
   const getNextKeyword = () => {
-    if (index == data.length - 1) return;
+    if (index == keyword.length - 1) return;
     setIndex((index) => index + 1);
   };
   //이전 키워드 제시
@@ -72,50 +32,16 @@ const Draw = () => {
     if (index == 0) return;
     setIndex((index) => index - 1);
   };
-  //브러쉬 크기 변경
-  const changeLineWidth = (event) => {
-    // const newLineWidth = parseInt(event.target.value, 10);
-    // dispatch({ type: BRUSH_SIZE, brushSize: newLineWidth });
-    console.log(brushSize);
-    dispatch({ type: BRUSH_SIZE, brushSize: parseInt(event.target.value, 10) });
-  };
-  //단어 개수만큼 캔버스 렌더링
-  const canvasRefs = useRef(
-    data.length > 0 ? data.map(() => React.createRef()) : [React.createRef()]
-  );
-  const navigate = useNavigate();
-
-  // Canvas 렌더링
   const renderCanvas = () => {
-    if (data.length === 0) {
-      return <Canvas isVisible={true} canvasRef={canvasRefs.current[0]} />;
-    }
-    return data.map((keyword, i) => (
+    canvasRefs.current = keyword.map(() => React.createRef());
+    return keyword.map((cur, i) => (
       <Canvas
         key={i}
-        isVisible={i === index}
+        isVisible={index === i}
         canvasRef={canvasRefs.current[i]}
       />
     ));
   };
-  const saveImage = async () => {
-    const imagesWithKeywords = await Promise.all(
-      canvasRefs.current.map(async (canvasRef, i) => {
-        const image = await canvasRef.current.toDataURL();
-        const keyword = data[i];
-        return { image, keyword };
-      })
-    );
-    setSavedImages(imagesWithKeywords);
-  };
-
-  useEffect(() => {
-    // 3. savedImages의 값을 photodiary 페이지에 넘겨주면서 페이지를 불러옴
-    if (savedImages.length > 0) {
-      console.log("Images saved:", savedImages);
-      navigate("/photoedit", { state: { data, savedImages } });
-    }
-  }, [savedImages]);
 
   return (
     <div className={"flex flex-col m-2 gap-2"}>
@@ -126,7 +52,7 @@ const Draw = () => {
           border: "1px solid black",
         }}
       >
-        {data.length > 0 ? (
+        {keyword.length > 0 ? (
           index === 0 ? (
             <div style={{ width: "50px" }}></div>
           ) : (
@@ -134,12 +60,12 @@ const Draw = () => {
           )
         ) : null}
         <p className={"text-4xl flex-grow text-center"}>
-          {data.length > 0 ? data[index] : "자유롭게 그려주세요"}
+          {keyword.length > 0 ? keyword[index] : "자유롭게 그려주세요"}
         </p>
-        {data.length > 0 && index !== data.length - 1 && (
+        {keyword.length > 0 && index !== keyword.length - 1 && (
           <IoIosArrowForward size={50} onClick={getNextKeyword} />
         )}
-        {data.length > 0 && index === data.length - 1 && (
+        {keyword.length > 0 && index === keyword.length - 1 && (
           <div style={{ width: "50px" }}></div>
         )}
       </div>
@@ -163,34 +89,6 @@ const Draw = () => {
         }}
       >
         {renderCanvas()}
-      </div>
-      {/* 브러쉬 크기 조정 */}
-      <div className={"flex flex-row justify-center items-center"}>
-        <p className={"text-2xl w-2/5 text-nowrap text-center"}>
-          브러쉬 크기 {brushSize}
-        </p>
-        <input
-          type="range"
-          value={brushSize}
-          min="1"
-          max="20"
-          step="1"
-          onChange={changeLineWidth}
-          className={"w-3/5"}
-        />
-      </div>
-      {/* 색상팔레트 */}
-      <Palette />
-      <div>
-        {data.length - 1 === index || data.length === 0 ? (
-          <Button
-            width="100%"
-            height="60px"
-            text="완료"
-            fontSize="30px"
-            onClick={saveImage}
-          />
-        ) : null}
       </div>
     </div>
   );

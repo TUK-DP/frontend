@@ -25,5 +25,9 @@ class DiaryController extends Api {
   checkAnswer = async (quizData) => {
     return await this.post("/diary/checkanswer", { data: quizData });
   };
+  //일기별 키워드 조회
+  getKeyword = async (diaryId) => {
+    return await this.get(`/diary/keyword?diaryId=${diaryId}`);
+  };
 }
 export default new DiaryController();

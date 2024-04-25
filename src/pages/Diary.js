@@ -10,7 +10,7 @@ import {
   CHANGE_DATE,
 } from "../redux/modules/DiaryInfo.js";
 
-const Diary = () => {
+const Diary = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const textRef = useRef();
@@ -95,7 +95,7 @@ const Diary = () => {
           <div
             id="btn_paint"
             onClick={() => {
-              navigate("/draw");
+              navigate("/draw", { state: data });
             }}
           >
             그림 그리기

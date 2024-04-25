@@ -151,6 +151,12 @@ const Canvas = ({ isVisible, canvasRef }) => {
     setPainting(false);
   };
 
+  //브러쉬 크기 변경
+  const changeLineWidth = (event) => {
+    console.log(brushSize);
+    dispatch({ type: BRUSH_SIZE, brushSize: parseInt(event.target.value, 10) });
+  };
+
   return (
     <div
       style={{
@@ -197,6 +203,21 @@ const Canvas = ({ isVisible, canvasRef }) => {
           }}
         />
         <TfiEraser size={55} onClick={() => setErasing(true)} />
+      </div>
+      {/* 브러쉬 크기 조정  */}
+      <div className={"flex flex-row justify-start items-center "}>
+        <p className={"text-xl w-2/5 text-nowrap text-start "}>
+          브러쉬 크기 {brushSize}
+        </p>
+        <input
+          type="range"
+          value={brushSize}
+          min="1"
+          max="20"
+          step="1"
+          onChange={changeLineWidth}
+          className={"w-3/5"}
+        />
       </div>
     </div>
   );

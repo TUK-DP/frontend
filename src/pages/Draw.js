@@ -4,6 +4,8 @@ import { SET_PAGENAME } from "../redux/modules/PageName";
 import { useLocation } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Canvas from "../component/ImageDiary/Canvas";
+import Palette from "../component/ImageDiary/Palette";
+import Button from "../component/Button";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -89,6 +91,19 @@ const Draw = () => {
         }}
       >
         {renderCanvas()}
+      </div>
+      {/* 색상팔레트 */}
+      <Palette />
+      <div>
+        {keyword.length - 1 === index || keyword.length === 0 ? (
+          <Button
+            width="100%"
+            height="60px"
+            text="완료"
+            fontSize="30px"
+            // onClick={saveImage}
+          />
+        ) : null}
       </div>
     </div>
   );

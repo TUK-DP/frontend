@@ -29,8 +29,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
     dispatch({ type: BRUSH_SIZE, brushSize: 3 });
     setGetCtx(ctx);
     clearCanvas();
-    console.log(ctx);
-    console.log(ctx.lineWidth);
   }, []);
 
   // 브러쉬 크기, 펜 색상 변경 시 호출됨
@@ -38,7 +36,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
     if (getCtx) {
       getCtx.lineWidth = brushSize;
       getCtx.strokeStyle = selectedColor;
-      console.log(getCtx.lineWidth);
     }
   }, [brushSize, selectedColor]);
 
@@ -117,7 +114,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
   const [width, setWidth] = useState();
   const resizeListener = () => {
     const size = window.innerWidth > 450 ? 450 : window.innerWidth;
-    console.log(size);
     setWidth(Math.ceil(size * 0.9));
   };
 

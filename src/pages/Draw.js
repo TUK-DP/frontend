@@ -6,6 +6,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Canvas from "../component/ImageDiary/Canvas";
 import Palette from "../component/ImageDiary/Palette";
 import Button from "../component/Button";
+import DiaryController from "../api/diary.controller";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -18,12 +19,20 @@ const Draw = () => {
   const [keyword, setKeyword] = useState([]);
   const [keywordId, setKeywordId] = useState([]);
   const canvasRefs = useRef([]);
+  const [photoData, setPhotoData] = useState([]);
   const photos = [];
 
   useEffect(() => {
     setKeyword(location.state.map((item) => item.keyword));
     setKeywordId(location.state.map((item) => item.keywordId));
+
+    getPhoto(
+      location.state.map((item) => item.keyword),
+      1,
+      5
+    );
   }, []);
+
   //다음 키워드 제시
   const getNextKeyword = () => {
     if (index == keyword.length - 1) return;
@@ -34,6 +43,7 @@ const Draw = () => {
     if (index == 0) return;
     setIndex((index) => index - 1);
   };
+  //Canvas 렌더링
   const renderCanvas = () => {
     if (keyword.length == 0) {
       const canvasRef = React.createRef();
@@ -46,6 +56,39 @@ const Draw = () => {
         isVisible={index === i}
         canvasRef={canvasRefs.current[i]}
       />
+    ));
+  };
+  //키워드 별 사진 가져오기
+  const getPhoto = async (keywords, page, pageSize) => {
+    try {
+      const requests = keywords.map((keyword) => {
+        return DiaryController.getKeywordPhotos({
+          keyword: keyword,
+          page: page,
+          pageSize: pageSize,
+        });
+      });
+
+      const responses = await Promise.all(requests);
+
+      const photos = responses.map((res) => res.data.result[0].results);
+      setPhotoData(photos);
+      console.log(photos);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //키워드 별 사진 띄우기
+  const renderPhoto = () => {
+    if (photoData && photoData[index].imgUrls[0] == null) {
+      return (
+        <div className={"w-full flex justify-center items-center"}>
+          그림이 존재하지 않습니다.
+        </div>
+      );
+    }
+    return photoData[index].imgUrls.map((item, index) => (
+      <img src={item} key={index} />
     ));
   };
 
@@ -77,13 +120,7 @@ const Draw = () => {
       </div>
       {/* 사진 띄워줄 부분 */}
       <div className={"h-40 w-full flex flex-row overflow-x-auto text-2xl"}>
-        {photos.length == 0 ? (
-          <div className={"w-full flex justify-center items-center"}>
-            그림이 존재하지 않습니다.
-          </div>
-        ) : (
-          photos.map((item, index) => <img src={item} key={index} />)
-        )}
+        {renderPhoto()}
       </div>
       {/* Canvas */}
       <div

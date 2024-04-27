@@ -29,5 +29,11 @@ class DiaryController extends Api {
   getKeyword = async (diaryId) => {
     return await this.get(`/diary/keyword?diaryId=${diaryId}`);
   };
+  //키워드별 사진 페이징
+  getKeywordPhotos = async ({ keyword, page, pageSize }) => {
+    return await this.get(
+      `/diary/pagingImg?keyword=${keyword}&page=${page}&pageSize=${pageSize}`
+    );
+  };
 }
 export default new DiaryController();

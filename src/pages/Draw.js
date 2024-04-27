@@ -35,6 +35,10 @@ const Draw = () => {
     setIndex((index) => index - 1);
   };
   const renderCanvas = () => {
+    if (keyword.length == 0) {
+      const canvasRef = React.createRef();
+      return <Canvas isVisible={true} canvasRef={canvasRef} />;
+    }
     canvasRefs.current = keyword.map(() => React.createRef());
     return keyword.map((cur, i) => (
       <Canvas

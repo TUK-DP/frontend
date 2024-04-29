@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GymButton from "../component/GymButton";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Gymnastics = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "체조영상" });
+  }, []);
   const info = [
     {
       src: "https://www.youtube.com/embed/AdnvPSutjXA?si=DU3ZJRA0pF6U2eCI",

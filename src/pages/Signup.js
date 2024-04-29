@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserController from "../api/users.controller";
 import { useForm } from "react-hook-form";
 import Button from "../component/Button";
 import Modal from "../component/Modal";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Signup = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "회원가입" });
+  }, []);
   const {
     register,
     handleSubmit,
@@ -24,7 +30,7 @@ const Signup = () => {
         birth: data.birth,
       });
       console.log(res);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +68,7 @@ const Signup = () => {
 
   return (
     <div className={"flex flex-col justify-center items-center my-4"}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className={"mb-5"}>
         <div className="inputField">
           <label>이름</label>
           <input

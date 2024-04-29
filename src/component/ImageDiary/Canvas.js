@@ -2,15 +2,18 @@ import { IoTrashOutline } from "react-icons/io5";
 import { AiOutlineRollback } from "react-icons/ai";
 import { HiOutlinePaintBrush } from "react-icons/hi2";
 import { TfiEraser } from "react-icons/tfi";
-import { useEffect, useState, useRef } from "react";
-import { connect } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BRUSH_SIZE, SELECT_COLOR } from "../../redux/modules/ImageDiary";
 
-const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
+const Canvas = ({ isVisible, canvasRef }) => {
   const [getCtx, setGetCtx] = useState(null); //드로잉 영역
   const [painting, setPainting] = useState(false); //그리기 모드
   const [erasing, setErasing] = useState(false); //지우기 모드
   const [history, setHistory] = useState([]); //실행 취소
-
+  const brushSize = useSelector((state) => state.ImageDiary.brushSize);
+  const selectedColor = useSelector((state) => state.ImageDiary.selectedColor);
+  const dispatch = useDispatch();
   //드로잉 영역 초기 세팅
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -19,20 +22,22 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
     ctx.lineJoin = "round"; //선이 꺽이는 부분의 스타일
     ctx.fillStyle = "white"; //캔버스 배경색
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 3; //선의 두께
+    ctx.lineWidth = 1; //선의 두께
     ctx.strokeStyle = "#000000"; //선의 색
 
+    dispatch({ type: SELECT_COLOR, selectedColor: "#000000" });
+    dispatch({ type: BRUSH_SIZE, brushSize: 1 });
     setGetCtx(ctx);
     clearCanvas();
   }, []);
 
-  //브러쉬 크기, 펜 색상 변경 시 호출됨
+  // 브러쉬 크기, 펜 색상 변경 시 호출됨
   useEffect(() => {
     if (getCtx) {
-      getCtx.lineWidth = lineWidth;
+      getCtx.lineWidth = brushSize;
       getCtx.strokeStyle = selectedColor;
     }
-  }, [lineWidth, selectedColor]);
+  }, [brushSize, selectedColor]);
 
   //그리기, 지우기 기능
   const drawFn = (x, y) => {
@@ -41,7 +46,12 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
       getCtx.moveTo(x, y);
     } else {
       if (erasing) {
-        getCtx.clearRect(x, y, lineWidth * 2, lineWidth * 2);
+        getCtx.clearRect(
+          x - brushSize,
+          y - brushSize,
+          brushSize * 2,
+          brushSize * 2
+        );
       } else {
         getCtx.lineTo(x, y);
         getCtx.stroke();
@@ -104,7 +114,6 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
   const [width, setWidth] = useState();
   const resizeListener = () => {
     const size = window.innerWidth > 450 ? 450 : window.innerWidth;
-    console.log(size);
     setWidth(Math.ceil(size * 0.9));
   };
 
@@ -115,6 +124,34 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
       window.removeEventListener("resize", resizeListener);
     };
   }, []);
+  // 마우스 클릭 이벤트 핸들러 함수
+  const handleMouseDown = (e) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left + window.scrollX;
+    const y = e.clientY - rect.top + window.scrollY;
+    setPainting(true);
+    drawFn(x, y);
+    updateCanvasState();
+  };
+
+  const handleMouseMove = (e) => {
+    if (painting) {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left + window.scrollX;
+      const y = e.clientY - rect.top + window.scrollY;
+      drawFn(x, y);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setPainting(false);
+  };
+
+  //브러쉬 크기 변경
+  const changeLineWidth = (event) => {
+    console.log(brushSize);
+    dispatch({ type: BRUSH_SIZE, brushSize: parseInt(event.target.value, 10) });
+  };
 
   return (
     <div
@@ -127,6 +164,9 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown} // 마우스 클릭 이벤트 추가
+        onMouseMove={handleMouseMove} // 마우스 이동 이벤트 추가
+        onMouseUp={handleMouseUp} // 마우스 클릭 종료 이벤트 추가
         width={width}
         height={width}
         style={{
@@ -160,13 +200,23 @@ const Canvas = ({ lineWidth, selectedColor, isVisible, canvasRef }) => {
         />
         <TfiEraser size={55} onClick={() => setErasing(true)} />
       </div>
+      {/* 브러쉬 크기 조정  */}
+      <div className={"flex flex-row justify-start items-center "}>
+        <p className={"text-xl w-2/5 text-nowrap text-start "}>
+          브러쉬 크기 {brushSize}
+        </p>
+        <input
+          type="range"
+          value={brushSize}
+          min="1"
+          max="20"
+          step="1"
+          onChange={changeLineWidth}
+          className={"w-3/5"}
+        />
+      </div>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  lineWidth: state.ImageDiary.lineWidth,
-  selectedColor: state.ImageDiary.selectedColor,
-});
-
-export default connect(mapStateToProps)(Canvas);
+export default Canvas;

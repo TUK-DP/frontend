@@ -1,7 +1,14 @@
 import User from "../assets/user.png";
 import MyPageList from "../component/MyPageList";
 import Diary from "../assets/diary.png";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 const MyPage = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "마이페이지" });
+  }, []);
   return (
     <div className={"flex justify-start flex-col px-5 py-2.5 h-full"}>
       {/* 사진, 이름, 닉네임 */}

@@ -3,9 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import UserController from "../api/users.controller";
 import Modal from "../component/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SET_USERINFO } from "../redux/modules/UserInfo";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "로그인" });
+  }, []);
   const navigate = useNavigate();
   const {
     register,
@@ -20,7 +27,18 @@ const Login = () => {
         nickname: data.nickname,
         password: data.password,
       });
-      console.log(res);
+      console.log(res.data.result);
+      const info = res.data.result;
+      dispatch({
+        type: SET_USERINFO,
+        userId: info.id,
+        email: info.email,
+        password: info.password,
+        nickname: info.nickname,
+        birth: info.birth,
+        created_at: info.created_at,
+        updated_at: info.updated_at,
+      });
       navigate("/");
     } catch (error) {
       console.log(error);

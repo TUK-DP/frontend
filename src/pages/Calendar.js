@@ -12,16 +12,20 @@ import {
   CHANGE_DATE,
 } from "../redux/modules/DiaryInfo.js";
 import DiaryController from "../api/diary.controller.js";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Calendar = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "캘린더" });
+  }, []);
+  const navigate = useNavigate();
   const { year, month, day } = useSelector((state) => state.DiaryDate);
-  const { userId, diaryId, title, content, date } = useSelector(
-    (state) => state.DiaryInfo
-  );
   const [isDiaryExist, setIsDiaryExist] = useState();
   const [isGetDiaryComplete, setIsGetDiaryComplete] = useState(false);
+  // userId는 한 번 로그인 이후 고정
+  const userId = useSelector((state) => state.UserInfo.userId);
+  // const { title, content, date } = useSelector((state) => state.DiaryInfo);
 
   // 현재 날짜를 가져옴
   const currentDate = new Date();
@@ -166,29 +170,6 @@ const Calendar = () => {
     });
 
     return rows.map((row, index) => <tr key={index}>{row}</tr>);
-  };
-
-  const renderButton = () => {
-    if (
-      year > currentYear ||
-      (year === currentYear && month > currentMonth) ||
-      (year === currentYear && month === currentMonth && day > currentDay)
-    )
-      return null; // 미래의 날짜인 경우 아무것도 렌더링하지 않음
-    if (!isGetDiaryComplete) return null; // 일기 데이터를 가져오는 중인 경우 아무것도 렌더링하지 않음
-    if (isDiaryExist) return <DiaryShow />; // 일기가 존재하는 경우 일기 내용 렌더링
-    return (
-      <div id="btnBox">
-        <div
-          id="btn_diary"
-          onClick={() => {
-            navigate("/diarywrite");
-          }}
-        >
-          일기작성
-        </div>
-      </div>
-    );
   };
 
   return (

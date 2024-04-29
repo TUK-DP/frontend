@@ -1,58 +1,18 @@
-import backBtn from "../assets/backBtn.png";
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-const Header = ({}) => {
-  const location = useLocation();
-  const [pageName, setPageName] = useState("Re-Memory");
+const Header = () => {
   const navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
   };
-  useEffect(() => {
-    // 여기에서 URL을 가져와서 페이지 이름 설정
-    const currentUrl = location.pathname;
+  const pageName = useSelector((state) => state.PageName.pageName);
 
-    if (currentUrl === "/") {
-      setPageName("Re-Memory");
-    } else if (currentUrl === "/games") {
-      setPageName("게임 선택화면");
-    } else if (currentUrl === "/game1") {
-      setPageName("이모티콘 찾기");
-    } else if (currentUrl === "/game2") {
-      setPageName("지는 가위바위보");
-    } else if (currentUrl === "/game3") {
-      setPageName("컬러매치");
-    } else if (currentUrl === "/game4") {
-      setPageName("순서대로 터치");
-    } else if (currentUrl === "/game5") {
-      setPageName("알맞은 글자 연결");
-    } else if (currentUrl === "/diary/test") {
-      setPageName("일기회상");
-    } else if (currentUrl === "/draw") {
-      setPageName("그림일기");
-    } else if (currentUrl === "/diary/test/submit") {
-      setPageName("제출 결과");
-    } else if (currentUrl === "/login") {
-      setPageName("로그인");
-    } else if (currentUrl === "/signup") {
-      setPageName("회원가입");
-    } else if (currentUrl === "/survey") {
-      setPageName("치매진단");
-    } else if (currentUrl === "/surveyStart") {
-      setPageName("치매진단");
-    } else if (currentUrl === "/diarywrite") {
-      setPageName("일기작성");
-    } else if (currentUrl === "/calendar") {
-      setPageName("캘린더");
-    } else if (currentUrl === "/gymnastics") {
-      setPageName("체조영상");
-    } else if (currentUrl === "gymvideo") {
-      setPageName("체조영상");
-    }
-  }, [location.pathname]);
+  useEffect(() => {
+    console.log(pageName);
+  }, [pageName]);
 
   return (
     <div
@@ -75,7 +35,7 @@ const Header = ({}) => {
         boxShadow: "0 4px 2px -2px #D9D9D9",
       }}
     >
-      {pageName !== "Re-Memory" && (
+      {pageName !== "Re-Memory" && pageName !== "로그인" && (
         <IoIosArrowRoundBack
           size={60}
           className={"z-10 ml-4"}
@@ -91,7 +51,9 @@ const Header = ({}) => {
       >
         {pageName}
       </div>
-      {pageName !== "Re-Memory" && <div style={{ width: "75px" }}></div>}
+      {pageName !== "Re-Memory" && pageName !== "로그인" && (
+        <div style={{ width: "75px" }}></div>
+      )}
     </div>
   );
 };

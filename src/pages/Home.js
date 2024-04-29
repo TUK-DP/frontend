@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../index.css";
 import mainBtn1 from "../assets/mainBtn1.png";
 import mainBtn2 from "../assets/mainBtn2.png";
@@ -7,8 +7,14 @@ import mainBtn4 from "../assets/mainBtn4.png";
 import mainBtn5 from "../assets/mainBtn5.png";
 import user from "../assets/user.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "Re-Memory" });
+  }, []);
   const navigate = useNavigate();
 
   return (
@@ -111,7 +117,7 @@ const Home = () => {
           <div
             className="w-[10rem] h-[10rem] rounded-xl"
             style={{ boxShadow: "3px 3px 3px rgb(200, 200, 200)" }}
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/mypage")}
           >
             <div className="h-[75%] w-full flex flex-col justify-center items-center rounded-tl-xl rounded-tr-xl border-l-4 border-r-4 border-t-4">
               <img className="w-[5rem]" src={user}></img>

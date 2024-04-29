@@ -40,12 +40,6 @@ const Draw = () => {
     };
     fetchData();
   }, []);
-  useEffect(() => {
-    // photoData가 업데이트되면 renderPhoto()를 호출합니다.
-    if (isGetPhoto) {
-      renderPhoto();
-    }
-  }, [isGetPhoto]);
 
   //다음 키워드 제시
   const getNextKeyword = () => {
@@ -95,7 +89,8 @@ const Draw = () => {
   };
   //키워드 별 사진 띄우기
   const renderPhoto = () => {
-    if (photoData.length == 0 || photoData[index].imgUrls[0] == null) {
+    // if (photoData.length == 0 || photoData[index].imgUrls[0] == null) {
+    if (photoData[index].length == 0) {
       return (
         <div className={"w-full flex justify-center items-center"}>
           그림이 존재하지 않습니다.

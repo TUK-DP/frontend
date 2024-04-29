@@ -4,6 +4,7 @@ import Button from "../component/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
+import SkeletonSurvey from "../component/SkeletonSurvey";
 
 function SurveyCop({ question, onVote }) {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -67,15 +68,19 @@ function Survey() {
   const [questionState, setQuestionState] = useState([]);
   const [selectedResults, setSelectedResults] = useState([]);
   const [checkList, setCheckList] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); 
 
   const get_survey = async () => {
     const survey = await SurveyController.findAllSimpleSurvey();
     setQuestionState(survey.data.data);
     setSelectedResults(new Array(survey.data.data.length).fill(null));
+    setIsLoading(false); 
   };
 
   useEffect(() => {
-    get_survey();
+    setTimeout(() => {
+      get_survey();
+    }, 1000); 
   }, []);
 
   const handleVote = (questionIndex, option) => {
@@ -100,19 +105,23 @@ function Survey() {
 
   return (
     <div className={"px-4 mb-10"}>
-      <SurveyList questionState={questionState} onVote={handleVote} />
-      <Button
-        height={"60px"}
-        text={"제출하기"}
-        fontSize={"24px"}
-        onClick={handleSubmit}
-      />
-      {!checkList ? (
-        <div className="text-[#e15449] mt-2 text-xl">
-          모든 문항을 체크해주세요.
-        </div>
+      {isLoading ? (
+        <SkeletonSurvey />
       ) : (
-        <div></div>
+        <>
+          <SurveyList questionState={questionState} onVote={handleVote} />
+          <Button
+            height={"60px"}
+            text={"제출하기"}
+            fontSize={"24px"}
+            onClick={handleSubmit}
+          />
+          {!checkList ? (
+            <div className="text-[#e15449] mt-2 text-xl">
+              모든 문항을 체크해주세요.
+            </div>
+          ) : null}
+        </>
       )}
     </div>
   );

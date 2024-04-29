@@ -3,7 +3,7 @@ export const BRUSH_SIZE = "BRUSH_SIZE";
 
 export const initialState = {
   selectedColor: "#000000",
-  brushSize: 3,
+  brushSize: 1,
 };
 
 export default function ImageDiary(state = initialState, action) {

@@ -2,7 +2,7 @@ import { IoTrashOutline } from "react-icons/io5";
 import { AiOutlineRollback } from "react-icons/ai";
 import { HiOutlinePaintBrush } from "react-icons/hi2";
 import { TfiEraser } from "react-icons/tfi";
-import { useEffect, useState, useRef, useDebugValue } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BRUSH_SIZE, SELECT_COLOR } from "../../redux/modules/ImageDiary";
 
@@ -22,11 +22,11 @@ const Canvas = ({ isVisible, canvasRef }) => {
     ctx.lineJoin = "round"; //선이 꺽이는 부분의 스타일
     ctx.fillStyle = "white"; //캔버스 배경색
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 3; //선의 두께
+    ctx.lineWidth = 1; //선의 두께
     ctx.strokeStyle = "#000000"; //선의 색
 
     dispatch({ type: SELECT_COLOR, selectedColor: "#000000" });
-    dispatch({ type: BRUSH_SIZE, brushSize: 3 });
+    dispatch({ type: BRUSH_SIZE, brushSize: 1 });
     setGetCtx(ctx);
     clearCanvas();
   }, []);

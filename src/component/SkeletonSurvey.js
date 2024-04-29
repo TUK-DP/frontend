@@ -1,5 +1,5 @@
 import React from "react";
-const SkeletonDementia = () => {
+const SkeletonSurvey = () => {
   return (
     <div>
       <div>
@@ -8,4 +8,4 @@ const SkeletonDementia = () => {
   );
 };
 
-export default SkeletonDementia;
+export default SkeletonSurvey;

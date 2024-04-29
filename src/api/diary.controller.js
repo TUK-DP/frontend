@@ -25,5 +25,19 @@ class DiaryController extends Api {
   checkAnswer = async (quizData) => {
     return await this.post("/diary/checkanswer", { data: quizData });
   };
+  //일기별 키워드 조회
+  getKeyword = async (diaryId) => {
+    return await this.get(`/diary/keyword?diaryId=${diaryId}`);
+  };
+  //키워드별 사진 페이징
+  getKeywordPhotos = async ({ keyword, page, pageSize }) => {
+    return await this.get(
+      `/diary/pagingImg?keyword=${keyword}&page=${page}&pageSize=${pageSize}`
+    );
+  };
+  //키워드별 이미지 저장
+  saveKeywordImg = async (keywordData) => {
+    return await this.post("/diary/keywordImg", { data: keywordData });
+  };
 }
 export default new DiaryController();

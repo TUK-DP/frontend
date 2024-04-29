@@ -13,6 +13,8 @@ const DiaryEdit = () => {
     (state) => state.DiaryInfo
   );
 
+  const [data, setData] = useState();
+
   const fetchData = async () => {
     try {
       const response = await DiaryController.getQuiz({
@@ -45,6 +47,21 @@ const DiaryEdit = () => {
     setShowDiary(false);
   }, [diaryId]);
 
+  const getKeyword = async () => {
+    try {
+      const response = await DiaryController.getKeyword(diaryId);
+      const { isSuccess, result } = response.data;
+      setData(
+        result.map((item, index) => {
+          return { keywordId: item.keywordId, keyword: item.keyword };
+        })
+      );
+      console.log(result);
+    } catch (error) {
+      console.error("Error fetching quiz data:", error);
+      console.error(error.stack);
+    }
+  };
   return (
     <div>
       <div className={"flex justify-between items-center py-8 bg-[#e0f4ff]  "}>
@@ -61,13 +78,31 @@ const DiaryEdit = () => {
           className={
             "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
           }
-          style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
+          style={{
+            boxShadow: " 3px 3px 3px rgb(200, 200, 200)",
+            display: showDiary ? "none" : "block",
+          }}
+          onClick={() => {
+            toggleBtn();
+            getKeyword();
+          }}
+        >
+          일기열기
+        </button>
+        <button
+          className={
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+          }
+          style={{
+            boxShadow: " 3px 3px 3px rgb(200, 200, 200)",
+            display: showDiary ? "block" : "none",
+          }}
           onClick={toggleBtn}
         >
-          {showDiary ? "일기닫기" : "일기열기"}
+          일기닫기
         </button>
       </div>
-      {showDiary && <Diary />}
+      {showDiary && <Diary data={data} />}
     </div>
   );
 };

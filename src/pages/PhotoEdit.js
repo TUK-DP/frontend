@@ -8,7 +8,7 @@ const PhotoEdit = ({}) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const images = location.state?.savedImages || [];
+  const images = location.state;
   const [imageDataUrl, setImageDataUrl] = useState([]);
 
   useEffect(() => {
@@ -66,11 +66,12 @@ const PhotoEdit = ({}) => {
             images.map((image, index) => (
               <Image
                 key={index}
-                image={image.image}
+                image={image}
                 initialPo={{
                   x: (index % 3) * 100,
                   y: Math.floor(index / 3) * 100,
                 }}
+                width={width}
               />
             ))
           ) : (
@@ -78,7 +79,7 @@ const PhotoEdit = ({}) => {
           )}
         </div>
       </div>
-      <Button width="350px" height="50px" text="완료" onClick={captureImage} />
+      <Button width="95%" height="50px" text="완료" onClick={captureImage} />
     </div>
   );
 };

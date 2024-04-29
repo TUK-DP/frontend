@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Canvas from "../component/ImageDiary/Canvas";
 import Palette from "../component/ImageDiary/Palette";
 import Button from "../component/Button";
 import DiaryController from "../api/diary.controller";
+import axios from "axios";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -15,23 +16,36 @@ const Draw = () => {
   }, []);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [keyword, setKeyword] = useState([]);
   const [keywordId, setKeywordId] = useState([]);
-  const canvasRefs = useRef([]);
+  const canvasRefs = useRef({});
   const [photoData, setPhotoData] = useState([]);
   const photos = [];
+  const [isGetPhoto, setIsGetPhoto] = useState(false);
+  const [savedImages, setSavedImages] = useState([]);
 
   useEffect(() => {
     setKeyword(location.state.map((item) => item.keyword));
     setKeywordId(location.state.map((item) => item.keywordId));
 
-    getPhoto(
-      location.state.map((item) => item.keyword),
-      1,
-      5
-    );
+    const fetchData = async () => {
+      await getPhoto(
+        location.state.map((item) => item.keyword),
+        1,
+        5
+      );
+      setIsGetPhoto(true);
+    };
+    fetchData();
   }, []);
+  useEffect(() => {
+    // photoData가 업데이트되면 renderPhoto()를 호출합니다.
+    if (isGetPhoto) {
+      renderPhoto();
+    }
+  }, [isGetPhoto]);
 
   //다음 키워드 제시
   const getNextKeyword = () => {
@@ -58,6 +72,7 @@ const Draw = () => {
       />
     ));
   };
+
   //키워드 별 사진 가져오기
   const getPhoto = async (keywords, page, pageSize) => {
     try {
@@ -80,7 +95,7 @@ const Draw = () => {
   };
   //키워드 별 사진 띄우기
   const renderPhoto = () => {
-    if (photoData && photoData[index].imgUrls[0] == null) {
+    if (photoData.length == 0 || photoData[index].imgUrls[0] == null) {
       return (
         <div className={"w-full flex justify-center items-center"}>
           그림이 존재하지 않습니다.
@@ -90,6 +105,53 @@ const Draw = () => {
     return photoData[index].imgUrls.map((item, index) => (
       <img src={item} key={index} />
     ));
+  };
+
+  // 키워드 별 사진 저장
+  const base64Images = async () => {
+    const images = await Promise.all(
+      canvasRefs.current.map(async (canvasRef, i) => {
+        const image = await canvasRef.current.toDataURL();
+        return image;
+      })
+    );
+    setSavedImages(images);
+  };
+
+  useEffect(() => {
+    // 3. savedImages의 값을 photodiary 페이지에 넘겨주면서 페이지를 불러옴
+    if (savedImages.length > 0) {
+      console.log(savedImages);
+      navigate("/photoedit", { state: savedImages });
+    }
+  }, [savedImages]);
+  //키워드 별 사진을 서버로 전송
+  const saveImage = async () => {
+    try {
+      const requests = canvasRefs.current.map(async (canvasRef, i) => {
+        const formData = new FormData();
+        await new Promise((resolve, reject) => {
+          canvasRef.current.toBlob((blob) => {
+            if (blob) {
+              formData.append("image", blob, i + "image.png");
+              resolve();
+            } else {
+              reject(new Error("Failed to convert canvas to blob."));
+            }
+          });
+        });
+        return axios.post("http://52.79.249.163:8001/image/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      });
+
+      const response = await Promise.all(requests);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -120,7 +182,7 @@ const Draw = () => {
       </div>
       {/* 사진 띄워줄 부분 */}
       <div className={"h-40 w-full flex flex-row overflow-x-auto text-2xl"}>
-        {renderPhoto()}
+        {isGetPhoto && renderPhoto()}
       </div>
       {/* Canvas */}
       <div
@@ -142,7 +204,10 @@ const Draw = () => {
             height="60px"
             text="완료"
             fontSize="30px"
-            // onClick={saveImage}
+            onClick={() => {
+              saveImage();
+              base64Images();
+            }}
           />
         ) : null}
       </div>

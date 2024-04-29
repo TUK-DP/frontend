@@ -35,5 +35,9 @@ class DiaryController extends Api {
       `/diary/pagingImg?keyword=${keyword}&page=${page}&pageSize=${pageSize}`
     );
   };
+  //키워드별 이미지 저장
+  saveKeywordImg = async (keywordData) => {
+    return await this.post("/diary/keywordImg", { data: keywordData });
+  };
 }
 export default new DiaryController();

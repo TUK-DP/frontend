@@ -1,19 +1,74 @@
-import "../styles/Login.css";
+import React, { useEffect, useState } from "react";
+import UserController from "../api/users.controller";
 import { useForm } from "react-hook-form";
+import Button from "../component/Button";
+import Modal from "../component/Modal";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
+
 const Signup = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "회원가입" });
+  }, []);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
-    // 나머지 제출 로직
-    console.log(data);
+  const navigate = useNavigate();
+  //form 제출
+  const onSubmit = async (data) => {
+    try {
+      const res = await UserController.signUp({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        nickname: data.nickname,
+        birth: data.birth,
+      });
+      console.log(res);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
+  const [nickname, setNickname] = useState("");
+  const nicknameRegister = register("nickname", {
+    required: "빈 칸 없이 작성해주세요.",
+  });
+  //onChange 두 번 호출
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    setNickname(event.target.value);
+    nicknameRegister.onChange(event);
+  };
+  //닉네임 중복확인
+  const checkNickname = async () => {
+    if (nickname == "") return;
+    try {
+      const res = await UserController.checkNickname({ nickname: nickname });
+      console.log(nickname);
+      console.log(res);
+      setIsNicknameExist(false);
+    } catch (error) {
+      console.log(error);
+      setIsNicknameExist(true);
+    }
+    setIsModalOpen(true);
+  };
+  //닉네임 중복확인 결과 표시
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const [isNicknameExist, setIsNicknameExist] = useState();
+
   return (
-    <div id="screen">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className={"flex flex-col justify-center items-center my-4"}>
+      <form onSubmit={handleSubmit(onSubmit)} className={"mb-5"}>
         <div className="inputField">
           <label>이름</label>
           <input
@@ -31,14 +86,27 @@ const Signup = () => {
             {errors.username && errors.username.message}
           </div>
         </div>
-        {/* 중복확인 추가해야 됨 */}
         <div className="inputField">
           <label>닉네임</label>
-          <input
-            type="text"
-            placeholder="닉네임을 입력하세요."
-            {...register("nickname", { required: "빈 칸 없이 작성해주세요." })}
-          />
+          <div className={"flex flex-row justify-center items-center"}>
+            <input
+              value={nickname}
+              {...nicknameRegister}
+              onChange={handleChange}
+              type="text"
+              placeholder="닉네임을 입력하세요."
+              style={{ width: "283px" }}
+            />
+            <Button
+              width="50px"
+              height="30px"
+              text="확인"
+              fontSize="15px"
+              onClick={() => {
+                checkNickname();
+              }}
+            />
+          </div>
           <div className="error-message">
             {errors.nickname && errors.nickname.message}
           </div>
@@ -51,15 +119,13 @@ const Signup = () => {
             {...register("birth", { required: "빈 칸 없이 작성해주세요." })}
           />
           <div className="error-message">
-            {" "}
             {errors.birth && errors.birth.message}
           </div>
         </div>
-        {/* 이메일 형식 확인 */}
         <div className="inputField">
           <label>이메일</label>
           <input
-            type="email"
+            type="text"
             placeholder="이메일을 입력하세요."
             {...register("email", {
               required: "빈 칸 없이 작성해주세요.",
@@ -73,7 +139,6 @@ const Signup = () => {
             {errors.email && errors.email.message}
           </div>
         </div>
-        {/* 비밀번호 형식 확인 */}
         <div className="inputField">
           <label>비밀번호</label>
           <input
@@ -91,7 +156,6 @@ const Signup = () => {
             {errors.password && errors.password.message}
           </div>
         </div>
-        {/* 비밀번호 일치 확인 */}
         <div className="inputField">
           <label>비밀번호 확인</label>
           <input
@@ -111,7 +175,14 @@ const Signup = () => {
           완료
         </button>
       </form>
+      {isModalOpen && isNicknameExist && (
+        <Modal onClose={closeModal} content="다른 닉네임을 입력해주세요." />
+      )}
+      {isModalOpen && !isNicknameExist && (
+        <Modal onClose={closeModal} content="사용 가능한 닉네임입니다." />
+      )}
     </div>
   );
 };
+
 export default Signup;

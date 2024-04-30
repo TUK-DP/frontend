@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
 
-const Image = ({ image, initialPo }) => {
+const Image = ({ image, initialPo, width }) => {
   const nodeRef = useRef(null);
   const [position, setPosition] = useState({ x: initialPo.x, y: initialPo.y });
 
@@ -16,8 +16,8 @@ const Image = ({ image, initialPo }) => {
     if (
       position.x < 0 ||
       position.y < 0 ||
-      position.x > 250 ||
-      position.y > 250
+      position.x > width ||
+      position.y > width
     ) {
       alert("캔버스 안에서만 움직여주세요.");
     }
@@ -26,8 +26,15 @@ const Image = ({ image, initialPo }) => {
 
   return (
     <Draggable
-        bounds={{ top: -initialPo.y, left: -initialPo.x, right: 250 - initialPo.x, bottom: 250 - initialPo.y }}
-        nodeRef={nodeRef} onDrag={(e, data) => trackPos(data)}>
+      bounds={{
+        top: -initialPo.y,
+        left: -initialPo.x,
+        right: width - initialPo.x - 100,
+        bottom: width - initialPo.y - 100,
+      }}
+      nodeRef={nodeRef}
+      onDrag={(e, data) => trackPos(data)}
+    >
       <div ref={nodeRef} style={{ width: "100px", height: "100px" }}>
         <img draggable={"false"} src={image} width="100px" height="100px" />
       </div>

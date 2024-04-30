@@ -1,29 +1,73 @@
 import "../styles/Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import UserController from "../api/users.controller";
+import Modal from "../component/Modal";
+import { useEffect, useState } from "react";
+import { SET_USERINFO } from "../redux/modules/UserInfo";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "로그인" });
+  }, []);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // 나머지 제출 로직
     console.log(data);
+    try {
+      const res = await UserController.signIn({
+        nickname: data.nickname,
+        password: data.password,
+      });
+      console.log(res.data.result);
+      const info = res.data.result;
+      dispatch({
+        type: SET_USERINFO,
+        userId: info.id,
+        email: info.email,
+        password: info.password,
+        nickname: info.nickname,
+        birth: info.birth,
+        created_at: info.created_at,
+        updated_at: info.updated_at,
+      });
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      setIsModalOpen(true);
+    }
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div id="screen">
+      {isModalOpen && (
+        <Modal
+          content={"닉네임 또는 비밀번호가 일치하지 않습니다."}
+          onClose={closeModal}
+        />
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="inputField">
-          <label>이름</label>
+          <label>닉네임</label>
           <input
             type="text"
-            placeholder="이름을 입력하세요."
-            {...register("username", { required: "이름을 입력해주세요." })}
+            placeholder="닉네임을 입력하세요."
+            {...register("nickname", { required: "닉네임을 입력해주세요." })}
           />
           <div className="error-message">
-            {errors.username && errors.username.message}
+            {errors.nickname && errors.nickname.message}
           </div>
         </div>
         <div className="inputField">

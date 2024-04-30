@@ -1,21 +1,49 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
+import { useLocation, useNavigate } from "react-router-dom";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Canvas from "../component/ImageDiary/Canvas";
-import React, { useRef, useState, useEffect } from "react";
-import Right from "../assets/Right.png";
-import Left from "../assets/left.png";
 import Palette from "../component/ImageDiary/Palette";
-import { connect } from "react-redux";
-import { brushSize } from "../redux/modules/ImageDiary";
-import { useNavigate, useLocation } from "react-router-dom";
-const Draw = ({ lineWidth, dispatch }) => {
+import Button from "../component/Button";
+import DiaryController from "../api/diary.controller";
+import axios from "axios";
+
+const Draw = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
+  }, []);
+
   const location = useLocation();
-  //추출된 키워드
-  const data = location.state;
+  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
+  const [keyword, setKeyword] = useState([]);
+  const [keywordId, setKeywordId] = useState([]);
+  const canvasRefs = useRef({});
+  const [photoData, setPhotoData] = useState([]);
+  const photos = [];
+  const [isGetPhoto, setIsGetPhoto] = useState(false);
   const [savedImages, setSavedImages] = useState([]);
+
+  useEffect(() => {
+    setKeyword(location.state.map((item) => item.keyword));
+    setKeywordId(location.state.map((item) => item.keywordId));
+
+    const fetchData = async () => {
+      await getPhoto(
+        location.state.map((item) => item.keyword),
+        1,
+        5
+      );
+      setIsGetPhoto(true);
+    };
+    fetchData();
+  }, []);
 
   //다음 키워드 제시
   const getNextKeyword = () => {
-    if (index == data.length - 1) return;
+    if (index == keyword.length - 1) return;
     setIndex((index) => index + 1);
   };
   //이전 키워드 제시
@@ -23,117 +51,133 @@ const Draw = ({ lineWidth, dispatch }) => {
     if (index == 0) return;
     setIndex((index) => index - 1);
   };
-  //브러쉬 크기 변경
-  const changeLineWidth = (event) => {
-    const newLineWidth = parseInt(event.target.value, 10);
-    dispatch(brushSize(newLineWidth));
-  };
-
-  const canvasRefs = useRef(
-    data.length > 0 ? data.map(() => React.createRef()) : [React.createRef()]
-  );
-  const navigate = useNavigate();
-
-  // Canvas 렌더링
+  //Canvas 렌더링
   const renderCanvas = () => {
-    if (data.length === 0) {
-      return <Canvas isVisible={true} canvasRef={canvasRefs.current[0]} />;
+    if (keyword.length == 0) {
+      const canvasRef = React.createRef();
+      return <Canvas isVisible={true} canvasRef={canvasRef} />;
     }
-    return data.map((keyword, i) => (
+    canvasRefs.current = keyword.map(() => React.createRef());
+    return keyword.map((cur, i) => (
       <Canvas
         key={i}
-        isVisible={i === index}
+        isVisible={index === i}
         canvasRef={canvasRefs.current[i]}
       />
     ));
   };
 
-  const saveImage = async () => {
+  //키워드 별 사진 가져오기
+  const getPhoto = async (keywords, page, pageSize) => {
+    try {
+      const requests = keywords.map((keyword) => {
+        return DiaryController.getKeywordPhotos({
+          keyword: keyword,
+          page: page,
+          pageSize: pageSize,
+        });
+      });
+
+      const responses = await Promise.all(requests);
+
+      const photos = responses.map((res) => res.data.result[0].results);
+      setPhotoData(photos);
+      console.log(photos);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //키워드 별 사진 띄우기
+  const renderPhoto = () => {
+    // if (photoData.length == 0 || photoData[index].imgUrls[0] == null) {
+    if (photoData[index].length == 0) {
+      return (
+        <div className={"w-full flex justify-center items-center"}>
+          그림이 존재하지 않습니다.
+        </div>
+      );
+    }
+    return photoData[index].imgUrls.map((item, index) => (
+      <img src={item} key={index} />
+    ));
+  };
+
+  // 키워드 별 사진 저장
+  const base64Images = async () => {
     const images = await Promise.all(
-      canvasRefs.current.map(async (canvasRef) => {
-        return await canvasRef.current.toDataURL();
+      canvasRefs.current.map(async (canvasRef, i) => {
+        const image = await canvasRef.current.toDataURL();
+        return image;
       })
     );
-    // 1. toDataURL 실행 후
-    // 2. setSavedImages의 값을 업데이트
     setSavedImages(images);
   };
 
   useEffect(() => {
     // 3. savedImages의 값을 photodiary 페이지에 넘겨주면서 페이지를 불러옴
     if (savedImages.length > 0) {
-      console.log("Images saved:", savedImages);
-      navigate("/photoedit", { state: { data, savedImages } });
+      console.log(savedImages);
+      navigate("/photoedit", { state: savedImages });
     }
   }, [savedImages]);
+  //키워드 별 사진을 서버로 전송
+  const saveImage = async () => {
+    try {
+      const requests = canvasRefs.current.map(async (canvasRef, i) => {
+        const formData = new FormData();
+        await new Promise((resolve, reject) => {
+          canvasRef.current.toBlob((blob) => {
+            if (blob) {
+              formData.append("image", blob, i + "image.png");
+              resolve();
+            } else {
+              reject(new Error("Failed to convert canvas to blob."));
+            }
+          });
+        });
+        return axios.post("http://52.79.249.163:8001/image/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      });
+
+      const response = await Promise.all(requests);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-    <div>
+    <div className={"flex flex-col m-2 gap-2"}>
       {/* 키워드 */}
-      {data.length > 0 ? (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid black",
-            margin: "10px",
-            borderRadius: "20px",
-            height: "60px",
-          }}
-        >
-          {index === 0 ? (
-            <div style={{ width: "30px", height: "30px" }}></div>
-          ) : (
-            <img src={Left} height="30" onClick={getPrevKeyword} />
-          )}
-          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
-            {data[index]}
-          </p>
-          {index === data.length - 1 ? (
-            <div style={{ width: "30px", height: "30px" }}></div>
-          ) : (
-            <img src={Right} height="30" onClick={getNextKeyword} />
-          )}
-        </div>
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid black",
-            margin: "10px",
-            borderRadius: "20px",
-            height: "60px",
-          }}
-        >
-          <p style={{ fontSize: "25px", flexGrow: "1", textAlign: "center" }}>
-            자유롭게 그려주세요
-          </p>
-        </div>
-      )}
-
-      {/* 색상팔레트 */}
-      <Palette />
-      {/* 브러쉬 크기 조정 */}
       <div
+        className={"flex items-center rounded-2xl h-16 overflow-x-scroll"}
         style={{
-          fontSize: "20px",
-          margin: "5px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          border: "1px solid black",
         }}
       >
-        브러쉬 크기 {lineWidth}
-        <input
-          type="range"
-          value={lineWidth}
-          min="1"
-          max="20"
-          step="1"
-          onChange={changeLineWidth}
-          style={{ width: "230px" }}
-        />
+        {keyword.length > 0 ? (
+          index === 0 ? (
+            <div style={{ width: "50px" }}></div>
+          ) : (
+            <IoIosArrowBack size={50} onClick={getPrevKeyword} />
+          )
+        ) : null}
+        <p className={"text-4xl flex-grow text-center"}>
+          {keyword.length > 0 ? keyword[index] : "자유롭게 그려주세요"}
+        </p>
+        {keyword.length > 0 && index !== keyword.length - 1 && (
+          <IoIosArrowForward size={50} onClick={getNextKeyword} />
+        )}
+        {keyword.length > 0 && index === keyword.length - 1 && (
+          <div style={{ width: "50px" }}></div>
+        )}
+      </div>
+      {/* 사진 띄워줄 부분 */}
+      <div className={"h-40 w-full flex flex-row overflow-x-auto text-2xl"}>
+        {isGetPhoto && renderPhoto()}
       </div>
       {/* Canvas */}
       <div
@@ -145,31 +189,25 @@ const Draw = ({ lineWidth, dispatch }) => {
         }}
       >
         {renderCanvas()}
-        {data.length - 1 === index || data.length === 0 ? (
-          <button
-            onClick={saveImage}
-            style={{
-              backgroundColor: "#82AAE3",
-              borderRadius: "10px",
-              border: "none",
-              fontSize: "20px",
-              fontWeight: "600",
-              margin: "5px 0px",
-              color: "white",
-              width: "350px",
-              height: "40px",
+      </div>
+      {/* 색상팔레트 */}
+      <Palette />
+      <div>
+        {keyword.length - 1 === index || keyword.length === 0 ? (
+          <Button
+            width="100%"
+            height="60px"
+            text="완료"
+            fontSize="30px"
+            onClick={() => {
+              saveImage();
+              base64Images();
             }}
-          >
-            완료
-          </button>
+          />
         ) : null}
       </div>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  lineWidth: state.ImageDiary.lineWidth,
-});
-
-export default connect(mapStateToProps)(Draw);
+export default Draw;

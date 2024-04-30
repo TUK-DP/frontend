@@ -61,7 +61,7 @@
   align-items: center;
   font-size: 20px;
   font-weight: bold;
-  margin: 50px auto 0 auto;
+  margin: 50px auto 50px auto;
 }
 
 .calendar td.empty {

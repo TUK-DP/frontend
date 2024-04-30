@@ -1,7 +1,7 @@
 export const SET_PAGENAME = "SET_PAGENAME";
 
 export const initialState = {
-  pageName: "Re-Memory",
+  pageName: "",
 };
 
 export default function PageName(state = initialState, action) {

@@ -8,11 +8,11 @@ const SkeletonSurvey = () => {
       {dummyQuestions.map((questionIndex) => (
         <div key={questionIndex}>
           <div className="bg-[#ddd] my-10 pt-4 px-4 pb-1 rounded-3xl">
-            <div className="skeletonText"></div>
-            <div className="skeletonText"></div>
+            <div className="skeletonText skeleton"></div>
+            <div className="skeletonText skeleton"></div>
             <div>
-              <div className="skeletonBox"></div>
-              <div className="skeletonBox"></div>
+              <div className="skeletonBox skeleton"></div>
+              <div className="skeletonBox skeleton"></div>
             </div>
           </div>
         </div>

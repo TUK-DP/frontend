@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import kakaoMap from "../component/KakaoMap";
 
 const CenterMap = () => {
   const location = useLocation();
@@ -8,11 +9,12 @@ const CenterMap = () => {
 
   return (
     <div>
-      <div>
-        <p>치매 센터 이름: {center.name}</p>
-        <p>거리: {center.distance.toFixed(1)}km</p>
-        <p>주소: {center.address}</p>
+      <div className="text-center font-bold text-[#82AAE3] text-2xl my-5">{center.name}</div>
+      <div className="w-full h-auto">
+      <kakaoMap latitude={center.latitude} longitude={center.longitude} />
       </div>
+      <div className="text-lg">거리: {center.distance.toFixed(1)}km</div>
+      <div className="text-lg">주소: {center.address}</div>
     </div>
   );
 };

@@ -36,7 +36,16 @@ const DementiaCenter = () => {
         lon: longitude,
         radius: parseInt(distance)
       });
-      setCenters(response.data);
+      const { isSuccess, message, result } = response.data;
+      const centerlist = result.map(center => ({
+        name: center["치매센터명"],
+        latitude: center["위도"],
+        longitude: center["경도"],
+        address: center["소재지도로명주소"],
+        distance: center["나와의거리"]
+      }));
+      setCenters(centerlist);
+      console.log(centerlist);
     } catch (error) {
       console.error("Error fetching nearby centers:", error);
     }
@@ -67,7 +76,6 @@ const DementiaCenter = () => {
       </div>
       {/* 치매센터리스트 */}
       <div className={"flex flex-col px-2.5"}>
-        {/* 주변 치매 센터 목록을 표시합니다. */}
         <DementiaList centers={centers} />
       </div>
     </div>

@@ -63,7 +63,6 @@ const DementiaCenter = () => {
         <input
           className="flex-grow border-none"
           placeholder="거리(km)를 입력해주세요."
-          type="number"
           value={distance}
           onChange={(event) => {
             setDistance(event.target.value);

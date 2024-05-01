@@ -106,6 +106,7 @@ const Home = () => {
           <div
             className="w-[10rem] h-[10rem] rounded-xl"
             style={{ boxShadow: "3px 3px 3px rgb(200, 200, 200)" }}
+            onClick={() => navigate("/dementiacenter")}
           >
             <div className="h-[75%] w-full flex flex-col justify-center items-center rounded-tl-xl rounded-tr-xl border-l-4 border-r-4 border-t-4">
               <img className="w-[7rem]" src={mainBtn5}></img>

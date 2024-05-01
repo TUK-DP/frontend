@@ -4,11 +4,7 @@ import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../component/Loading.js";
-import {
-  CHANGE_DIARYID,
-  CHANGE_CONTENT,
-  CHANGE_DATE,
-} from "../redux/modules/DiaryInfo.js";
+import { CHANGE_DIARY } from "../redux/modules/DiaryInfo.js";
 
 const Diary = ({ data }) => {
   const navigate = useNavigate();
@@ -18,7 +14,7 @@ const Diary = ({ data }) => {
   const [keywords, setKeywords] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { diaryId, title, content, date } = useSelector(
+  const { diaryId, content, date, imgUrl } = useSelector(
     (state) => state.DiaryInfo
   );
   const userId = useSelector((state) => state.UserInfo.userId);
@@ -51,14 +47,22 @@ const Diary = ({ data }) => {
       const res = await DiaryController.updateDiary({
         diaryId: diaryId,
         userId: userId,
-        title: title,
+        title: "title",
         content: newContent,
         date: date,
       });
       const result = res.data.result;
       console.log(result);
-      dispatch({ type: CHANGE_DIARYID, diaryId: result.diaryId });
-      dispatch({ type: CHANGE_CONTENT, content: result.content });
+      // dispatch({ type: CHANGE_DIARYID, diaryId: result.diaryId });
+      // dispatch({ type: CHANGE_CONTENT, content: result.content });
+      const diaryInfo = res.data.result[0];
+      dispatch({
+        type: CHANGE_DIARY,
+        diaryId: diaryInfo.diaryId,
+        content: diaryInfo.content,
+        imgUrl: diaryInfo.imgUrl,
+        date: diaryInfo.createDate,
+      });
       setIsSaving(false);
     } catch (error) {
       console.log(error);

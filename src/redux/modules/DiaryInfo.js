@@ -1,31 +1,26 @@
-export const CHANGE_DIARYID = "CHANGE_DIARYID";
-export const CHANGE_CONTENT = "CHANGE_CONTENT";
-export const CHANGE_DATE = "CHANGE_DATE";
+// export const CHANGE_DIARYID = "CHANGE_DIARYID";
+// export const CHANGE_CONTENT = "CHANGE_CONTENT";
+// export const CHANGE_DATE = "CHANGE_DATE";
+export const CHANGE_DIARY = "CHANGE_DIARY";
 
 const initialState = {
   diaryId: 0,
-  title: "string",
   content: "",
   date: 0,
+  imgUrl: null,
 };
 
 export default function DiaryInfo(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_DIARYID:
+    case CHANGE_DIARY:
       return {
         ...state,
         diaryId: action.diaryId,
-      };
-    case CHANGE_CONTENT:
-      return {
-        ...state,
         content: action.content,
-      };
-    case CHANGE_DATE:
-      return {
-        ...state,
         date: action.date,
+        imgUrl: action.imgUrl,
       };
+
     default:
       return state;
   }

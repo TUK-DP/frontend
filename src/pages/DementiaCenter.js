@@ -44,6 +44,7 @@ const DementiaCenter = () => {
         address: center["소재지도로명주소"],
         distance: center["나와의거리"]
       }));
+      centerlist.sort((a, b) => a.distance - b.distance);
       setCenters(centerlist);
       console.log(centerlist);
     } catch (error) {

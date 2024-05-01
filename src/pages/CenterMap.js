@@ -10,11 +10,10 @@ const CenterMap = () => {
   return (
     <div>
       <div className="text-center font-bold text-[#82AAE3] text-2xl my-5">{center.name}</div>
-      <div className="w-full h-auto">
+      <div>
       <KakaoMap latitude={center.latitude} longitude={center.longitude} />
       </div>
-      <div className="text-lg">거리: {center.distance.toFixed(1)}km</div>
-      <div className="text-lg">주소: {center.address}</div>
+      <div className="text-lg mt-3">주소: {center.address}</div>
     </div>
   );
 };

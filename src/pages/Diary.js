@@ -44,8 +44,7 @@ const Diary = ({ data }) => {
         return alert("내용을 작성해주세요.");
       }
       setIsSaving(true);
-      const res = await DiaryController.updateDiary({
-        diaryId: diaryId,
+      const res = await DiaryController.updateDiary(diaryId, {
         userId: userId,
         title: "title",
         content: newContent,
@@ -65,6 +64,7 @@ const Diary = ({ data }) => {
       });
       setIsSaving(false);
     } catch (error) {
+      setIsSaving(false);
       console.log(error);
     }
   };
@@ -72,19 +72,15 @@ const Diary = ({ data }) => {
   // 다이어리 삭제
   const deleteDiary = async () => {
     try {
-      console.log(
-        "Deleting diary with userId:",
-        userId,
-        "and diaryId:",
-        diaryId
-      );
-      const res = await DiaryController.deleteDiary({
-        userId: userId,
-        diaryId: diaryId,
-      });
+      // const res = await DiaryController.deleteDiary({
+      //   userId: userId,
+      //   diaryId: diaryId,
+      // });
+      const res = await DiaryController.deleteDiary(diaryId);
       console.log("일기가 삭제되었습니다.");
-      navigate("/calendar");
+      window.location.reload();
     } catch (error) {
+      setIsSaving(false);
       console.log(error);
     }
   };

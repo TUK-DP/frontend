@@ -8,6 +8,7 @@ const DementiaCenter = () => {
   const [longitude, setLongitude] = useState(null); //경도
   const [distance, setDistance] = useState(""); //입력받은 거리
   const [centers, setCenters] = useState([]); //주변 센터 목록
+  const [showMessage, setShowMessage] = useState(false); //메시지 표시 여부
 
   useEffect(() => {
     const getCurrentLocation = () => {
@@ -46,6 +47,7 @@ const DementiaCenter = () => {
       }));
       centerlist.sort((a, b) => a.distance - b.distance);
       setCenters(centerlist);
+      setShowMessage(centerlist.length === 0);
       console.log(centerlist);
     } catch (error) {
       console.error("Error fetching nearby centers:", error);
@@ -76,11 +78,8 @@ const DementiaCenter = () => {
       </div>
       {/* 치매센터리스트 */}
       <div className={"flex flex-col px-2.5"}>
-        {centers.length === 0 ? (
-          <div>주변에 치매센터가 존재하지 않습니다.</div>
-        ) : (
-          <DementiaList centers={centers} />
-        )}
+        {showMessage && <div>주변에 치매센터가 존재하지 않습니다.</div>}
+        {!showMessage && <DementiaList centers={centers} />}
       </div>
     </div>
   );

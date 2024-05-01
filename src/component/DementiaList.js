@@ -1,17 +1,17 @@
 import React from "react";
 
-const DementiaList = () => {
+const DementiaList = ({ centers }) => {
   return (
-    <div
-      className={
-        "flex flex-col px-2.5 py-5 gap-2.5  border-b-2 border-neutral-300 text-lg"
-      }
-    >
-      <div className={"text-[#82AAE3] "}>강서구치매안심센터</div>
-      <div className={"flex flex-row gap-5"}>
-        <div className={"font-semibold"}>1km</div>
-        <div>서울 강서구 등촌동</div>
-      </div>
+    <div>
+      {centers.map((center, index) => (
+        <div key={index}>
+          {center.name}
+          <div>
+            <div>{center.distance.toFixed(1)}km</div>
+            <div>{center.address}</div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

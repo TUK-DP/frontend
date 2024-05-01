@@ -4,13 +4,9 @@ import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../component/Loading.js";
-import {
-  CHANGE_DIARYID,
-  CHANGE_CONTENT,
-  CHANGE_DATE,
-} from "../redux/modules/DiaryInfo.js";
+import { CHANGE_DIARY } from "../redux/modules/DiaryInfo.js";
 
-const Diary = () => {
+const Diary = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const textRef = useRef();
@@ -18,7 +14,7 @@ const Diary = () => {
   const [keywords, setKeywords] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { diaryId, title, content, date } = useSelector(
+  const { diaryId, content, date, imgUrl } = useSelector(
     (state) => state.DiaryInfo
   );
   const userId = useSelector((state) => state.UserInfo.userId);
@@ -51,14 +47,22 @@ const Diary = () => {
       const res = await DiaryController.updateDiary({
         diaryId: diaryId,
         userId: userId,
-        title: title,
+        title: "title",
         content: newContent,
         date: date,
       });
       const result = res.data.result;
       console.log(result);
-      dispatch({ type: CHANGE_DIARYID, diaryId: result.diaryId });
-      dispatch({ type: CHANGE_CONTENT, content: result.content });
+      // dispatch({ type: CHANGE_DIARYID, diaryId: result.diaryId });
+      // dispatch({ type: CHANGE_CONTENT, content: result.content });
+      const diaryInfo = res.data.result[0];
+      dispatch({
+        type: CHANGE_DIARY,
+        diaryId: diaryInfo.diaryId,
+        content: diaryInfo.content,
+        imgUrl: diaryInfo.imgUrl,
+        date: diaryInfo.createDate,
+      });
       setIsSaving(false);
     } catch (error) {
       console.log(error);
@@ -79,22 +83,11 @@ const Diary = () => {
         diaryId: diaryId,
       });
       console.log("일기가 삭제되었습니다.");
-      window.location.href = "/calendar"; //페이지 새로고침
+      navigate("/calendar");
     } catch (error) {
       console.log(error);
     }
   };
-
-  //키워드 가져오기
-  const getKeyword = async () => {
-    const res = await DiaryController.getQuiz({ diaryId: diaryId });
-    console.log(res.data.result);
-    setKeywords(res.data.result.map((item) => item.A));
-  };
-
-  useEffect(() => {
-    getKeyword();
-  }, [diaryId]);
 
   return (
     <div id="diary">
@@ -106,7 +99,7 @@ const Diary = () => {
           <div
             id="btn_paint"
             onClick={() => {
-              navigate("/draw", { state: keywords });
+              navigate("/draw", { state: data });
             }}
           >
             그림 그리기

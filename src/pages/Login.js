@@ -24,11 +24,13 @@ const Login = () => {
     console.log(data);
     try {
       const res = await UserController.signIn({
-        nickname: data.nickname,
+        email: data.email,
         password: data.password,
       });
       console.log(res.data.result);
-      const info = res.data.result;
+      const info = res.data.result.user;
+      localStorage.setItem("ACCESS_TOKEN", res.data.result.token.AccessToken);
+      localStorage.setItem("REFRESH_TOKEN", res.data.result.token.RefreshToken);
       dispatch({
         type: SET_USERINFO,
         userId: info.id,
@@ -60,14 +62,20 @@ const Login = () => {
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="inputField">
-          <label>닉네임</label>
+          <label>이메일</label>
           <input
-            type="text"
-            placeholder="닉네임을 입력하세요."
-            {...register("nickname", { required: "닉네임을 입력해주세요." })}
+            type="email"
+            placeholder="이메일을 입력하세요."
+            {...register("email", {
+              required: "빈 칸 없이 작성해주세요.",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "올바른 이메일 형식이 아닙니다.",
+              },
+            })}
           />
           <div className="error-message">
-            {errors.nickname && errors.nickname.message}
+            {errors.email && errors.email.message}
           </div>
         </div>
         <div className="inputField">

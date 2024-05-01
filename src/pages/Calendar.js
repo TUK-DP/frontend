@@ -6,11 +6,7 @@ import { useNavigate } from "react-router-dom";
 import DiaryShow from "./DiaryShow.js";
 import { useDispatch, useSelector } from "react-redux";
 import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
-import {
-  CHANGE_DIARYID,
-  CHANGE_CONTENT,
-  CHANGE_DATE,
-} from "../redux/modules/DiaryInfo.js";
+import { CHANGE_DIARY } from "../redux/modules/DiaryInfo.js";
 import DiaryController from "../api/diary.controller.js";
 import { SET_PAGENAME } from "../redux/modules/PageName";
 
@@ -25,7 +21,7 @@ const Calendar = () => {
   const [isGetDiaryComplete, setIsGetDiaryComplete] = useState(false);
   // userId는 한 번 로그인 이후 고정
   const userId = useSelector((state) => state.UserInfo.userId);
-  // const { title, content, date } = useSelector((state) => state.DiaryInfo);
+  const [imgUrl, setImgUrl] = useState(null);
 
   // 현재 날짜를 가져옴
   const currentDate = new Date();
@@ -56,20 +52,34 @@ const Calendar = () => {
     )
       return;
     try {
-      //일기가 존재함
       const res = await DiaryController.searchDiary({
         userId: userId,
         date: dateFormat(),
       });
       console.log(res.data);
-      setIsDiaryExist(res.data.isSuccess);
 
-      dispatch({ type: CHANGE_DIARYID, diaryId: res.data.result.diaryId });
-      dispatch({ type: CHANGE_CONTENT, content: res.data.result.content });
-    } catch (error) {
       //일기가 존재하지 않음
+      if (res.data.result.length == 0) {
+        setIsGetDiaryComplete(true);
+        return setIsDiaryExist(false);
+      }
+
+      const diaryInfo = res.data.result[0];
+      //일기가 존재함
+      // dispatch({ type: CHANGE_DIARYID, diaryId: res.data.result[0].diaryId });
+      // dispatch({ type: CHANGE_CONTENT, content: res.data.result[0].content });
+      // setImgUrl(res.data.result[0].imgUrl);
+      dispatch({
+        type: CHANGE_DIARY,
+        diaryId: diaryInfo.diaryId,
+        content: diaryInfo.content,
+        imgUrl: diaryInfo.imgUrl,
+        date: diaryInfo.createDate,
+      });
+      setIsDiaryExist(true);
+    } catch (error) {
       console.log(error.response.data);
-      setIsDiaryExist(error.response.data.isSuccess);
+      setIsDiaryExist(false);
     }
     setIsGetDiaryComplete(true);
   };
@@ -77,8 +87,8 @@ const Calendar = () => {
   useEffect(() => {
     // 일기 데이터 가져오기
     getDiary();
-    const initialFormatDate = dateFormat();
-    dispatch({ type: CHANGE_DATE, date: initialFormatDate });
+    // const initialFormatDate = dateFormat();
+    // dispatch({ type: CHANGE_DATE, date: initialFormatDate });
   }, [year, month, day]);
 
   // 이전 달로 이동

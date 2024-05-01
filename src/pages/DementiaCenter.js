@@ -76,7 +76,11 @@ const DementiaCenter = () => {
       </div>
       {/* 치매센터리스트 */}
       <div className={"flex flex-col px-2.5"}>
-        <DementiaList centers={centers} />
+        {centers.length === 0 ? (
+          <div>주변에 치매센터가 존재하지 않습니다.</div>
+        ) : (
+          <DementiaList centers={centers} />
+        )}
       </div>
     </div>
   );

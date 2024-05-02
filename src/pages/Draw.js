@@ -10,6 +10,7 @@ import DiaryController from "../api/diary.controller";
 import axios from "axios";
 import keywordController from "../api/keyword.controller";
 import diaryController from "../api/diary.controller";
+import imgController from "../api/img.controller";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -147,11 +148,7 @@ const Draw = () => {
             }
           });
         });
-        return axios.post("http://52.79.249.163:8001/image", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        return imgController.uploadImg(formData);
       });
 
       const responses = await Promise.all(requests);

@@ -4,6 +4,9 @@ import Image from "../component/ImageDiary/Image.js";
 import html2canvas from "html2canvas";
 import Button from "../component/Button.js";
 import { style } from "d3";
+import imgController from "../api/img.controller.js";
+import diaryController from "../api/diary.controller.js";
+import { useSelector } from "react-redux";
 
 const PhotoEdit = ({}) => {
   const location = useLocation();
@@ -11,20 +14,37 @@ const PhotoEdit = ({}) => {
 
   const images = location.state;
   const [imageDataUrl, setImageDataUrl] = useState([]);
+  const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
 
   useEffect(() => {
     if (imageDataUrl.length > 0) {
       navigate("/diary/show", { state: { imageDataUrl } });
     }
   }, [imageDataUrl]);
-
+  //캡쳐 후 이미지 저장
   const captureImage = () => {
     const element = document.getElementById("limit");
-    html2canvas(element).then((canvas) => {
-      const dataUrl = canvas.toDataURL("image/png");
-      setImageDataUrl(dataUrl);
+    const formData = new FormData();
 
-      console.log("Captured image:", dataUrl);
+    html2canvas(element).then((canvas) => {
+      canvas.toBlob((blob) => {
+        formData.append("image", blob, "image.png");
+
+        // 이미지를 업로드하고 완료될 때까지 기다림
+        imgController
+          .uploadImg(formData)
+          .then((res) => {
+            console.log(res.data.result.imageUrl);
+            const saveImg = diaryController.saveDiaryImg(
+              diaryId,
+              res.data.result.imageUrl
+            );
+            // console.log(saveImg);
+          })
+          .catch((error) => {
+            console.error("이미지 업로드 오류:", error);
+          });
+      });
     });
   };
 
@@ -119,8 +139,8 @@ const PhotoEdit = ({}) => {
           id="limit"
           style={{
             // boxSizing: "border-box",
-            width: { width } - 8,
-            height: { width } - 8,
+            width: width - 8,
+            height: width - 8,
             display: "flex",
             flexWrap: "wrap",
             alignContent: "flex-start",

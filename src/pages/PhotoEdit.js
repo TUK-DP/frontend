@@ -119,8 +119,8 @@ const PhotoEdit = ({}) => {
           id="limit"
           style={{
             // boxSizing: "border-box",
-            width: width - 8,
-            height: width - 8,
+            width: { width } - 8,
+            height: { width } - 8,
             display: "flex",
             flexWrap: "wrap",
             alignContent: "flex-start",

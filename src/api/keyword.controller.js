@@ -5,6 +5,10 @@ class KeywordController extends Api {
   getKeyword = async (diaryId) => {
     return await this.get(`/keyword/diary/${diaryId}`);
   };
+  //키워드별 이미지 저장
+  saveKeywordImg = async (keywordId, imgData) => {
+    return await this.post(`/keyword/${keywordId}/image`, { data: imgData });
+  };
 }
 
 export default new KeywordController();

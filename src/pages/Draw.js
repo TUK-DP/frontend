@@ -9,6 +9,7 @@ import Button from "../component/Button";
 import DiaryController from "../api/diary.controller";
 import axios from "axios";
 import keywordController from "../api/keyword.controller";
+import diaryController from "../api/diary.controller";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -22,8 +23,10 @@ const Draw = () => {
   const [keyword, setKeyword] = useState([]);
   const [keywordId, setKeywordId] = useState([]);
   const canvasRefs = useRef({});
+  //키워드 별 사진 저장
   const [photoData, setPhotoData] = useState([]);
-  const photos = [];
+  //서버로 전송된 사진 url 저장
+  const [photos, setPhotos] = useState([]);
   const [isGetPhoto, setIsGetPhoto] = useState(false);
   const [savedImages, setSavedImages] = useState([]);
   //키워드가 존재하는 지의 여부
@@ -79,7 +82,7 @@ const Draw = () => {
   const getPhoto = async (keywords, page, pageSize) => {
     try {
       const requests = keywords.map((keyword) => {
-        return keywordController.getKeywordPhotos({
+        return diaryController.getKeywordPhotos({
           keyword: keyword,
           page: page,
           pageSize: pageSize,
@@ -88,9 +91,9 @@ const Draw = () => {
 
       const responses = await Promise.all(requests);
 
-      const photos = responses.map((res) => res.data.result[0].results);
-      setPhotoData(photos);
-      console.log(photos);
+      const photodata = responses.map((res) => res.data.result[0].results);
+      setPhotoData(photodata);
+      console.log(photodata);
     } catch (err) {
       console.log(err);
     }
@@ -125,13 +128,12 @@ const Draw = () => {
   useEffect(() => {
     // 3. savedImages의 값을 photodiary 페이지에 넘겨주면서 페이지를 불러옴
     if (savedImages.length > 0) {
-      console.log(savedImages);
       navigate("/photoedit", { state: savedImages });
     }
   }, [savedImages]);
 
   //키워드 별 사진을 서버로 전송
-  const saveImage = async () => {
+  const postImg = async () => {
     try {
       const requests = canvasRefs.current.map(async (canvasRef, i) => {
         const formData = new FormData();
@@ -154,9 +156,36 @@ const Draw = () => {
 
       const responses = await Promise.all(requests);
       console.log(responses);
-      const photos = responses.map((res) => res.data.result.imageUrl);
-      setPhotoData(photos);
+      const photo = responses.map((res) => res.data.result.imageUrl);
+      setPhotos(photo);
+      console.log(photo);
+      return photo; // 이미지 URL 배열 반환
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //키워드 별 이미지 저장
+  const saveKeywordImg = async () => {
+    try {
+      const requests = keywordId.map(async (keyId, i) => {
+        return keywordController.saveKeywordImg(keyId, {
+          imgUrl: photos[i],
+        });
+      });
+      const responses = await Promise.all(requests);
+      console.log(responses);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const saveImage = async () => {
+    try {
+      const photos = await postImg(); // postImg 함수의 반환값을 받아옴
+      if (!isKeywordExist) return;
       console.log(photos);
+      await saveKeywordImg(photos); // saveKeywordImg 함수에 이미지 URL 배열 전달
     } catch (err) {
       console.log(err);
     }

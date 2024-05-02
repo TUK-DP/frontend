@@ -62,7 +62,6 @@ const Calendar = () => {
       if (res.data.result.length == 0) {
         setIsGetDiaryComplete(true);
         setIsDiaryExist(false);
-        console.log("업승ㅁ");
         return;
       }
 

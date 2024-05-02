@@ -44,15 +44,15 @@ const Diary = ({ data }) => {
         return alert("내용을 작성해주세요.");
       }
       setIsSaving(true);
+      console.log(diaryId, userId, newContent);
       const res = await DiaryController.updateDiary(diaryId, {
         userId: userId,
         title: "title",
         content: newContent,
       });
-      const result = res.data.result;
-      console.log(result);
 
-      const diaryInfo = res.data.result[0];
+      const diaryInfo = res.data.result;
+      console.log(diaryInfo);
       dispatch({
         type: CHANGE_DIARY,
         diaryId: diaryInfo.diaryId,
@@ -70,10 +70,6 @@ const Diary = ({ data }) => {
   // 다이어리 삭제
   const deleteDiary = async () => {
     try {
-      // const res = await DiaryController.deleteDiary({
-      //   userId: userId,
-      //   diaryId: diaryId,
-      // });
       const res = await DiaryController.deleteDiary(diaryId);
       console.log("일기가 삭제되었습니다.");
       // window.location.reload();

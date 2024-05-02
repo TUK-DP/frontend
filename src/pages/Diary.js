@@ -78,7 +78,8 @@ const Diary = ({ data }) => {
       // });
       const res = await DiaryController.deleteDiary(diaryId);
       console.log("일기가 삭제되었습니다.");
-      window.location.reload();
+      // window.location.reload();
+      navigate("/");
     } catch (error) {
       setIsSaving(false);
       console.log(error);

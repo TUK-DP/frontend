@@ -27,7 +27,7 @@ class DiaryController extends Api {
   };
   //일기별 키워드 조회
   getKeyword = async (diaryId) => {
-    return await this.get(`/keyword?diaryId=${diaryId}`);
+    return await this.get(`/keyword/diary/${diaryId}`);
   };
   //키워드별 사진 페이징
   getKeywordPhotos = async ({ keyword, page, pageSize }) => {

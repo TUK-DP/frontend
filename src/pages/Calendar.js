@@ -61,14 +61,13 @@ const Calendar = () => {
       //일기가 존재하지 않음
       if (res.data.result.length == 0) {
         setIsGetDiaryComplete(true);
-        return setIsDiaryExist(false);
+        setIsDiaryExist(false);
+        return;
       }
 
       const diaryInfo = res.data.result[0];
       //일기가 존재함
-      // dispatch({ type: CHANGE_DIARYID, diaryId: res.data.result[0].diaryId });
-      // dispatch({ type: CHANGE_CONTENT, content: res.data.result[0].content });
-      // setImgUrl(res.data.result[0].imgUrl);
+
       dispatch({
         type: CHANGE_DIARY,
         diaryId: diaryInfo.diaryId,
@@ -78,7 +77,7 @@ const Calendar = () => {
       });
       setIsDiaryExist(true);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error);
       setIsDiaryExist(false);
     }
     setIsGetDiaryComplete(true);
@@ -87,8 +86,6 @@ const Calendar = () => {
   useEffect(() => {
     // 일기 데이터 가져오기
     getDiary();
-    // const initialFormatDate = dateFormat();
-    // dispatch({ type: CHANGE_DATE, date: initialFormatDate });
   }, [year, month, day]);
 
   // 이전 달로 이동

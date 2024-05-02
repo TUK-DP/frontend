@@ -14,6 +14,7 @@ import photo5 from "../assets/mainBtn5.png";
 import { SET_PAGENAME } from "../redux/modules/PageName";
 import diaryController from "../api/diary.controller";
 import { BRUSH_SIZE } from "../redux/modules/ImageDiary";
+import keywordController from "../api/keyword.controller";
 
 const Draw2 = () => {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const Draw2 = () => {
     // 키워드 가져오기
     const fetchData = async () => {
       try {
-        const response = await diaryController.getKeyword(diaryId);
+        const response = await keywordController.getKeyword(diaryId);
         const { isSuccess, result } = response.data;
         console.log(result);
         setKeyword(

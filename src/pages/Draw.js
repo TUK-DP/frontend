@@ -8,6 +8,7 @@ import Palette from "../component/ImageDiary/Palette";
 import Button from "../component/Button";
 import DiaryController from "../api/diary.controller";
 import axios from "axios";
+import keywordController from "../api/keyword.controller";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -78,7 +79,7 @@ const Draw = () => {
   const getPhoto = async (keywords, page, pageSize) => {
     try {
       const requests = keywords.map((keyword) => {
-        return DiaryController.getKeywordPhotos({
+        return keywordController.getKeywordPhotos({
           keyword: keyword,
           page: page,
           pageSize: pageSize,
@@ -154,7 +155,7 @@ const Draw = () => {
       const responses = await Promise.all(requests);
       console.log(responses);
       const photos = responses.map((res) => res.data.result.imageUrl);
-      // setPhotoData(photos);
+      setPhotoData(photos);
       console.log(photos);
     } catch (err) {
       console.log(err);

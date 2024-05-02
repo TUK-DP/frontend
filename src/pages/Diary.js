@@ -48,12 +48,10 @@ const Diary = ({ data }) => {
         userId: userId,
         title: "title",
         content: newContent,
-        date: date,
       });
       const result = res.data.result;
       console.log(result);
-      // dispatch({ type: CHANGE_DIARYID, diaryId: result.diaryId });
-      // dispatch({ type: CHANGE_CONTENT, content: result.content });
+
       const diaryInfo = res.data.result[0];
       dispatch({
         type: CHANGE_DIARY,

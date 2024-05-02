@@ -35,11 +35,15 @@ const PhotoEdit = ({}) => {
           .uploadImg(formData)
           .then((res) => {
             console.log(res.data.result.imageUrl);
-            const saveImg = diaryController.saveDiaryImg(
-              diaryId,
-              res.data.result.imageUrl
-            );
-            // console.log(saveImg);
+            diaryController
+              .saveDiaryImg(diaryId, {
+                imgUrl: res.data.result.imageUrl,
+              })
+              .then((res) => {
+                console.log(res);
+                navigate("/calendar");
+              })
+              .catch((err) => console.log(err));
           })
           .catch((error) => {
             console.error("이미지 업로드 오류:", error);

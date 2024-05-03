@@ -27,6 +27,7 @@ import DiaryWrite from "../pages/DiaryWrite";
 import Error from "../pages/Error";
 import Header from "../component/Header";
 import CenterMap from "../pages/CenterMap";
+import Graphs from "../component/Graphs";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -76,6 +77,7 @@ const MainLayout = () => {
         <Route path={"/gymvideo"} element={<GymnasticsVideo />} />
         <Route path={"/mypage"} element={<MyPage />} />
         <Route path={"/centermap"} element={<CenterMap />} />
+        <Route path={"/graphs"} element={<Graphs />} />
       </Routes>
       <Navbar />
     </div>

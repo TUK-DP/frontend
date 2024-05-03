@@ -199,19 +199,17 @@ const Draw = () => {
       >
         {keyword.length > 0 ? (
           index === 0 ? (
-            <div style={{ width: "50px" }}></div>
+            <div style={{ width: "40px" }}></div>
           ) : (
-            <IoIosArrowBack size={50} onClick={getPrevKeyword} />
+            <IoIosArrowBack size={40} onClick={getPrevKeyword} />
           )
         ) : null}
-        <p className={"text-4xl flex-grow text-center"}>
-          {keyword.length > 0 ? keyword[index] : "자유롭게 그려주세요"}
-        </p>
+        <p className={"text-3xl flex-grow text-center"}>{keyword[index]}</p>
         {keyword.length > 0 && index !== keyword.length - 1 && (
-          <IoIosArrowForward size={50} onClick={getNextKeyword} />
+          <IoIosArrowForward size={40} onClick={getNextKeyword} />
         )}
         {keyword.length > 0 && index === keyword.length - 1 && (
-          <div style={{ width: "50px" }}></div>
+          <div style={{ width: "40px" }}></div>
         )}
       </div>
       {/* 사진 띄워줄 부분 */}

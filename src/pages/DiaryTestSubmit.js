@@ -37,7 +37,14 @@ const DiaryTestSubmit = () => {
           answer={item.answer}
         />
       ))}
-      <div className={"pb-5 w-full flex justify-center"}>
+      <div className={"pb-5 w-full h-[155px] flex flex-col justify-between items-center"}>
+        <Button
+          width="90%"
+          height="60px"
+          text="키워드 그래프 보기"
+          onClick={() => navigate("/keyword")}
+          fontSize="20px"
+        />
         <Button
           width="90%"
           height="60px"

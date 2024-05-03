@@ -31,6 +31,7 @@ const Login = () => {
       const info = res.data.result.user;
       localStorage.setItem("ACCESS_TOKEN", res.data.result.token.AccessToken);
       localStorage.setItem("REFRESH_TOKEN", res.data.result.token.RefreshToken);
+      localStorage.setItem("userId", info.id);
       dispatch({
         type: SET_USERINFO,
         userId: info.id,

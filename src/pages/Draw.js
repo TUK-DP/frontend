@@ -25,11 +25,16 @@ const Draw = () => {
   const photos = [];
   const [isGetPhoto, setIsGetPhoto] = useState(false);
   const [savedImages, setSavedImages] = useState([]);
+  //키워드가 존재하는 지의 여부
+  const [isKeywordExist, setIsKeywordExist] = useState();
 
   useEffect(() => {
-    setKeyword(location.state.map((item) => item.keyword));
-    setKeywordId(location.state.map((item) => item.keywordId));
-
+    //키워드가 없는 경우
+    if (location.state.length == 0) {
+      setKeyword(["자유롭게 그려주세요"]);
+      setIsKeywordExist(false);
+    }
+    //키워드 별 사진 가져오기
     const fetchData = async () => {
       await getPhoto(
         location.state.map((item) => item.keyword),
@@ -38,7 +43,13 @@ const Draw = () => {
       );
       setIsGetPhoto(true);
     };
-    fetchData();
+    //키워드가 있는 경우
+    if (location.state.length !== 0) {
+      setIsKeywordExist(true);
+      setKeyword(location.state.map((item) => item.keyword));
+      setKeywordId(location.state.map((item) => item.keywordId));
+      fetchData();
+    }
   }, []);
 
   //다음 키워드 제시
@@ -51,12 +62,8 @@ const Draw = () => {
     if (index == 0) return;
     setIndex((index) => index - 1);
   };
-  //Canvas 렌더링
+  // 캔버스 렌더링
   const renderCanvas = () => {
-    if (keyword.length == 0) {
-      const canvasRef = React.createRef();
-      return <Canvas isVisible={true} canvasRef={canvasRef} />;
-    }
     canvasRefs.current = keyword.map(() => React.createRef());
     return keyword.map((cur, i) => (
       <Canvas
@@ -87,6 +94,7 @@ const Draw = () => {
       console.log(err);
     }
   };
+
   //키워드 별 사진 띄우기
   const renderPhoto = () => {
     // if (photoData.length == 0 || photoData[index].imgUrls[0] == null) {
@@ -102,7 +110,7 @@ const Draw = () => {
     ));
   };
 
-  // 키워드 별 사진 저장
+  // 키워드 별 사진 저장(base64 형태)
   const base64Images = async () => {
     const images = await Promise.all(
       canvasRefs.current.map(async (canvasRef, i) => {
@@ -120,6 +128,7 @@ const Draw = () => {
       navigate("/photoedit", { state: savedImages });
     }
   }, [savedImages]);
+
   //키워드 별 사진을 서버로 전송
   const saveImage = async () => {
     try {
@@ -135,15 +144,18 @@ const Draw = () => {
             }
           });
         });
-        return axios.post("http://52.79.249.163:8001/image/", formData, {
+        return axios.post("http://52.79.249.163:8001/image", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
       });
 
-      const response = await Promise.all(requests);
-      console.log(response);
+      const responses = await Promise.all(requests);
+      console.log(responses);
+      const photos = responses.map((res) => res.data.result.imageUrl);
+      // setPhotoData(photos);
+      console.log(photos);
     } catch (err) {
       console.log(err);
     }
@@ -176,9 +188,11 @@ const Draw = () => {
         )}
       </div>
       {/* 사진 띄워줄 부분 */}
-      <div className={"h-40 w-full flex flex-row overflow-x-auto text-2xl"}>
-        {isGetPhoto && renderPhoto()}
-      </div>
+      {isKeywordExist && (
+        <div className={"h-40 w-full flex flex-row overflow-x-auto text-2xl"}>
+          {isGetPhoto && renderPhoto()}
+        </div>
+      )}
       {/* Canvas */}
       <div
         style={{

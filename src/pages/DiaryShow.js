@@ -13,7 +13,7 @@ const DiaryEdit = () => {
     (state) => state.DiaryInfo
   );
 
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
 
   const fetchData = async () => {
     try {
@@ -51,6 +51,10 @@ const DiaryEdit = () => {
     try {
       const response = await DiaryController.getKeyword(diaryId);
       const { isSuccess, result } = response.data;
+
+      if (result.length == 0) {
+        return;
+      }
       setData(
         result.map((item, index) => {
           return { keywordId: item.keywordId, keyword: item.keyword };

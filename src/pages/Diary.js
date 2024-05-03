@@ -17,9 +17,6 @@ const Diary = ({ data }) => {
     (state) => state.DiaryInfo
   );
 
-  useEffect(() => {
-    console.log(imgUrl);
-  }, [imgUrl]);
   const userId = useSelector((state) => state.UserInfo.userId);
 
   const [newContent, setNewContent] = useState(content);

@@ -21,17 +21,32 @@ const Draw = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
+  //키워드
   const [keyword, setKeyword] = useState([]);
+  //키워드 아이디
   const [keywordId, setKeywordId] = useState([]);
+  //캔버스들 저장
   const canvasRefs = useRef({});
   //키워드 별 사진 저장
   const [photoData, setPhotoData] = useState([]);
   //서버로 전송된 사진 url 저장
   const [photos, setPhotos] = useState([]);
+  //키워드별 사진 가져왔는지의 여부
   const [isGetPhoto, setIsGetPhoto] = useState(false);
+  //키워드별 사진 저장(base64 형태) -> photoedit으로 넘겨줌
   const [savedImages, setSavedImages] = useState([]);
   //키워드가 존재하는 지의 여부
   const [isKeywordExist, setIsKeywordExist] = useState();
+
+  //키워드 별 사진 가져오기
+  const fetchData = async () => {
+    await getPhoto(
+      location.state.map((item) => item.keyword),
+      1,
+      5
+    );
+    setIsGetPhoto(true);
+  };
 
   useEffect(() => {
     //키워드가 없는 경우
@@ -39,15 +54,7 @@ const Draw = () => {
       setKeyword(["자유롭게 그려주세요"]);
       setIsKeywordExist(false);
     }
-    //키워드 별 사진 가져오기
-    const fetchData = async () => {
-      await getPhoto(
-        location.state.map((item) => item.keyword),
-        1,
-        5
-      );
-      setIsGetPhoto(true);
-    };
+
     //키워드가 있는 경우
     if (location.state.length !== 0) {
       setIsKeywordExist(true);
@@ -94,7 +101,6 @@ const Draw = () => {
 
       const photodata = responses.map((res) => res.data.result[0].results);
       setPhotoData(photodata);
-      console.log(photodata);
     } catch (err) {
       console.log(err);
     }
@@ -102,14 +108,14 @@ const Draw = () => {
 
   //키워드 별 사진 띄우기
   const renderPhoto = () => {
-    // if (photoData.length == 0 || photoData[index].imgUrls[0] == null) {
-    if (photoData[index].length == 0) {
+    if (photoData[index].imgUrls[0] == null) {
       return (
         <div className={"w-full flex justify-center items-center"}>
           그림이 존재하지 않습니다.
         </div>
       );
     }
+
     return photoData[index].imgUrls.map((item, index) => (
       <img src={item} key={index} />
     ));
@@ -152,10 +158,8 @@ const Draw = () => {
       });
 
       const responses = await Promise.all(requests);
-      console.log(responses);
       const photo = responses.map((res) => res.data.result.imageUrl);
       setPhotos(photo);
-      console.log(photo);
       return photo; // 이미지 URL 배열 반환
     } catch (err) {
       console.log(err);
@@ -163,9 +167,10 @@ const Draw = () => {
   };
 
   //키워드 별 이미지 저장
-  const saveKeywordImg = async () => {
+  const saveKeywordImg = async (photos) => {
     try {
       const requests = keywordId.map(async (keyId, i) => {
+        console.log(photos[i]);
         return keywordController.saveKeywordImg(keyId, {
           imgUrl: photos[i],
         });

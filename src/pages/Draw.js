@@ -98,8 +98,7 @@ const Draw = () => {
       });
 
       const responses = await Promise.all(requests);
-
-      const photodata = responses.map((res) => res.data.result[0].results);
+      const photodata = responses.map((res) => res.data.result);
       setPhotoData(photodata);
     } catch (err) {
       console.log(err);
@@ -108,6 +107,7 @@ const Draw = () => {
 
   //키워드 별 사진 띄우기
   const renderPhoto = () => {
+    console.log(photoData);
     if (photoData[index].imgUrls[0] == null) {
       return (
         <div className={"w-full flex justify-center items-center"}>

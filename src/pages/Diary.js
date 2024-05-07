@@ -4,11 +4,7 @@ import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../component/Loading.js";
-import {
-  CHANGE_DIARYID,
-  CHANGE_CONTENT,
-  CHANGE_DATE,
-} from "../redux/modules/DiaryInfo.js";
+import { CHANGE_DIARY } from "../redux/modules/DiaryInfo.js";
 
 const Diary = ({ data }) => {
   const navigate = useNavigate();
@@ -18,7 +14,7 @@ const Diary = ({ data }) => {
   const [keywords, setKeywords] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { diaryId, title, content, date } = useSelector(
+  const { diaryId, content, date, imgUrl } = useSelector(
     (state) => state.DiaryInfo
   );
   const userId = useSelector((state) => state.UserInfo.userId);
@@ -48,19 +44,25 @@ const Diary = ({ data }) => {
         return alert("내용을 작성해주세요.");
       }
       setIsSaving(true);
-      const res = await DiaryController.updateDiary({
-        diaryId: diaryId,
+      console.log(diaryId, userId, newContent);
+      const res = await DiaryController.updateDiary(diaryId, {
         userId: userId,
-        title: title,
+        title: "title",
         content: newContent,
-        date: date,
       });
-      const result = res.data.result;
-      console.log(result);
-      dispatch({ type: CHANGE_DIARYID, diaryId: result.diaryId });
-      dispatch({ type: CHANGE_CONTENT, content: result.content });
+
+      const diaryInfo = res.data.result;
+      console.log(diaryInfo);
+      dispatch({
+        type: CHANGE_DIARY,
+        diaryId: diaryInfo.diaryId,
+        content: diaryInfo.content,
+        imgUrl: diaryInfo.imgUrl,
+        date: diaryInfo.createDate,
+      });
       setIsSaving(false);
     } catch (error) {
+      setIsSaving(false);
       console.log(error);
     }
   };
@@ -68,19 +70,12 @@ const Diary = ({ data }) => {
   // 다이어리 삭제
   const deleteDiary = async () => {
     try {
-      console.log(
-        "Deleting diary with userId:",
-        userId,
-        "and diaryId:",
-        diaryId
-      );
-      const res = await DiaryController.deleteDiary({
-        userId: userId,
-        diaryId: diaryId,
-      });
+      const res = await DiaryController.deleteDiary(diaryId);
       console.log("일기가 삭제되었습니다.");
-      navigate("/calendar");
+      // window.location.reload();
+      navigate("/");
     } catch (error) {
+      setIsSaving(false);
       console.log(error);
     }
   };

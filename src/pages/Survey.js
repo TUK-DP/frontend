@@ -27,9 +27,12 @@ function SurveyCop({ question, selectedResults, setSelectedResults }) {
 
   return (
     <div>
-      <div className={"flex bg-[#e0f4ff] my-10 p-6 text-3xl rounded-3xl space-y-3 shadow-lg"}>
+      <div className="text-4xl w-full flex justify-center items-center mt-6 font-bold">
+      {question.index} 번
+      </div>
+      <div className={"flex flex-col bg-[#e0f4ff] mt-8 mb-10 p-6 text-4xl rounded-3xl shadow-lg break-keep"}>
         <p>
-          {question.index}. {question.question}
+          {question.question}
         </p>
       </div>
       <div className="flex w-full justify-between">

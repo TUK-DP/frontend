@@ -30,7 +30,7 @@ function SurveyCop({ question, selectedResults, setSelectedResults }) {
       <div className="text-4xl w-full flex justify-center items-center mt-6 font-bold">
       {question.index} 번
       </div>
-      <div className={"flex flex-col bg-[#e0f4ff] mt-8 mb-10 p-6 text-4xl rounded-3xl shadow-lg break-keep"}>
+      <div className={"flex flex-col bg-[#e0f4ff] mt-8 mb-10 p-6 text-3xl rounded-3xl shadow-lg break-keep"}>
         <p>
           {question.question}
         </p>
@@ -38,7 +38,7 @@ function SurveyCop({ question, selectedResults, setSelectedResults }) {
       <div className="flex w-full justify-between">
         <div
           className={
-            "w-[45%] h-[12rem] bg-white rounded-2xl flex items-center text-2xl rounded-3xl border-4 justify-center mb-5"
+            "w-[45%] h-[12rem] bg-white flex items-center text-2xl rounded-3xl border-4 justify-center mb-5"
           }
           style={{
             backgroundColor: selectedOption === "O" ? "#C6F6D5" : "white",
@@ -48,7 +48,7 @@ function SurveyCop({ question, selectedResults, setSelectedResults }) {
           <FaRegCircle size={"80px"} />
         </div>
         <div
-          className={"w-[45%] h-[12rem] bg-white rounded-2xl flex items-center text-2xl rounded-3xl border-4 justify-center mb-5"}
+          className={"w-[45%] h-[12rem] bg-white flex items-center text-2xl rounded-3xl border-4 justify-center mb-5"}
           style={{
             backgroundColor: selectedOption === "X" ? "#C6F6D5" : "white",
           }}

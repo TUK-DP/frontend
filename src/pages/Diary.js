@@ -11,12 +11,12 @@ const Diary = ({ data }) => {
   const dispatch = useDispatch();
   const textRef = useRef();
   const [isImage, setIsImage] = useState(false);
-  const [keywords, setKeywords] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
 
   const { diaryId, content, date, imgUrl } = useSelector(
     (state) => state.DiaryInfo
   );
+
   const userId = useSelector((state) => state.UserInfo.userId);
 
   const [newContent, setNewContent] = useState(content);
@@ -84,8 +84,11 @@ const Diary = ({ data }) => {
     <div id="diary">
       {isSaving ? <Loading text="일기 수정 중..." /> : null}
       <div id="draw">
-        {isImage ? (
-          <div></div>
+        {imgUrl !== null ? (
+          <img
+            src={imgUrl}
+            style={{ width: "100%", height: "100%", borderRadius: "25px" }}
+          />
         ) : (
           <div
             id="btn_paint"

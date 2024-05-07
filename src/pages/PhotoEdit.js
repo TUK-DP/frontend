@@ -3,6 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Image from "../component/ImageDiary/Image.js";
 import html2canvas from "html2canvas";
 import Button from "../component/Button.js";
+import { style } from "d3";
+import imgController from "../api/img.controller.js";
+import diaryController from "../api/diary.controller.js";
+import { useSelector } from "react-redux";
 
 const PhotoEdit = ({}) => {
   const location = useLocation();
@@ -10,20 +14,41 @@ const PhotoEdit = ({}) => {
 
   const images = location.state;
   const [imageDataUrl, setImageDataUrl] = useState([]);
+  const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
 
   useEffect(() => {
     if (imageDataUrl.length > 0) {
       navigate("/diary/show", { state: { imageDataUrl } });
     }
   }, [imageDataUrl]);
-
+  //캡쳐 후 이미지 저장
   const captureImage = () => {
     const element = document.getElementById("limit");
-    html2canvas(element).then((canvas) => {
-      const dataUrl = canvas.toDataURL("image/png");
-      setImageDataUrl(dataUrl);
+    const formData = new FormData();
 
-      console.log("Captured image:", dataUrl);
+    html2canvas(element).then((canvas) => {
+      canvas.toBlob((blob) => {
+        formData.append("image", blob, "image.png");
+
+        // 이미지를 업로드하고 완료될 때까지 기다림
+        imgController
+          .uploadImg(formData)
+          .then((res) => {
+            console.log(res.data.result.imageUrl);
+            diaryController
+              .saveDiaryImg(diaryId, {
+                imgUrl: res.data.result.imageUrl,
+              })
+              .then((res) => {
+                console.log(res);
+                navigate("/calendar");
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((error) => {
+            console.error("이미지 업로드 오류:", error);
+          });
+      });
     });
   };
 
@@ -34,7 +59,7 @@ const PhotoEdit = ({}) => {
     console.log(size);
     setWidth(Math.ceil(size * 0.9));
   };
-
+  // 화면 크기 조절
   useEffect(() => {
     resizeListener();
     window.addEventListener("resize", resizeListener);
@@ -54,7 +79,7 @@ const PhotoEdit = ({}) => {
     { name: "낙엽", url: "/leave" },
     { name: "벚꽃", url: "/blossom" },
   ];
-  const [backgroundUrl, setBackgroundUrl] = useState("");
+  const [backgroundUrl, setBackgroundUrl] = useState("/");
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
   // 배경 변경
   const changeBg = (url, index) => {
@@ -70,13 +95,15 @@ const PhotoEdit = ({}) => {
   const changeOpacity = (item, index) => {
     setBgOpacity(1 - parseInt(item) * 0.01);
     setSelectedOpacityIndex(index);
-    console.log(1 - parseInt(item) * 0.01);
   };
 
   return (
-    <div className={"flex flex-col w-11/12 mx-auto my-5 text-xl"}>
+    <div
+      className={"flex flex-col mx-auto my-5 text-xl gap-2"}
+      style={{ width: "90%" }}
+    >
       {/* 배경 선택 */}
-      <p className={"mb-4"}>배경</p>
+      <p className={"mb-2"}>배경</p>
       <div className={"whitespace-nowrap overflow-x-scroll "}>
         {list.map((item, index) => (
           <button
@@ -91,7 +118,7 @@ const PhotoEdit = ({}) => {
         ))}
       </div>
       {/* 배경 투명도 설정 */}
-      <p className={"mb-4"}>배경 투명도 설정</p>
+      <p className={"mb-2"}>배경 투명도 설정</p>
       <div className={"whitespace-nowrap overflow-x-scroll "}>
         {bgOpacityList.map((item, index) => (
           <button
@@ -103,17 +130,21 @@ const PhotoEdit = ({}) => {
               changeOpacity(item, index);
             }}
           >
-            {item}%
+            {item}
           </button>
         ))}
       </div>
       {/* 그림 편집기 */}
-      <div className={"border-4 border-[#D9D9D9] my-10"}>
+      <div
+        className={"border-4 border-[#D9D9D9] my-10 "}
+        style={{ width: width, height: width }}
+      >
         <div
           id="limit"
           style={{
-            width: width,
-            height: width,
+            // boxSizing: "border-box",
+            width: width - 8,
+            height: width - 8,
             display: "flex",
             flexWrap: "wrap",
             alignContent: "flex-start",

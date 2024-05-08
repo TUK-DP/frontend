@@ -9,6 +9,8 @@ import { RxCross2 } from "react-icons/rx";
 import { FaChevronRight } from "react-icons/fa6";
 import { FaChevronLeft } from "react-icons/fa6";
 import Button from "../component/Button";
+import recordController from "../api/record.controller";
+import { useSelector } from "react-redux";
 
 function SurveyCop({ question, selectedResults, setSelectedResults }) {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -86,6 +88,7 @@ function Survey() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [checkList, setCheckList] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const userId = useSelector((state) => state.UserInfo.userId);
 
   const get_survey = async () => {
     const survey = await SurveyController.findAllSimpleSurvey();
@@ -125,11 +128,21 @@ function Survey() {
     const xCount = selectedResults.filter((result) => result === "X").length;
     console.log(`Total O Count: ${oCount}`);
     console.log(`Total X Count: ${xCount}`);  
-    if (oCount+xCount==32) {
+    if (oCount + xCount === 32) {
+      saveRecord(userId, 32, oCount);
       navigate("/surveyresult", { state: { oCount, xCount } });
-    }
+    }    
   };
-  
+
+  const saveRecord = async (id, totalSize, yCount) => {
+    const recordData = {
+      userId: id,
+      totalQuestionSize: totalSize,
+      yesCount: yCount
+    };
+    await recordController.saveRecord(recordData);
+    console.log("save");
+  };  
 
   return (
     <div className={"px-4 mb-10"}>

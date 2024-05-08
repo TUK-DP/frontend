@@ -39,15 +39,25 @@ const Home = () => {
   return (
     <div>
       <div
-        className="w-[22em] h-[11rem] bg-[#e0f4ff] mx-auto mt-[2rem] rounded-3xl flex justify-evenly flex-col"
+        className="w-[22em] h-auto bg-[#e0f4ff] mx-auto mt-[2rem] rounded-3xl flex justify-evenly flex-col"
         style={{ boxShadow: "3px 3px 3px rgb(200, 200, 200)" }}
       >
-        <span className="text-2xl font-bold text-[#838383] mx-auto">
-          치매진단 기록이 없습니다
-        </span>
+        {record.length!=0 ? (
+          <div className="flex justify-center items-center flex-col my-4">
+            <div className="text-2xl text-[#82aae3] font-bold my-3">이전 진단 결과</div>
+            <div className="bg-white rounded-2xl w-[80%] flex justify-center items-center flex-col h-20">
+              <div className="text-2xl">{record.yesCount} / {record.total}</div>
+              <div className="text-2xl">{record.yesCount >= 17 ? <div>치매 의심</div> : <div>저위험 단계</div>}</div>
+            </div>
+          </div>
+        ):(
+          <span className="text-2xl font-bold text-[#838383] mx-auto">
+            치매진단 기록이 없습니다
+          </span>
+        )}
         <div className="w-[95%] flex justify-end">
           <div
-            className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold text-lg"
+            className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold text-lg mb-3"
             onClick={() => {
               navigate("/surveyStart");
             }}

@@ -124,11 +124,12 @@ function Survey() {
     const oCount = selectedResults.filter((result) => result === "O").length;
     const xCount = selectedResults.filter((result) => result === "X").length;
     console.log(`Total O Count: ${oCount}`);
-    console.log(`Total X Count: ${xCount}`);
-    if (oCount + xCount === 32) {
+    console.log(`Total X Count: ${xCount}`);  
+    if (oCount+xCount==32) {
       navigate("/surveyresult", { state: { oCount, xCount } });
     }
   };
+  
 
   return (
     <div className={"px-4 mb-10"}>
@@ -155,6 +156,11 @@ function Survey() {
               <FaChevronRight onClick={handleNextQuestion} size={"50px"}/>
             )}
           </div>
+          {currentQuestionIndex===31?(
+            <Button onClick={handleSubmit} height={"60px"} text={"제출하기"} fontSize={"24px"}/>
+          ):(
+            <div></div>
+          )}
           {!checkList ? (
             <div className="text-[#e15449] mt-2 text-xl">
               문항을 체크해주세요.

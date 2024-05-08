@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../index.css";
 import mainBtn1 from "../assets/mainBtn1.png";
 import mainBtn2 from "../assets/mainBtn2.png";
@@ -7,16 +7,35 @@ import mainBtn4 from "../assets/mainBtn4.png";
 import mainBtn5 from "../assets/mainBtn5.png";
 import user from "../assets/user.png";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
+import recordController from "../api/record.controller";
 
 const Home = () => {
+  const userId = useSelector((state) => state.UserInfo.userId);
+  const [record, setRecord] = useState();
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "Re-Memory" });
+    getRecord();
   }, []);
   const navigate = useNavigate();
 
+  const getRecord = async () => {
+    try {
+      const response = await recordController.prevRecord({ userId });
+      const { isSuccess, message, result } = response.data;
+      const recordData = {
+        total: result.totalQuestionSize,
+        yesCount: result.yesCount
+      };
+      setRecord(recordData);
+    } catch (error) {
+      console.log("이전 진단결과 조회 중 오류", error);
+    }
+  };
+  
   return (
     <div>
       <div

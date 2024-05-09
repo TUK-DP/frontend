@@ -118,7 +118,7 @@ const PhotoEdit = ({}) => {
         ))}
       </div>
       {/* 배경 투명도 설정 */}
-      <p className={"mb-2"}>배경 투명도 설정</p>
+      <p className={"mb-2"}>배경 선명도 설정</p>
       <div className={"whitespace-nowrap overflow-x-scroll "}>
         {bgOpacityList.map((item, index) => (
           <button

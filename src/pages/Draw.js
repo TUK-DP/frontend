@@ -7,7 +7,6 @@ import Canvas from "../component/ImageDiary/Canvas";
 import Palette from "../component/ImageDiary/Palette";
 import Button from "../component/Button";
 import keywordController from "../api/keyword.controller";
-import diaryController from "../api/diary.controller";
 import imgController from "../api/img.controller";
 import InfiniteScroll from "../component/ImageDiary/InfiniteScroll";
 
@@ -26,26 +25,10 @@ const Draw = () => {
   const [keywordId, setKeywordId] = useState([]);
   //캔버스들 저장
   const canvasRefs = useRef({});
-  //키워드 별 사진 저장
-  const [photoData, setPhotoData] = useState([]);
-  //서버로 전송된 사진 url 저장
-  const [photos, setPhotos] = useState([]);
-  //키워드별 사진 가져왔는지의 여부
-  const [isGetPhoto, setIsGetPhoto] = useState(false);
   //키워드별 사진 저장(base64 형태) -> photoedit으로 넘겨줌
   const [savedImages, setSavedImages] = useState([]);
   //키워드가 존재하는 지의 여부
   const [isKeywordExist, setIsKeywordExist] = useState();
-
-  //키워드 별 사진 가져오기
-  // const fetchData = async () => {
-  //   await getPhoto(
-  //     location.state.map((item) => item.keyword),
-  //     1,
-  //     5
-  //   );
-  //   setIsGetPhoto(true);
-  // };
 
   useEffect(() => {
     //키워드가 없는 경우
@@ -59,7 +42,6 @@ const Draw = () => {
       setIsKeywordExist(true);
       setKeyword(location.state.map((item) => item.keyword));
       setKeywordId(location.state.map((item) => item.keywordId));
-      // fetchData();
     }
   }, []);
 
@@ -129,7 +111,6 @@ const Draw = () => {
 
       const responses = await Promise.all(requests);
       const photo = responses.map((res) => res.data.result.imageUrl);
-      setPhotos(photo);
       return photo; // 이미지 URL 배열 반환
     } catch (err) {
       console.log(err);

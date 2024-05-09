@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
+import diaryController from "../../api/diary.controller";
 
 const InfiniteScroll = ({ isVisible, keyword }) => {
   const [data, setData] = useState([]);
@@ -9,9 +9,11 @@ const InfiniteScroll = ({ isVisible, keyword }) => {
 
   const getPhoto = async () => {
     if (!hasNext) return;
-    const res = await axios.get(
-      `http://remomory.shop:8001/api/image?keyword=${keyword}&page=${page}&pageSize=5`
-    );
+    const res = await diaryController.getKeywordPhotos({
+      keyword: keyword,
+      page: page,
+      pageSize: 5,
+    });
     console.log(res.data.result.imgUrls);
     setHasNext(res.data.result.hasNext);
     setData((prev) => [...prev, ...res.data.result.imgUrls]);

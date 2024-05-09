@@ -6,11 +6,10 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Canvas from "../component/ImageDiary/Canvas";
 import Palette from "../component/ImageDiary/Palette";
 import Button from "../component/Button";
-import DiaryController from "../api/diary.controller";
-import axios from "axios";
 import keywordController from "../api/keyword.controller";
 import diaryController from "../api/diary.controller";
 import imgController from "../api/img.controller";
+import InfiniteScroll from "../component/ImageDiary/InfiniteScroll";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -39,14 +38,14 @@ const Draw = () => {
   const [isKeywordExist, setIsKeywordExist] = useState();
 
   //키워드 별 사진 가져오기
-  const fetchData = async () => {
-    await getPhoto(
-      location.state.map((item) => item.keyword),
-      1,
-      5
-    );
-    setIsGetPhoto(true);
-  };
+  // const fetchData = async () => {
+  //   await getPhoto(
+  //     location.state.map((item) => item.keyword),
+  //     1,
+  //     5
+  //   );
+  //   setIsGetPhoto(true);
+  // };
 
   useEffect(() => {
     //키워드가 없는 경우
@@ -60,7 +59,7 @@ const Draw = () => {
       setIsKeywordExist(true);
       setKeyword(location.state.map((item) => item.keyword));
       setKeywordId(location.state.map((item) => item.keywordId));
-      fetchData();
+      // fetchData();
     }
   }, []);
 
@@ -86,38 +85,9 @@ const Draw = () => {
     ));
   };
 
-  //키워드 별 사진 가져오기
-  const getPhoto = async (keywords, page, pageSize) => {
-    try {
-      const requests = keywords.map((keyword) => {
-        return diaryController.getKeywordPhotos({
-          keyword: keyword,
-          page: page,
-          pageSize: pageSize,
-        });
-      });
-
-      const responses = await Promise.all(requests);
-      const photodata = responses.map((res) => res.data.result);
-      setPhotoData(photodata);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  //키워드 별 사진 띄우기
   const renderPhoto = () => {
-    console.log(photoData);
-    if (photoData[index].imgUrls[0] == null) {
-      return (
-        <div className={"w-full flex justify-center items-center"}>
-          그림이 존재하지 않습니다.
-        </div>
-      );
-    }
-
-    return photoData[index].imgUrls.map((item, index) => (
-      <img src={item} key={index} />
+    return keyword.map((cur, i) => (
+      <InfiniteScroll isVisible={index === i} keyword={keyword[i]} />
     ));
   };
 
@@ -218,11 +188,7 @@ const Draw = () => {
         )}
       </div>
       {/* 사진 띄워줄 부분 */}
-      {isKeywordExist && (
-        <div className={"h-40 w-full flex flex-row overflow-x-auto text-2xl"}>
-          {isGetPhoto && renderPhoto()}
-        </div>
-      )}
+      {isKeywordExist && renderPhoto()}
       {/* Canvas */}
       <div
         style={{

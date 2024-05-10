@@ -28,6 +28,7 @@ import Error from "../pages/Error";
 import Header from "../component/Header";
 import CenterMap from "../pages/CenterMap";
 import PrevSurveyResult from "../pages/PrevSurveyResult";
+import SurveyError from "../pages/SurveyError";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -78,6 +79,7 @@ const MainLayout = () => {
         <Route path={"/mypage"} element={<MyPage />} />
         <Route path={"/centermap"} element={<CenterMap />} />
         <Route path={"/prevsurveyresult"} element={<PrevSurveyResult/>} />
+        <Route path={"/surveyerror"} element={<SurveyError/>} />
       </Routes>
       <Navbar />
     </div>

@@ -28,11 +28,11 @@ const SurveyStart = () => {
   };
 
   const handleSubmit = () => {
-    if(record.length!=0){
+    if(record!=null){
       navigate("/prevsurveyresult", {state:{count:record}});
     }
     else{
-      navigate("/survey");
+      navigate("/surveyerror");
     }
   };
 

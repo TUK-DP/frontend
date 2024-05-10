@@ -132,6 +132,9 @@ function Survey() {
     console.log(`Total X Count: ${xCount}`);  
     if (oCount + xCount === 32) {
       await getRecord(userId);
+      if(record==null){
+        setRecord(0);
+      }
       saveRecord(userId, 32, oCount);
       console.log(record);
       navigate("/surveyresult", { state: { oCount, xCount, record } });

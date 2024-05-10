@@ -13,7 +13,7 @@ import recordController from "../api/record.controller";
 
 const Home = () => {
   const userId = useSelector((state) => state.UserInfo.userId);
-  const [record, setRecord] = useState();
+  const [record, setRecord] = useState({});
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -42,12 +42,12 @@ const Home = () => {
         className="w-[22em] h-auto bg-[#e0f4ff] mx-auto mt-[2rem] rounded-3xl flex justify-evenly flex-col"
         style={{ boxShadow: "3px 3px 3px rgb(200, 200, 200)" }}
       >
-        {record.length!=0 ? (
+        {Object.keys(record).length !== 0 ? (
           <div className="flex justify-center items-center flex-col my-4">
-            <div className="text-2xl text-[#82aae3] font-bold my-3">이전 진단 결과</div>
+            <div className="text-3xl text-[#82aae3] font-bold my-3">이전 진단 결과</div>
             <div className="bg-white rounded-2xl w-[80%] flex justify-center items-center flex-col h-20">
-              <div className="text-2xl">{record.yesCount} / {record.total}</div>
-              <div className="text-2xl">{record.yesCount >= 17 ? <div>치매 의심</div> : <div>저위험 단계</div>}</div>
+              <div className="text-2xl font-bold">{record.yesCount} / {record.total}</div>
+              <div className="text-2xl">{record.yesCount >= 17 ? <div className="text-[#e15449] font-bold">치매 의심</div> : <div className="text-[#5fc25f] font-bold">저위험 단계</div>}</div>
             </div>
           </div>
         ):(

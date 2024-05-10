@@ -89,6 +89,7 @@ function Survey() {
   const [checkList, setCheckList] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const userId = useSelector((state) => state.UserInfo.userId);
+  const [record, setRecord] = useState({});
 
   const get_survey = async () => {
     const survey = await SurveyController.findAllSimpleSurvey();
@@ -129,8 +130,9 @@ function Survey() {
     console.log(`Total O Count: ${oCount}`);
     console.log(`Total X Count: ${xCount}`);  
     if (oCount + xCount === 32) {
+      getRecord(userId);
       saveRecord(userId, 32, oCount);
-      navigate("/surveyresult", { state: { oCount, xCount } });
+      navigate("/surveyresult", { state: { oCount, xCount, yesCount: record.yesCount } });
     }    
   };
 
@@ -143,6 +145,20 @@ function Survey() {
     await recordController.saveRecord(recordData);
     console.log("save");
   };  
+
+  const getRecord = async () => {
+    try {
+      const response = await recordController.prevRecord({ userId });
+      const { isSuccess, message, result } = response.data;
+      const recordData = {
+        total: result.totalQuestionSize,
+        yesCount: result.yesCount
+      };
+      setRecord(recordData);
+    } catch (error) {
+      console.log("이전 진단결과 조회 중 오류", error);
+    }
+  };
 
   return (
     <div className={"px-4 mb-10"}>

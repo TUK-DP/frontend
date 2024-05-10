@@ -59,7 +59,7 @@ const Home = () => {
           <div
             className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold text-lg mb-3"
             onClick={() => {
-              navigate("/surveyStart");
+              navigate("/surveyStart",{ state: {count: record.yesCount} });
             }}
           >
             치매진단 하러 가기

@@ -46,8 +46,8 @@ const Home = () => {
           <div className="flex justify-center items-center flex-col my-4">
             <div className="text-3xl text-[#82aae3] font-bold my-3">이전 진단 결과</div>
             <div className="bg-white rounded-2xl w-[80%] flex justify-center items-center flex-col h-20">
-              <div className="text-2xl font-bold">{record.yesCount} / {record.total}</div>
               <div className="text-2xl">{record.yesCount >= 17 ? <div className="text-[#e15449] font-bold">치매 의심</div> : <div className="text-[#5fc25f] font-bold">저위험 단계</div>}</div>
+              <div className="text-2xl font-bold">{record.yesCount} / {record.total}</div>
             </div>
           </div>
         ):(

@@ -63,12 +63,11 @@ function SurveyCop({ question, selectedResults, setSelectedResults }) {
   );
 }
 
-function SurveyList({ questionState, currentQuestionIndex, onVote, selectedResults, setSelectedResults }) {
+function SurveyList({ questionState, currentQuestionIndex, selectedResults, setSelectedResults }) {
   return (
     <SurveyCop
       key={currentQuestionIndex}
       question={questionState[currentQuestionIndex]}
-      onVote={onVote}
       selectedResults={selectedResults}
       setSelectedResults={setSelectedResults}
     />
@@ -86,7 +85,7 @@ function Survey() {
   const [questionState, setQuestionState] = useState([]);
   const [selectedResults, setSelectedResults] = useState(Array(32).fill(null));
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [checkList, setCheckList] = useState(true);
+  const [checkList, setCheckList] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const userId = useSelector((state) => state.UserInfo.userId);
   const [record, setRecord] = useState({});
@@ -104,14 +103,6 @@ function Survey() {
       get_survey();
     }, 1000);
   }, []);
-
-  const handleVote = (questionIndex, option) => {
-    console.log(`Question ID: ${questionIndex}, Selected Option: ${option}`);
-
-    const updatedResults = [...selectedResults];
-    updatedResults[questionIndex] = option;
-    setSelectedResults(updatedResults);
-  };
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questionState.length - 1) {
@@ -136,7 +127,6 @@ function Survey() {
         setRecord(0);
       }
       saveRecord(userId, 32, oCount);
-      console.log(record);
       navigate("/surveyresult", { state: { oCount, xCount, record } });
     }    
   };  
@@ -170,10 +160,14 @@ function Survey() {
           <SurveyList
             questionState={questionState}
             currentQuestionIndex={currentQuestionIndex}
-            onVote={handleVote}
             selectedResults={selectedResults}
             setSelectedResults={setSelectedResults}
           />
+          {checkList ? (
+            <div className="text-[#e15449] mt-2 text-xl mb-5 flex justify-center items-center">
+              문항을 체크해주세요.
+            </div>
+          ) : <div className="mt-2 text-xl mb-5 invisible">빈칸</div>}
           <div className={"flex w-full justify-between px-8 mb-[2rem]"}>
             {currentQuestionIndex === 0 ? (
               <div></div>
@@ -191,11 +185,6 @@ function Survey() {
           ):(
             <div></div>
           )}
-          {!checkList ? (
-            <div className="text-[#e15449] mt-2 text-xl">
-              문항을 체크해주세요.
-            </div>
-          ) : null}
         </>
       )}
     </div>

@@ -61,7 +61,7 @@ const Comparechart = ({ data }) => {
     setChartInstance(newChartInstance);
   }, [data]);
 
-  return <canvas ref={chartRef} style={{marginBottom:"2rem",font:"20px", width:"100%"}}/>; 
+  return <canvas ref={chartRef} style={{marginBottom:"2rem",font:"20px", width:"100%", backgroundColor:"white", borderRadius:"5px", border:"1px solid #ddd"}}/>; 
 };
 
 export default Comparechart;

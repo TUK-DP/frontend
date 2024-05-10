@@ -85,7 +85,7 @@ function Survey() {
   const [questionState, setQuestionState] = useState([]);
   const [selectedResults, setSelectedResults] = useState(Array(32).fill(null));
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [checkList, setCheckList] = useState(false);
+  const [checkList, setCheckList] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const userId = useSelector((state) => state.UserInfo.userId);
   const [record, setRecord] = useState({});
@@ -106,7 +106,11 @@ function Survey() {
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questionState.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCheckList(false);
+      if(selectedResults[questionState[currentQuestionIndex].index]=="O"||selectedResults[questionState[currentQuestionIndex].index]=="X"){
+        setCheckList(true);
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      }
     }
   };
 
@@ -163,7 +167,7 @@ function Survey() {
             selectedResults={selectedResults}
             setSelectedResults={setSelectedResults}
           />
-          {checkList ? (
+          {selectedResults[questionState[currentQuestionIndex].index]==null && !checkList ? (
             <div className="text-[#e15449] mt-2 text-xl mb-5 flex justify-center items-center">
               문항을 체크해주세요.
             </div>

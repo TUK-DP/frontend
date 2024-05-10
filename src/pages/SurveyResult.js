@@ -52,7 +52,7 @@ const Surveyresult = () => {
           )}
         </div>
         <div className="w-full pt-10 pb-8 bg-[#e0f4ff] flex justify-center items-center flex-col">
-          <div className="text-xl mb-5">치매 예방법</div>
+          <div className="text-2xl mb-5">치매 예방법</div>
           <div className="bg-white w-[90%] p-5 rounded-xl border-2 mb-7">
             1. 정기적인 건강검진을 받습니다. <br />
             2. 과도한 음주와 흡연을 피합니다. <br />
@@ -62,6 +62,9 @@ const Surveyresult = () => {
             6. 적절한 대인관계와 사회활동을 유지합니다. <br />
             7. 우울증을 치료합니다. <br />
             8. 기억력이 떨어지면 조기에 진료를 받습니다. <br />
+          </div>
+          <div className="text-2xl mb-4 mt-2">
+            진단결과 비교하기
           </div>
           <div className="w-[96%]">
             <Comparechart data={data}/>

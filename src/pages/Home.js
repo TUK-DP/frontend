@@ -42,7 +42,7 @@ const Home = () => {
         className="w-[22em] h-auto bg-[#e0f4ff] mx-auto mt-[2rem] rounded-3xl flex justify-evenly flex-col"
         style={{ boxShadow: "3px 3px 3px rgb(200, 200, 200)" }}
       >
-        {Object.keys(record).length !== 0 ? (
+        {record.yesCount != null ? (
           <div className="flex justify-center items-center flex-col my-4">
             <div className="text-3xl text-[#82aae3] font-bold my-3">이전 진단 결과</div>
             <div className="bg-white rounded-2xl w-[80%] flex justify-center items-center flex-col h-20">
@@ -51,7 +51,7 @@ const Home = () => {
             </div>
           </div>
         ):(
-          <span className="text-2xl font-bold text-[#838383] mx-auto">
+          <span className="text-2xl font-bold text-[#838383] mx-auto pt-8 mb-4">
             치매진단 기록이 없습니다
           </span>
         )}

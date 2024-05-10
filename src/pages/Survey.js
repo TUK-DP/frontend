@@ -99,6 +99,7 @@ function Survey() {
   };
 
   useEffect(() => {
+    getRecord();
     setTimeout(() => {
       get_survey();
     }, 1000);
@@ -124,17 +125,18 @@ function Survey() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const oCount = selectedResults.filter((result) => result === "O").length;
     const xCount = selectedResults.filter((result) => result === "X").length;
     console.log(`Total O Count: ${oCount}`);
     console.log(`Total X Count: ${xCount}`);  
     if (oCount + xCount === 32) {
-      getRecord(userId);
+      await getRecord(userId);
       saveRecord(userId, 32, oCount);
-      navigate("/surveyresult", { state: { oCount, xCount, yesCount: record.yesCount } });
+      console.log(record);
+      navigate("/surveyresult", { state: { oCount, xCount, record } });
     }    
-  };
+  };  
 
   const saveRecord = async (id, totalSize, yCount) => {
     const recordData = {
@@ -150,11 +152,7 @@ function Survey() {
     try {
       const response = await recordController.prevRecord({ userId });
       const { isSuccess, message, result } = response.data;
-      const recordData = {
-        total: result.totalQuestionSize,
-        yesCount: result.yesCount
-      };
-      setRecord(recordData);
+      setRecord(result.yesCount);
     } catch (error) {
       console.log("이전 진단결과 조회 중 오류", error);
     }

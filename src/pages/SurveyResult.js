@@ -5,6 +5,7 @@ import Button from "../component/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
+import Comparechart from "../component/CompareChart";
 
 const Surveyresult = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,10 @@ const Surveyresult = () => {
   }, []);
   const location = useLocation();
   const count = location.state ? location.state.oCount : 0;
+  const record = location.state ? location.state.record : 0;
+  const oCount = location.state ? location.state.oCount : 0;
+  const data = [record, oCount];
+
   const navigate = useNavigate();
   const handleSubmit = () => {
     navigate("/");
@@ -57,6 +62,9 @@ const Surveyresult = () => {
             6. 적절한 대인관계와 사회활동을 유지합니다. <br />
             7. 우울증을 치료합니다. <br />
             8. 기억력이 떨어지면 조기에 진료를 받습니다. <br />
+          </div>
+          <div className="w-[96%]">
+            <Comparechart data={data}/>
           </div>
           <Button
             text="홈으로가기"

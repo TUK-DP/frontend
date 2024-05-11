@@ -16,6 +16,11 @@ const PhotoEdit = ({}) => {
   const [imageDataUrl, setImageDataUrl] = useState([]);
   const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
   const [selected, setSelected] = useState(0);
+  const element = document.getElementById("limit");
+
+  // useEffect(() => {
+  //   console.log(element);
+  // }, [element]);
 
   const changeSelected = (i) => {
     setSelected(i);
@@ -29,34 +34,36 @@ const PhotoEdit = ({}) => {
   }, [imageDataUrl]);
   //캡쳐 후 이미지 저장
   const captureImage = () => {
-    // handleSelected(-1);
-    const element = document.getElementById("limit");
-    const formData = new FormData();
+    changeSelected(-1); // changeSelected 함수 실행
 
-    html2canvas(element).then((canvas) => {
-      canvas.toBlob((blob) => {
-        formData.append("image", blob, "image.png");
+    setTimeout(() => {
+      const formData = new FormData();
 
-        // 이미지를 업로드하고 완료될 때까지 기다림
-        imgController
-          .uploadImg(formData)
-          .then((res) => {
-            console.log(res.data.result.imageUrl);
-            diaryController
-              .saveDiaryImg(diaryId, {
-                imgUrl: res.data.result.imageUrl,
-              })
-              .then((res) => {
-                console.log(res);
-                navigate("/calendar");
-              })
-              .catch((err) => console.log(err));
-          })
-          .catch((error) => {
-            console.error("이미지 업로드 오류:", error);
-          });
+      html2canvas(element).then((canvas) => {
+        canvas.toBlob((blob) => {
+          formData.append("image", blob, "image.png");
+
+          // 이미지를 업로드하고 완료될 때까지 기다림
+          imgController
+            .uploadImg(formData)
+            .then((res) => {
+              console.log(res.data.result.imageUrl);
+              diaryController
+                .saveDiaryImg(diaryId, {
+                  imgUrl: res.data.result.imageUrl,
+                })
+                .then((res) => {
+                  console.log(res);
+                  navigate("/calendar");
+                })
+                .catch((err) => console.log(err));
+            })
+            .catch((error) => {
+              console.error("이미지 업로드 오류:", error);
+            });
+        });
       });
-    });
+    }, 0); // setTimeout을 사용하여 changeSelected가 끝난 후에 실행되도록 함
   };
 
   // 캔버스 크기를 반응형으로 조절하기 위해 화면의 크기를 받아와서 조정
@@ -172,6 +179,7 @@ const PhotoEdit = ({}) => {
                 width={width}
                 selected={selected}
                 changeSelected={changeSelected}
+                limit={element}
               />
             ))
           ) : (

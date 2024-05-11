@@ -2,12 +2,24 @@ import React, { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
 import Moveable from "react-moveable";
 import MoveableHelper from "moveable-helper";
+import "../../styles/Moveable.css";
 
-const Image = ({ image, initialPo, width }) => {
+const Image = ({
+  image,
+  initialPo,
+  width,
+  selected,
+  index,
+  changeSelected,
+}) => {
   const targetRef = useRef(null);
   const [helper] = useState(() => {
     return new MoveableHelper();
   });
+  const handleClick = () => {
+    changeSelected(index); // 전달받은 onClick 함수를 호출하여 이미지의 인덱스를 전달
+  };
+
   // const [position, setPosition] = useState({ x: initialPo.x, y: initialPo.y });
 
   // const trackPos = (data) => {
@@ -44,23 +56,30 @@ const Image = ({ image, initialPo, width }) => {
     //     <img draggable={"false"} src={image} width="100px" height="100px" />
     //   </div>
     // </Draggable>
-    <div>
+    <div
+      onClick={() => {
+        handleClick(index);
+      }}
+      onTouch
+    >
       <div className="target" ref={targetRef}>
         <img src={image} width={100} height={100} />
       </div>
-      <Moveable
-        target={targetRef}
-        draggable={true}
-        scalable={true}
-        keepRatio={true}
-        rotatable={true}
-        onDragStart={helper.onDragStart}
-        onDrag={helper.onDrag}
-        onScaleStart={helper.onScaleStart}
-        onScale={helper.onScale}
-        onRotateStart={helper.onRotateStart}
-        onRotate={helper.onRotate}
-      />
+      {selected === index ? (
+        <Moveable
+          target={targetRef}
+          draggable={true}
+          scalable={true}
+          keepRatio={true}
+          rotatable={true}
+          onDragStart={helper.onDragStart}
+          onDrag={helper.onDrag}
+          onScaleStart={helper.onScaleStart}
+          onScale={helper.onScale}
+          onRotateStart={helper.onRotateStart}
+          onRotate={helper.onRotate}
+        />
+      ) : null}
     </div>
   );
 };

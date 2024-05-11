@@ -15,6 +15,12 @@ const PhotoEdit = ({}) => {
   const images = location.state;
   const [imageDataUrl, setImageDataUrl] = useState([]);
   const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
+  const [selected, setSelected] = useState(0);
+
+  const changeSelected = (i) => {
+    setSelected(i);
+    console.log(selected);
+  };
 
   useEffect(() => {
     if (imageDataUrl.length > 0) {
@@ -23,6 +29,7 @@ const PhotoEdit = ({}) => {
   }, [imageDataUrl]);
   //캡쳐 후 이미지 저장
   const captureImage = () => {
+    // handleSelected(-1);
     const element = document.getElementById("limit");
     const formData = new FormData();
 
@@ -56,7 +63,6 @@ const PhotoEdit = ({}) => {
   const [width, setWidth] = useState();
   const resizeListener = () => {
     const size = window.innerWidth > 450 ? 450 : window.innerWidth;
-    console.log(size);
     setWidth(Math.ceil(size * 0.9));
   };
   // 화면 크기 조절
@@ -157,12 +163,15 @@ const PhotoEdit = ({}) => {
             images.map((image, index) => (
               <Image
                 key={index}
+                index={index}
                 image={image}
                 initialPo={{
                   x: (index % 3) * 100,
                   y: Math.floor(index / 3) * 100,
                 }}
                 width={width}
+                selected={selected}
+                changeSelected={changeSelected}
               />
             ))
           ) : (

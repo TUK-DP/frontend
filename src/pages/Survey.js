@@ -4,15 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
 import SkeletonSurvey from "../component/SkeletonSurvey";
-import { FaRegCircle } from "react-icons/fa";
+import { FaRegCircle, FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { FaChevronRight } from "react-icons/fa6";
-import { FaChevronLeft } from "react-icons/fa6";
 import Button from "../component/Button";
 import recordController from "../api/record.controller";
 import { useSelector } from "react-redux";
 
-function SurveyCop({ question, selectedResults, setSelectedResults }) {
+function SurveyCop({ question, selectedResults, setSelectedResults, handleNextQuestion, handlePreviousQuestion }) {
   const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
@@ -29,8 +27,20 @@ function SurveyCop({ question, selectedResults, setSelectedResults }) {
 
   return (
     <div>
-      <div className="text-4xl w-full flex justify-center items-center mt-6 font-bold">
-      {question.index} 번
+      <div className={"flex w-full justify-between px-8 mb-[2rem] mt-7"}>
+        {question.index === 1 ? (
+          <FaChevronLeft size={"50px"} style={{ visibility: "hidden" }}/>
+        ) : (
+          <FaChevronLeft  onClick={handlePreviousQuestion} size={"50px"}/>
+        )}
+        <div className="text-4xl w-full flex justify-center items-center font-bold">
+          {question.index} 번
+        </div>
+        {question.index === 32 ? (
+          <FaChevronRight size={"50px"} style={{ visibility: "hidden" }}/>
+        ) : (
+          <FaChevronRight onClick={handleNextQuestion} size={"50px"}/>
+        )}
       </div>
       <div className={"flex flex-col bg-[#e0f4ff] mt-8 mb-10 p-6 text-3xl rounded-3xl shadow-lg break-keep"}>
         <p>
@@ -63,13 +73,15 @@ function SurveyCop({ question, selectedResults, setSelectedResults }) {
   );
 }
 
-function SurveyList({ questionState, currentQuestionIndex, selectedResults, setSelectedResults }) {
+function SurveyList({ questionState, currentQuestionIndex, selectedResults, setSelectedResults, handleNextQuestion, handlePreviousQuestion }) {
   return (
     <SurveyCop
       key={currentQuestionIndex}
       question={questionState[currentQuestionIndex]}
       selectedResults={selectedResults}
       setSelectedResults={setSelectedResults}
+      handleNextQuestion={handleNextQuestion}
+      handlePreviousQuestion={handlePreviousQuestion}
     />
   );
 }
@@ -132,7 +144,7 @@ function Survey() {
       }
       saveRecord(userId, 32, oCount);
       navigate("/surveyresult", { state: { oCount, xCount, record } });
-    }    
+    }
   };  
 
   const saveRecord = async (id, totalSize, yCount) => {
@@ -166,24 +178,14 @@ function Survey() {
             currentQuestionIndex={currentQuestionIndex}
             selectedResults={selectedResults}
             setSelectedResults={setSelectedResults}
+            handleNextQuestion={handleNextQuestion}
+            handlePreviousQuestion={handlePreviousQuestion}
           />
           {selectedResults[questionState[currentQuestionIndex].index]==null && !checkList ? (
             <div className="text-[#e15449] mt-2 text-xl mb-5 flex justify-center items-center">
               문항을 체크해주세요.
             </div>
           ) : <div className="mt-2 text-xl mb-5 invisible">빈칸</div>}
-          <div className={"flex w-full justify-between px-8 mb-[2rem]"}>
-            {currentQuestionIndex === 0 ? (
-              <div></div>
-            ) : (
-              <FaChevronLeft  onClick={handlePreviousQuestion} size={"50px"}/>
-            )}
-            {currentQuestionIndex === 31 ? (
-              <div></div>
-            ) : (
-              <FaChevronRight onClick={handleNextQuestion} size={"50px"}/>
-            )}
-          </div>
           {currentQuestionIndex===31?(
             <Button onClick={handleSubmit} height={"60px"} text={"제출하기"} fontSize={"24px"}/>
           ):(

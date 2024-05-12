@@ -27,7 +27,7 @@ function SurveyCop({ question, selectedResults, setSelectedResults, handleNextQu
 
   return (
     <div>
-      <div className={"flex w-full justify-between px-8 mb-[2rem] mt-7"}>
+      <div className={"flex w-full justify-between px-3 mb-[3rem] mt-[3rem]"}>
         {question.index === 1 ? (
           <FaChevronLeft size={"50px"} style={{ visibility: "hidden" }}/>
         ) : (
@@ -42,7 +42,7 @@ function SurveyCop({ question, selectedResults, setSelectedResults, handleNextQu
           <FaChevronRight onClick={handleNextQuestion} size={"50px"}/>
         )}
       </div>
-      <div className={"flex flex-col bg-[#e0f4ff] mt-8 mb-10 p-6 text-3xl rounded-3xl shadow-lg break-keep"}>
+      <div className={"flex flex-col bg-[#e0f4ff] mt-8 mb-14 p-6 text-3xl rounded-3xl shadow-lg break-keep"}>
         <p>
           {question.question}
         </p>

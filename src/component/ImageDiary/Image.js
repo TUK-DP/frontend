@@ -20,6 +20,26 @@ const Image = ({
   const handleClick = () => {
     changeSelected(index);
   };
+    const onDrag = ({
+                        target,
+                        beforeDelta, beforeDist,
+                        left, top,
+                        right, bottom,
+                        delta, dist,
+                        transform,
+                        clientX, clientY,
+                    }) => {
+
+        if (left < 0) {
+            left = 0;
+        }
+
+        if (top < 0) {
+            top = 0;
+        }
+
+        target.style.transform = `translate(${left}px, ${top}px) rotate(0deg) scale(1,1)`;
+    };
 
   return (
     <div
@@ -42,7 +62,7 @@ const Image = ({
           keepRatio={true}
           rotatable={true}
           onDragStart={helper.onDragStart}
-          onDrag={helper.onDrag}
+          onDrag={onDrag}
           onScaleStart={helper.onScaleStart}
           onScale={helper.onScale}
           onRotateStart={helper.onRotateStart}

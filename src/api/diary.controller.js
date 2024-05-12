@@ -41,5 +41,9 @@ class DiaryController extends Api {
       data: imgUrl,
     });
   };
+  //그래프 데이터 가져오기
+  getGraphData = async (diaryId) => {
+    return await this.get(`/diary/${diaryId}/graph`);
+  }
 }
 export default new DiaryController();

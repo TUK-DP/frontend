@@ -27,9 +27,13 @@ const Image = ({
         handleClick(index);
       }}
     >
-      <div className="target" ref={targetRef}>
-        <img src={image} width={100} height={100} />
-      </div>
+      <img
+        src={image}
+        width={100}
+        height={100}
+        className="target"
+        ref={targetRef}
+      />
       {selected === index ? (
         <Moveable
           target={targetRef}

@@ -1,8 +1,9 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Explain = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   return (
     <div>
       <div className="bg-[#e0f4ff] w-full h-[23rem] mx-auto flex flex-col  items-center mt-[3rem] mb-[5rem] text-[#82aae3]">
@@ -11,7 +12,7 @@ const Explain = () => {
           <span></span>
         </div>
       </div>
-      <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl" onClick={()=>navigate('/keyword')}>키워드 그래프 보기</div>
+      <div className="bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl" onClick={()=>navigate('/keyword',{state:{diaryId: location.state.diaryId}})}>키워드 그래프 보기</div>
     </div>
   );
 };

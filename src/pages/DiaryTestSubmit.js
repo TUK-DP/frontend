@@ -12,7 +12,7 @@ const DiaryTestSubmit = () => {
   }, []);
   const navigate = useNavigate();
   const location = useLocation();
-  const answerList = location.state || {}; // useLocation을 통해 상태값을 가져옴
+  const answerList = location.state.list || {}; // useLocation을 통해 상태값을 가져옴
 
   useEffect(() => {
     console.log(answerList);
@@ -42,7 +42,7 @@ const DiaryTestSubmit = () => {
           width="90%"
           height="60px"
           text="키워드 그래프 보기"
-          onClick={() => navigate("/explain")}
+          onClick={() => navigate("/explain",{state:{diaryId: location.state.diaryId}})}
           fontSize="20px"
         />
         <Button

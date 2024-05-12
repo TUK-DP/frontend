@@ -1,5 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import diaryController from "../api/diary.controller";
+
+//그래프 데이터 가져오기
+const getGraphData = async(diaryid)=> {
+  try{
+    const response = diaryController.getGraphData(diaryid);
+    console.log(response.data)
+  }catch(error){
+    console.error("그래프 데이터 가져오기 중 오류", error);
+  }
+};
 
 const Graph = ({
   // 그래프 데이터

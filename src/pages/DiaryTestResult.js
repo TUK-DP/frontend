@@ -15,8 +15,9 @@ const DiaryTestResult = ({}) => {
 
   const handleResultCheck = () => {
     navigate("/diary/test/submit", {
-      state: answerList,
-    });
+      state: {list: answerList,
+      diaryId: location.state.diaryId
+  }});
   };
 
   return (

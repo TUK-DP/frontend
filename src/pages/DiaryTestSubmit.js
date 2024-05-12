@@ -42,7 +42,7 @@ const DiaryTestSubmit = () => {
           width="90%"
           height="60px"
           text="키워드 그래프 보기"
-          onClick={() => navigate("/keyword")}
+          onClick={() => navigate("/explain")}
           fontSize="20px"
         />
         <Button

@@ -29,6 +29,7 @@ import Header from "../component/Header";
 import CenterMap from "../pages/CenterMap";
 import Graphs from "../component/Graphs";
 import Keyword from "../pages/Keyword";
+import Explain from "../pages/Explain";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -80,6 +81,7 @@ const MainLayout = () => {
         <Route path={"/centermap"} element={<CenterMap />} />
         <Route path={"/graphs"} element={<Graphs />} />
         <Route path={"/keyword"} element={<Keyword />} />
+        <Route path={"/explain"} element={<Explain />} />
       </Routes>
       <Navbar />
     </div>

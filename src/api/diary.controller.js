@@ -25,7 +25,10 @@ class DiaryController extends Api {
   checkAnswer = async (quizData) => {
     return await this.post("/diary/checkanswer", { data: quizData });
   };
-
+  //일기별 키워드 조회
+  getKeyword = async (diaryId) => {
+    return await this.get(`/keyword/diary/${diaryId}`);
+  };
   //키워드별 사진 페이징
   getKeywordPhotos = async ({ keyword, page, pageSize }) => {
     return await this.get(
@@ -38,7 +41,10 @@ class DiaryController extends Api {
       data: imgUrl,
     });
   };
-
+  //그래프 데이터 가져오기
+  getGraphData = async (diaryId) => {
+    return await this.get(`/diary/${diaryId}/graph`);
+  }
   //일기 이미지 저장
   saveDiaryImg = async (diaryId, imgUrl) => {
     return await this.post(`/diary/${diaryId}/image`, {

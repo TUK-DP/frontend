@@ -74,6 +74,7 @@ const DiaryTest = () => {
       navigate("/diary/test/result", {
         state: {
           result: res.data.result,
+          diaryId: diaryId
         },
       });
     } catch (err) {

@@ -12,7 +12,7 @@ const DiaryTestSubmit = () => {
   }, []);
   const navigate = useNavigate();
   const location = useLocation();
-  const answerList = location.state || {}; // useLocation을 통해 상태값을 가져옴
+  const answerList = location.state.list || {}; // useLocation을 통해 상태값을 가져옴
 
   useEffect(() => {
     console.log(answerList);
@@ -37,7 +37,14 @@ const DiaryTestSubmit = () => {
           answer={item.answer}
         />
       ))}
-      <div className={"pb-5 w-full flex justify-center"}>
+      <div className={"pb-5 w-full h-[155px] flex flex-col justify-between items-center"}>
+        <Button
+          width="90%"
+          height="60px"
+          text="키워드 그래프 보기"
+          onClick={() => navigate("/explain",{state:{diaryId: location.state.diaryId}})}
+          fontSize="20px"
+        />
         <Button
           width="90%"
           height="60px"

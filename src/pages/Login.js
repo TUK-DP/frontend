@@ -29,8 +29,8 @@ const Login = () => {
       });
       console.log(res.data.result);
       const info = res.data.result.user;
-      localStorage.setItem("ACCESS_TOKEN", res.data.result.token.AccessToken);
-      localStorage.setItem("REFRESH_TOKEN", res.data.result.token.RefreshToken);
+      localStorage.setItem("AccessToken", res.data.result.token.AccessToken);
+      localStorage.setItem("RefreshToken", res.data.result.token.RefreshToken);
       localStorage.setItem("userId", info.id);
       dispatch({
         type: SET_USERINFO,

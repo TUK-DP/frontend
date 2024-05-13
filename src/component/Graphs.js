@@ -9,16 +9,15 @@ const Graph = ({
   height = "100%",
 
   // 노드의 폰트 사이즈
-  fondSize = { user: 20, diary: 20, keyword: 20 },
-
+  fondSize = { user: 30, diary: 30, keyword: 35 },
   // 노드의 크기 keywordConstants는 weight에 곱해지는 상수 (키워드 노드의 가중치에 따라 크기가 달라짐)
-  nodeSize = { user: 20, diary: 20, keyword: 20, keywordConstants: 1 },
+  nodeSize = { user: 25, diary: 25, keyword: 25, keywordConstants: 1.5 },
 
   // 노드의 색상 (user, diary, keyword)
-  nodeColor = { user: "red", diary: "green", keyword: "blue" },
+  nodeColor = { user: "#FFDFDF", diary: "#FFE3BB", keyword: "#D2E0FB" },
 
   // 노드 간격(노드가 서로 밀려나느힘) 음수일 경우 응집력으로 바뀜
-  spreadForce = 500,
+  spreadForce = 2000,
 }) => {
   const [data, setData] = useState({ nodes: [], relationships: [] });
   const [loading, setLoading] = useState(true);

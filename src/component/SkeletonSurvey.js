@@ -2,21 +2,14 @@ import React from "react";
 import "../styles/Skeleton.css";
 
 const SkeletonSurvey = () => {
-  const dummyQuestions = Array.from({ length: 32 }, (_, index) => index + 1);
   return (
-    <div>
-      {dummyQuestions.map((questionIndex) => (
-        <div key={questionIndex}>
-          <div className="bg-[#ddd] my-10 pt-4 px-4 pb-1 rounded-3xl">
-            <div className="skeletonText skeleton"></div>
-            <div className="skeletonText skeleton"></div>
-            <div>
-              <div className="skeletonBox skeleton"></div>
-              <div className="skeletonBox skeleton"></div>
-            </div>
-          </div>
-        </div>
-      ))}
+    <div className="rounded-3xl mt-7 w-full">
+      <div style={{height:"3rem", marginBottom:"1.5rem"}}></div>
+      <div className="skeletonText skeleton" style={{height:"7.5rem", width:"100%"}}></div>
+      <div className="flex justify-between">
+        <div className="skeletonBox skeleton"></div>
+        <div className="skeletonBox skeleton"></div>
+      </div>
     </div>
   );
 };

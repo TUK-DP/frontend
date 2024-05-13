@@ -5,22 +5,18 @@ import Button from "../component/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
-import Comparechart from "../component/CompareChart";
 
 const Surveyresult = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({ type: SET_PAGENAME, pageName: "치매진단결과" });
+    dispatch({ type: SET_PAGENAME, pageName: "이전진단결과" });
   }, []);
   const location = useLocation();
-  const count = location.state ? location.state.oCount : 0;
-  const record = location.state ? location.state.record : 0;
-  const oCount = location.state ? location.state.oCount : 0;
-  const data = [record, oCount];
+  const count = location.state ? location.state.count : 0;
 
   const navigate = useNavigate();
   const handleSubmit = () => {
-    navigate("/");
+    navigate("/survey");
   };
   const backgroundColor = count >= 17 ? "#e15449" : "#5fc25f";
 
@@ -52,7 +48,7 @@ const Surveyresult = () => {
           )}
         </div>
         <div className="w-full pt-10 pb-8 bg-[#e0f4ff] flex justify-center items-center flex-col">
-          <div className="text-2xl mb-5">치매 예방법</div>
+          <div className="text-xl mb-5">치매 예방법</div>
           <div className="bg-white w-[90%] p-5 rounded-xl border-2 mb-7">
             1. 정기적인 건강검진을 받습니다. <br />
             2. 과도한 음주와 흡연을 피합니다. <br />
@@ -63,14 +59,8 @@ const Surveyresult = () => {
             7. 우울증을 치료합니다. <br />
             8. 기억력이 떨어지면 조기에 진료를 받습니다. <br />
           </div>
-          <div className="text-2xl mb-4 mt-2">
-            진단결과 비교하기
-          </div>
-          <div className="w-[96%]">
-            <Comparechart data={data}/>
-          </div>
           <Button
-            text="홈으로가기"
+            text="치매진단하러가기"
             width={"90%"}
             height={"60px"}
             fontSize={"24px"}

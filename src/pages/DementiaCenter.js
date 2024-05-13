@@ -59,11 +59,11 @@ const DementiaCenter = () => {
   };
 
   return (
-    <div className={"flex flex-col justify-start px-2.5 py-5 h-full gap-5"}>
+    <div className={"flex-col px-2.5 py-5 h-full gap-5"}>
       {/* 검색바 */}
-      <div className="flex flex-row items-center border border-1 rounded-2xl gap-5 px-2.5 h-12 border-black">
+      <div className="flex items-center border-[1px] rounded-2xl px-2.5 h-12 border-black">
         <input
-          className="flex-grow border-none"
+          className="border-none flex-1"
           placeholder="거리(km)를 입력해주세요."
           value={distance}
           onChange={(event) => {
@@ -77,7 +77,7 @@ const DementiaCenter = () => {
         />
       </div>
       {/* 치매센터리스트 */}
-      <div className={"flex flex-col px-2.5"}>
+      <div className={"flex-col px-2.5"}>
         {showMessage && <div>주변에 치매센터가 존재하지 않습니다.</div>}
         {!showMessage && <DementiaList centers={centers} />}
       </div>

@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import Draggable from "react-draggable";
 import Moveable from "react-moveable";
 import MoveableHelper from "moveable-helper";
 import "../../styles/Moveable.css";
@@ -19,27 +18,32 @@ const Image = ({
   });
   const handleClick = () => {
     changeSelected(index);
+    console.log(index);
   };
-    const onDrag = ({
-                        target,
-                        beforeDelta, beforeDist,
-                        left, top,
-                        right, bottom,
-                        delta, dist,
-                        transform,
-                        clientX, clientY,
-                    }) => {
+  const onDrag = ({
+    target,
+    beforeDelta,
+    beforeDist,
+    left,
+    top,
+    right,
+    bottom,
+    delta,
+    dist,
+    transform,
+    clientX,
+    clientY,
+  }) => {
+    if (left < 0) {
+      left = 0;
+    }
 
-        if (left < 0) {
-            left = 0;
-        }
+    if (top < 0) {
+      top = 0;
+    }
 
-        if (top < 0) {
-            top = 0;
-        }
-
-        target.style.transform = `translate(${left}px, ${top}px) rotate(0deg) scale(1,1)`;
-    };
+    target.style.transform = `translate(${left}px, ${top}px) rotate(0deg) scale(1,1)`;
+  };
 
   return (
     <div

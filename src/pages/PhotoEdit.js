@@ -3,10 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Image from "../component/ImageDiary/Image.js";
 import html2canvas from "html2canvas";
 import Button from "../component/Button.js";
-import { style } from "d3";
 import imgController from "../api/img.controller.js";
 import diaryController from "../api/diary.controller.js";
 import { useSelector } from "react-redux";
+import Image2 from "../component/ImageDiary/Image2.js";
 
 const PhotoEdit = ({}) => {
   const location = useLocation();
@@ -168,18 +168,29 @@ const PhotoEdit = ({}) => {
           {/* 키워드 별 그림들 배치 */}
           {images.length > 0 ? (
             images.map((image, index) => (
-              <Image
+              // <Image
+              //   key={index}
+              //   index={index}
+              //   image={image}
+              // initialPo={{
+              //   x: (index % 3) * 100,
+              //   y: Math.floor(index / 3) * 100,
+              // }}
+              //   width={width}
+              //   selected={selected}
+              //   changeSelected={changeSelected}
+              //   limit={element}
+              // />
+              <Image2
                 key={index}
-                index={index}
                 image={image}
                 initialPo={{
                   x: (index % 3) * 100,
                   y: Math.floor(index / 3) * 100,
                 }}
-                width={width}
                 selected={selected}
                 changeSelected={changeSelected}
-                limit={element}
+                index={index}
               />
             ))
           ) : (

@@ -28,6 +28,7 @@ const Explain = () => {
         </div>
       </div>
       <div className="mb-5 bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl" onClick={()=>navigate('/keyword',{state:{diaryId: location.state.diaryId}})}>키워드 그래프 보기</div>
+      <div className="mb-5 bg-[#82aae3] text-white w-[20rem] mx-auto h-[3rem] rounded-lg flex justify-center items-center font-bold text-xl" onClick={()=>navigate('/')}>홈으로 가기</div>
     </div>
   );
 };

@@ -4,17 +4,17 @@ import KakaoMap from "../component/KakaoMap";
 
 const CenterMap = () => {
   const location = useLocation();
-  const { centers, index } = location.state;
-  const center = centers[index];
-
+  const { center } = location.state;
   return (
-    <div>
-      <div className="text-center font-bold text-[#82AAE3] text-2xl my-5">{center.name}</div>
-      <div>
-      <KakaoMap latitude={center.latitude} longitude={center.longitude} />
+    <>
+      <div className={`text-center font-bold text-REMEMORY text-2xl my-5`}>
+        {center.name}
       </div>
-      <div className="text-lg mt-3">주소: {center.address}</div>
-    </div>
+
+      <KakaoMap latitude={center.latitude} longitude={center.longitude} />
+
+      <p className="text-center text-lg mt-3">주소: {center.address}</p>
+    </>
   );
 };
 

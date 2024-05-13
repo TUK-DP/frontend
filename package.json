@@ -11,6 +11,7 @@
     "d3": "^7.9.0",
     "html2canvas": "^1.4.1",
     "postcss": "^8.4.35",
+    "prettier": "^3.2.5",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",

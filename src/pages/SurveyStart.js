@@ -1,16 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Check from "../assets/check.png";
 import "../styles/SurveyStart.css";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
+import recordController from "../api/record.controller";
 
 const SurveyStart = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "치매진단" });
+    getRecord();
   }, []);
   const navigate = useNavigate();
+
+  const [record, setRecord] = useState({});
+  const userId = useSelector((state) => state.UserInfo.userId);
+
+  const getRecord = async () => {
+    try {
+      const response = await recordController.prevRecord({ userId });
+      const { isSuccess, message, result } = response.data;
+      setRecord(result.yesCount);
+    } catch (error) {
+      console.log("이전 진단결과 조회 중 오류", error);
+    }
+  };
+
+  const handleSubmit = () => {
+    if(record!=null){
+      navigate("/prevsurveyresult", {state:{count:record}});
+    }
+    else{
+      navigate("/surveyerror");
+    }
+  };
 
   return (
     <div>
@@ -42,7 +66,7 @@ const SurveyStart = () => {
         <div id="btn_survey" onClick={() => navigate("/survey")}>
           치매 진단하기
         </div>
-        <div id="btn_before">이전 진단결과</div>
+        <div id="btn_before" onClick={handleSubmit}>이전 진단결과</div>
       </div>
     </div>
   );

@@ -30,6 +30,8 @@ import CenterMap from "../pages/CenterMap";
 import Graphs from "../component/Graphs";
 import Keyword from "../pages/Keyword";
 import Explain from "../pages/Explain";
+import PrevSurveyResult from "../pages/PrevSurveyResult";
+import SurveyError from "../pages/SurveyError";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -82,6 +84,8 @@ const MainLayout = () => {
         <Route path={"/graphs"} element={<Graphs />} />
         <Route path={"/keyword"} element={<Keyword />} />
         <Route path={"/explain"} element={<Explain />} />
+        <Route path={"/prevsurveyresult"} element={<PrevSurveyResult/>} />
+        <Route path={"/surveyerror"} element={<SurveyError/>} />
       </Routes>
       <Navbar />
     </div>

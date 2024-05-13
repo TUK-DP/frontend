@@ -45,7 +45,6 @@ class DiaryController extends Api {
   getGraphData = async (diaryId) => {
     return await this.get(`/diary/${diaryId}/graph`);
   }
-
   //일기 이미지 저장
   saveDiaryImg = async (diaryId, imgUrl) => {
     return await this.post(`/diary/${diaryId}/image`, {

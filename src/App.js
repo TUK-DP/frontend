@@ -33,6 +33,8 @@ import SubLayout from "./layout/SubLayout";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import useAutoLogin from "./hooks/useAutoLogin";
+import Explain from "./pages/Explain.js";
+import Keyword from "./pages/Keyword.js";
 
 function App() {
   let { loading } = useAutoLogin();
@@ -75,6 +77,8 @@ function App() {
           <Route exact path={"/gymvideo"} element={<GymnasticsVideo />} />
           <Route exact path={"/mypage"} element={<MyPage />} />
           <Route exact path={"/centermap"} element={<CenterMap />} />
+          <Route exact path={"/explain"} element={<Explain />} />
+          <Route exact path={"/keyword"} element={<Keyword />} />
           <Route
             exact
             path={"/prevsurveyresult"}

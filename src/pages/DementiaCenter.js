@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Search from "../assets/search.png";
 import { useGetNearByCenter } from "../hooks/useGetNearByCenter";
 import DementiaList from "../component/DementiaList";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const InputComp = ({ loading, value, onChange }) => {
   return (
@@ -68,6 +70,11 @@ const DementiaCenter = () => {
     centers,
     fetchNearbyCenters,
   } = useGetNearByCenter({ latitude: "", longitude: "" });
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "치매센터" });
+  }, []);
 
   return (
     <div id={"cos"} className={"flex flex-col h-[99%] px-2.5 pt-5"}>

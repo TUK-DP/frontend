@@ -27,6 +27,9 @@ import DiaryWrite from "../pages/DiaryWrite";
 import Error from "../pages/Error";
 import Header from "../component/Header";
 import CenterMap from "../pages/CenterMap";
+import Graphs from "../component/Graphs";
+import Keyword from "../pages/Keyword";
+import Explain from "../pages/Explain";
 import PrevSurveyResult from "../pages/PrevSurveyResult";
 import SurveyError from "../pages/SurveyError";
 
@@ -78,6 +81,9 @@ const MainLayout = () => {
         <Route path={"/gymvideo"} element={<GymnasticsVideo />} />
         <Route path={"/mypage"} element={<MyPage />} />
         <Route path={"/centermap"} element={<CenterMap />} />
+        <Route path={"/graphs"} element={<Graphs />} />
+        <Route path={"/keyword"} element={<Keyword />} />
+        <Route path={"/explain"} element={<Explain />} />
         <Route path={"/prevsurveyresult"} element={<PrevSurveyResult/>} />
         <Route path={"/surveyerror"} element={<SurveyError/>} />
       </Routes>

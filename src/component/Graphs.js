@@ -1,168 +1,47 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import diaryController from "../api/diary.controller";
 
 const Graph = ({
-  // 그래프 데이터
-  data,
+  diaryId,
   // 가로 세로 크기 기본값은 반응형
   width = "100%",
   height = "100%",
 
   // 노드의 폰트 사이즈
-  fondSize = { user: 20, diary: 20, keyword: 20 },
-
+  fondSize = { user: 30, diary: 30, keyword: 35 },
   // 노드의 크기 keywordConstants는 weight에 곱해지는 상수 (키워드 노드의 가중치에 따라 크기가 달라짐)
-  nodeSize = { user: 20, diary: 20, keyword: 20, keywordConstants: 1 },
+  nodeSize = { user: 25, diary: 25, keyword: 25, keywordConstants: 1.5 },
 
   // 노드의 색상 (user, diary, keyword)
-  nodeColor = { user: "red", diary: "green", keyword: "blue" },
+  nodeColor = { user: "#FFDFDF", diary: "#FFE3BB", keyword: "#D2E0FB" },
 
   // 노드 간격(노드가 서로 밀려나느힘) 음수일 경우 응집력으로 바뀜
-  spreadForce = 500,
+  spreadForce = 2000,
 }) => {
+  const [data, setData] = useState({ nodes: [], relationships: [] });
+  const [loading, setLoading] = useState(true);
   const svgRef = useRef(null);
 
-  let sampleData = {
-    nodes: [
-      {
-        id: 0,
-        user_id: 1,
-        label: "User",
-        text: "나",
-      },
-      {
-        id: 1,
-        diary_id: 1,
-        label: "Diary",
-        text: "일기",
-      },
-      {
-        id: 5,
-        label: "Keyword",
-        text: "참고",
-        weight: 0.9999999999999998,
-      },
-      {
-        id: 4,
-        label: "Keyword",
-        text: "눈물",
-        weight: 0.9999999999999998,
-      },
-      {
-        id: 3,
-        label: "Keyword",
-        text: "사람",
-        weight: 0.9999999999999998,
-      },
-      {
-        id: 2,
-        label: "Keyword",
-        text: "나라",
-        weight: 0.9999999999999998,
-      },
-    ],
-    relationships: [
-      {
-        properties: {},
-        type: "WROTE",
-        startNode: 0,
-        endNode: 1,
-      },
-      {
-        properties: {},
-        type: "INCLUDE",
-        startNode: 1,
-        endNode: 5,
-      },
-      {
-        properties: {},
-        type: "INCLUDE",
-        startNode: 1,
-        endNode: 4,
-      },
-      {
-        properties: {},
-        type: "INCLUDE",
-        startNode: 1,
-        endNode: 3,
-      },
-      {
-        properties: {},
-        type: "INCLUDE",
-        startNode: 1,
-        endNode: 2,
-      },
-      {
-        properties: {
-          tfidf: -0.85,
-        },
-        type: "CONNECTED",
-        startNode: 5,
-        endNode: 4,
-      },
-      {
-        properties: {
-          tfidf: -0.85,
-        },
-        type: "CONNECTED",
-        startNode: 5,
-        endNode: 4,
-      },
-      {
-        properties: {
-          tfidf: -0.85,
-        },
-        type: "CONNECTED",
-        startNode: 4,
-        endNode: 5,
-      },
-      {
-        properties: {
-          tfidf: -0.85,
-        },
-        type: "CONNECTED",
-        startNode: 4,
-        endNode: 5,
-      },
-      {
-        properties: {
-          tfidf: -0.85,
-        },
-        type: "CONNECTED",
-        startNode: 3,
-        endNode: 2,
-      },
-      {
-        properties: {
-          tfidf: -0.85,
-        },
-        type: "CONNECTED",
-        startNode: 3,
-        endNode: 2,
-      },
-      {
-        properties: {
-          tfidf: -0.85,
-        },
-        type: "CONNECTED",
-        startNode: 2,
-        endNode: 3,
-      },
-      {
-        properties: {
-          tfidf: -0.85,
-        },
-        type: "CONNECTED",
-        startNode: 2,
-        endNode: 3,
-      },
-    ],
-    errors: [],
-  };
-  data = sampleData;
+  //그래프 데이터 가져오기
+  useEffect(() => {
+    const getGraphData = async (diaryId) => {
+      try {
+        const response = await diaryController.getGraphData(diaryId);
+        const { isSuccess, message, result } = response.data;
+        setData(result);
+        setLoading(false); // 데이터 로딩 완료
+      } catch (error) {
+        console.error("그래프 데이터 가져오기 중 오류", error);
+      }
+    };
+
+    getGraphData(diaryId);
+  }, [diaryId]);
+
 
   useEffect(() => {
-    if (!svgRef.current) return;
+    if (!svgRef.current || loading) return;
 
     // Extract nodes and relationships
     const nodes = data.nodes.map((d) => ({
@@ -331,7 +210,7 @@ const Graph = ({
         .on("drag", dragged)
         .on("end", dragended);
     }
-  }, [data]);
+  }, [data, loading]);
 
   return <svg ref={svgRef} style={{ width: width, height: height }} />;
 };

@@ -11,13 +11,15 @@ export class Api {
   }
 
   async sendRequest(options) {
-    const { method, url, data, content_type } = options;
+    let { method, url, data, content_type, config = null } = options;
 
-    const config = {
-      headers: {
-        "Content-Type": content_type,
-      },
-    };
+    if (config === null) {
+      config = {
+        headers: {
+          "Content-Type": content_type,
+        },
+      };
+    }
 
     return await this.axiosInstance[method](url, data, config);
   }
@@ -40,7 +42,7 @@ export class Api {
         "Content-Type": content_type,
       },
     };
-    return await this.axiosInstance.delete(url, {data: data}, config);
+    return await this.axiosInstance.delete(url, { data: data }, config);
     // return await this.sendRequest({ method: "delete", url, data, content_type });
   }
 }

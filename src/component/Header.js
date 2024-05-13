@@ -10,10 +10,6 @@ const Header = () => {
   };
   const pageName = useSelector((state) => state.PageName.pageName);
 
-  useEffect(() => {
-    console.log(pageName);
-  }, [pageName]);
-
   return (
     <div
       style={{

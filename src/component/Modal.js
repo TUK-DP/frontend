@@ -1,7 +1,9 @@
 import React from "react";
 import Button from "./Button";
 
-const Modal = ({ onClose, content }) => {
+const Modal = ({ isModalOpen, onClose, content }) => {
+  if (!isModalOpen) return null;
+
   return (
     <div
       className={

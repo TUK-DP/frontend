@@ -17,7 +17,7 @@ const Graph = ({
   nodeColor = { user: "#FFDFDF", diary: "#FFE3BB", keyword: "#D2E0FB" },
 
   // 노드 간격(노드가 서로 밀려나느힘) 음수일 경우 응집력으로 바뀜
-  spreadForce = 2000,
+  spreadForce = 600,
 }) => {
   const [data, setData] = useState({ nodes: [], relationships: [] });
   const [loading, setLoading] = useState(true);
@@ -99,7 +99,9 @@ const Graph = ({
     let linkText = linkGroup
       .append("text")
       .text((d) => {
-        return d.tfidf;
+        if(d.type === "CONNECTED"){
+          return parseInt(d.tfidf * 10)/10;
+        }
       })
       .style("color", "#000")
       .style("fontWeight", "900")

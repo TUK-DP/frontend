@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from "redux";
+import { createStore } from "redux";
 import { combineReducers } from "redux";
 import ImageDiary from "../modules/ImageDiary.js";
 import DiaryDate from "../modules/DiaryDate.js";

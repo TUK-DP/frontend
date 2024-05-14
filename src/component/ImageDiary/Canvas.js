@@ -153,6 +153,10 @@ const Canvas = ({ isVisible, canvasRef }) => {
     dispatch({ type: BRUSH_SIZE, brushSize: parseInt(event.target.value, 10) });
   };
 
+  useEffect(() => {
+    console.log("painting: ", painting, " erasing: ", erasing);
+  }, [painting, erasing]);
+
   return (
     <div
       style={{
@@ -198,8 +202,13 @@ const Canvas = ({ isVisible, canvasRef }) => {
           onClick={() => {
             setErasing(false);
           }}
+          color={erasing ? "black" : "red"}
         />
-        <TfiEraser size={55} onClick={() => setErasing(true)} />
+        <TfiEraser
+          size={55}
+          onClick={() => setErasing(true)}
+          color={erasing ? "red" : "black"}
+        />
       </div>
       {/* 브러쉬 크기 조정  */}
       <div className={"flex flex-row justify-start items-center "}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../index.css";
 import mainBtn1 from "../assets/mainBtn1.png";
 import mainBtn2 from "../assets/mainBtn2.png";
@@ -7,30 +7,59 @@ import mainBtn4 from "../assets/mainBtn4.png";
 import mainBtn5 from "../assets/mainBtn5.png";
 import user from "../assets/user.png";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
+import recordController from "../api/record.controller";
 
 const Home = () => {
+  const userId = useSelector((state) => state.UserInfo.userId);
+  const [record, setRecord] = useState({});
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "Re-Memory" });
+    getRecord();
   }, []);
   const navigate = useNavigate();
 
+  const getRecord = async () => {
+    try {
+      const response = await recordController.prevRecord({ userId });
+      const { isSuccess, message, result } = response.data;
+      const recordData = {
+        total: result.totalQuestionSize,
+        yesCount: result.yesCount
+      };
+      setRecord(recordData);
+    } catch (error) {
+      console.log("이전 진단결과 조회 중 오류", error);
+    }
+  };
+  
   return (
     <div>
       <div
-        className="w-[22em] h-[11rem] bg-[#e0f4ff] mx-auto mt-[2rem] rounded-3xl flex justify-evenly flex-col"
+        className="w-[22em] h-auto bg-[#e0f4ff] mx-auto mt-[2rem] rounded-3xl flex justify-evenly flex-col"
         style={{ boxShadow: "3px 3px 3px rgb(200, 200, 200)" }}
       >
-        <span className="text-2xl font-bold text-[#838383] mx-auto">
-          치매진단 기록이 없습니다
-        </span>
+        {record.yesCount != null ? (
+          <div className="flex justify-center items-center flex-col my-4">
+            <div className="text-3xl text-[#82aae3] font-bold my-3">이전 진단 결과</div>
+            <div className="bg-white rounded-2xl w-[80%] flex justify-center items-center flex-col h-20">
+              <div className="text-2xl">{record.yesCount >= 17 ? <div className="text-[#e15449] font-bold">치매 의심</div> : <div className="text-[#5fc25f] font-bold">저위험 단계</div>}</div>
+              <div className="text-2xl font-bold">{record.yesCount} / {record.total}</div>
+            </div>
+          </div>
+        ):(
+          <span className="text-2xl font-bold text-[#838383] mx-auto pt-8 mb-4">
+            치매진단 기록이 없습니다
+          </span>
+        )}
         <div className="w-[95%] flex justify-end">
           <div
-            className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold text-lg"
+            className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold text-lg mb-3"
             onClick={() => {
-              navigate("/surveyStart");
+              navigate("/surveyStart",{ state: {count: record.yesCount} });
             }}
           >
             치매진단 하러 가기

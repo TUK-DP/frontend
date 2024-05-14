@@ -1,86 +1,94 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Search from "../assets/search.png";
+import { useGetNearByCenter } from "../hooks/useGetNearByCenter";
 import DementiaList from "../component/DementiaList";
-import Center from "../api/center.controller";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
+
+const InputComp = ({ loading, value, onChange }) => {
+  return (
+    <input
+      disabled={loading}
+      className="border-none flex-1"
+      placeholder={
+        loading
+          ? "위치 정보를 가져오는 중입니다..."
+          : "거리(km)를 입력해주세요."
+      }
+      type={"number"}
+      value={value}
+      onChange={onChange}
+    />
+  );
+};
+
+const SearchIcon = ({ onClick, loading }) => {
+  if (loading) {
+    return (
+      <div className={"h-9 w-9"}>
+        <div
+          className={`animate-spin rounded-full h-9 w-9 border-4 border-REMEMORY border-b-white`}
+        />
+      </div>
+    );
+  }
+  return (
+    <img
+      src={Search}
+      className={"h-9 w-9 cursor-pointer"}
+      onClick={onClick}
+      alt={""}
+    />
+  );
+};
+
+const SearchBar = ({
+  value,
+  isPositionFetchingDone,
+  isCenterDataFetchingDone,
+  onRadiusChange,
+  onSearch,
+}) => {
+  return (
+    <div className="flex items-center w-auto h-12 px-2.5 border-[1px] rounded-2xl border-black">
+      <InputComp
+        loading={!isPositionFetchingDone}
+        value={value}
+        onChange={onRadiusChange}
+      />
+      <SearchIcon onClick={onSearch} loading={!isCenterDataFetchingDone} />
+    </div>
+  );
+};
 
 const DementiaCenter = () => {
-  const [latitude, setLatitude] = useState(null); //위도
-  const [longitude, setLongitude] = useState(null); //경도
-  const [distance, setDistance] = useState(""); //입력받은 거리
-  const [centers, setCenters] = useState([]); //주변 센터 목록
-  const [showMessage, setShowMessage] = useState(false); //메시지 표시 여부
+  let {
+    isPositionFetchingDone,
+    isCenterDataFetchingDone,
+    inputRadius,
+    onRadiusChange,
+    centers,
+    fetchNearbyCenters,
+  } = useGetNearByCenter({ latitude: "", longitude: "" });
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    const getCurrentLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude);
-          },
-          (error) => {
-            console.error("Error getting geolocation:", error);
-          }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    };
-
-    getCurrentLocation();
+    dispatch({ type: SET_PAGENAME, pageName: "치매센터" });
   }, []);
 
-  const fetchNearbyCenters = async () => {
-    try {
-      const response = await Center.searchCenter({
-        lat: latitude,
-        lon: longitude,
-        radius: parseInt(distance)
-      });
-      const { isSuccess, message, result } = response.data;
-      const centerlist = result.map(center => ({
-        name: center["치매센터명"],
-        latitude: center["위도"],
-        longitude: center["경도"],
-        address: center["소재지도로명주소"],
-        distance: center["나와의거리"]
-      }));
-      centerlist.sort((a, b) => a.distance - b.distance);
-      setCenters(centerlist);
-      setShowMessage(centerlist.length === 0);
-      console.log(centerlist);
-    } catch (error) {
-      console.error("Error fetching nearby centers:", error);
-    }
-  };
-
-  const handleSearchClick = () => {
-    fetchNearbyCenters();
-  };
-
   return (
-    <div className={"flex flex-col justify-start px-2.5 py-5 h-full gap-5"}>
+    <div id={"cos"} className={"flex flex-col h-[99%] px-2.5 pt-5"}>
       {/* 검색바 */}
-      <div className="flex flex-row items-center border border-1 rounded-2xl gap-5 px-2.5 h-12 border-black">
-        <input
-          className="flex-grow border-none"
-          placeholder="거리(km)를 입력해주세요."
-          value={distance}
-          onChange={(event) => {
-            setDistance(event.target.value);
-          }}
-        />
-        <img
-          src={Search}
-          className={"h-9 w-9 cursor-pointer"}
-          onClick={handleSearchClick}
-        />
-      </div>
+      <SearchBar
+        value={inputRadius}
+        isPositionFetchingDone={isPositionFetchingDone}
+        isCenterDataFetchingDone={isCenterDataFetchingDone}
+        onSearch={fetchNearbyCenters}
+        onRadiusChange={onRadiusChange}
+      />
+
       {/* 치매센터리스트 */}
-      <div className={"flex flex-col px-2.5"}>
-        {showMessage && <div>주변에 치매센터가 존재하지 않습니다.</div>}
-        {!showMessage && <DementiaList centers={centers} />}
-      </div>
+      <DementiaList centers={centers} />
     </div>
   );
 };

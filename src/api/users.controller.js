@@ -14,6 +14,17 @@ class UserController extends Api {
     return await this.post("/users/checknickname", { data: nickname });
   };
   // 자동 로그인
+  autoLogin = async ({ userId, AccessToken, RefreshToken }) => {
+    return await this.get(`/users/${userId}/auto/login`, {
+      data: {
+        headers: {
+          AccessToken,
+          RefreshToken,
+          "Content-Type": "application/json",
+        },
+      },
+    });
+  };
   // 회원 정보 수정
   // 회원탈퇴
 }

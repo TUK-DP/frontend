@@ -4,6 +4,7 @@ import Diary from "../pages/Diary.js";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../api/diary.controller.js";
 import { useSelector } from "react-redux";
+import keywordController from "../api/keyword.controller.js";
 
 const DiaryEdit = () => {
   const [showDiary, setShowDiary] = useState(false);
@@ -49,7 +50,7 @@ const DiaryEdit = () => {
 
   const getKeyword = async () => {
     try {
-      const response = await DiaryController.getKeyword(diaryId);
+      const response = await keywordController.getKeyword(diaryId);
       const { isSuccess, result } = response.data;
 
       if (result.length == 0) {

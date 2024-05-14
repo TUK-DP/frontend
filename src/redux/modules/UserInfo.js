@@ -13,6 +13,9 @@ export const initialState = {
 export default function UserInfo(state = initialState, action) {
   switch (action.type) {
     case SET_USERINFO:
+      if (!action.userId) {
+        action.userId = action.id;
+      }
       return {
         ...state,
         userId: action.userId,

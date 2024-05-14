@@ -41,5 +41,15 @@ class DiaryController extends Api {
       data: imgUrl,
     });
   };
+  //그래프 데이터 가져오기
+  getGraphData = async (diaryId) => {
+    return await this.get(`/diary/${diaryId}/graph`);
+  }
+  //일기 이미지 저장
+  saveDiaryImg = async (diaryId, imgUrl) => {
+    return await this.post(`/diary/${diaryId}/image`, {
+      data: imgUrl,
+    });
+  };
 }
 export default new DiaryController();

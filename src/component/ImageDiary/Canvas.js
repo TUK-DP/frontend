@@ -84,7 +84,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
       ctx.putImageData(prevState, 0, 0);
     } else {
       history.pop();
-      clearCanvas();
     }
   };
 
@@ -96,7 +95,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
     const y = touch.clientY - rect.top + window.scrollY;
     setPainting(true);
     drawFn(x, y);
-    updateCanvasState();
   };
 
   const handleTouchMove = (e) => {
@@ -109,6 +107,7 @@ const Canvas = ({ isVisible, canvasRef }) => {
 
   const handleTouchEnd = () => {
     setPainting(false);
+    updateCanvasState();
   };
   // 캔버스 크기를 반응형으로 조절하기 위해 화면의 크기를 받아와서 조정
   const [width, setWidth] = useState();
@@ -131,7 +130,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
     const y = e.clientY - rect.top + window.scrollY;
     setPainting(true);
     drawFn(x, y);
-    updateCanvasState();
   };
 
   const handleMouseMove = (e) => {
@@ -145,6 +143,7 @@ const Canvas = ({ isVisible, canvasRef }) => {
 
   const handleMouseUp = () => {
     setPainting(false);
+    updateCanvasState();
   };
 
   //브러쉬 크기 변경

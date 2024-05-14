@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Image from "../component/ImageDiary/Image.js";
 import html2canvas from "html2canvas";
 import Button from "../component/Button.js";
 import imgController from "../api/img.controller.js";
@@ -158,13 +157,11 @@ const PhotoEdit = ({}) => {
           style={{
             backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,${bgOpacity}), rgba(255,255,255,${bgOpacity})), url(${process.env.PUBLIC_URL}/Background${backgroundUrl})`,
             backgroundSize: "cover",
-            // boxSizing: "border-box",
             width: width - 8,
             height: width - 8,
             display: "flex",
             flexWrap: "wrap",
             alignContent: "flex-start",
-            // margin: "10px",
             position: "relative",
           }}
         >

@@ -38,8 +38,7 @@ const Image2 = ({ image, initialPo, selected, changeSelected, index }) => {
             top: "0px",
           },
         }
-      : // position: absolute; user-select: none; width: 10px; height: 10px; right: 0; top: 0px; cursor: ne-resize; border: 0.5px solid rgb(119, 119, 119);
-        {};
+      : {};
   return (
     <div style={{ padding: "5px" }}>
       <Rnd

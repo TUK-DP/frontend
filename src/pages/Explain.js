@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const Explain = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "키워드 그래프" });
+  }, []);
   return (
     <div>
       <div className="bg-[#e0f4ff] w-full h-auto pb-10 mx-auto flex flex-col  items-center mb-[2rem] text-[#82aae3]">

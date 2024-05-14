@@ -176,7 +176,6 @@ const Draw = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          touchAction: "none",
         }}
       >
         {renderCanvas()}

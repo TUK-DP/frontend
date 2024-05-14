@@ -84,6 +84,7 @@ const Canvas = ({ isVisible, canvasRef }) => {
       ctx.putImageData(prevState, 0, 0);
     } else {
       history.pop();
+      clearCanvas();
     }
   };
 
@@ -170,6 +171,7 @@ const Canvas = ({ isVisible, canvasRef }) => {
         height={width}
         style={{
           border: "4px solid #D9D9D9",
+          touchAction: "none",
         }}
       ></canvas>
       {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}

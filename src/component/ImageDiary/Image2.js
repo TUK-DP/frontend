@@ -13,48 +13,59 @@ const Image2 = ({ image, initialPo, selected, changeSelected, index }) => {
             width: "10px",
             height: "10px",
             border: "0.5px solid #777777",
+            left: "0px",
+            bottom: "0px",
           },
           bottomRight: {
             width: "10px",
             height: "10px",
             border: "0.5px solid #777777",
+            right: "0px",
+            bottom: "0px",
           },
           topLeft: {
             width: "10px",
             height: "10px",
             border: "0.5px solid #777777",
+            left: "0px",
+            top: "0px",
           },
           topRight: {
             width: "10px",
             height: "10px",
             border: "0.5px solid #777777",
+            right: "0px",
+            top: "0px",
           },
         }
-      : {};
+      : // position: absolute; user-select: none; width: 10px; height: 10px; right: 0; top: 0px; cursor: ne-resize; border: 0.5px solid rgb(119, 119, 119);
+        {};
   return (
-    <Rnd
-      default={{
-        x: initialPo.x,
-        y: initialPo.y,
-        width: 100,
-        height: 100,
-      }}
-      minWidth={50}
-      minHeight={50}
-      bounds="#limit"
-      resizeHandleStyles={handleStyles}
-      lockAspectRatio={true}
-    >
-      <img
-        src={image}
-        onClick={() => {
-          handleClick(index);
+    <div style={{ padding: "5px" }}>
+      <Rnd
+        default={{
+          x: initialPo.x,
+          y: initialPo.y,
+          width: 100,
+          height: 100,
         }}
-        onTouchStart={() => {
-          handleClick(index);
-        }}
-      />
-    </Rnd>
+        minWidth={50}
+        minHeight={50}
+        bounds="#limit"
+        resizeHandleStyles={handleStyles}
+        lockAspectRatio={true}
+      >
+        <img
+          src={image}
+          onClick={() => {
+            handleClick(index);
+          }}
+          onTouchStart={() => {
+            handleClick(index);
+          }}
+        />
+      </Rnd>
+    </div>
   );
 };
 

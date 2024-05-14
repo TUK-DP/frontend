@@ -33,7 +33,7 @@ const PhotoEdit = ({}) => {
     changeSelected(-1); // changeSelected 함수 실행
 
     setTimeout(() => {
-      const element = document.getElementById("photoEditArea");
+      const element = document.getElementById("limit");
       const formData = new FormData();
 
       html2canvas(element).then((canvas) => {
@@ -150,21 +150,21 @@ const PhotoEdit = ({}) => {
         style={{
           width: width,
           height: width,
-          backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,${bgOpacity}), rgba(255,255,255,${bgOpacity})), url(${process.env.PUBLIC_URL}/Background${backgroundUrl})`,
-          backgroundSize: "cover",
         }}
         id="photoEditArea"
       >
         <div
           id="limit"
           style={{
+            backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,${bgOpacity}), rgba(255,255,255,${bgOpacity})), url(${process.env.PUBLIC_URL}/Background${backgroundUrl})`,
+            backgroundSize: "cover",
             // boxSizing: "border-box",
-            width: width - 28,
-            height: width - 28,
+            width: width - 8,
+            height: width - 8,
             display: "flex",
             flexWrap: "wrap",
             alignContent: "flex-start",
-            margin: "10px",
+            // margin: "10px",
             position: "relative",
           }}
         >

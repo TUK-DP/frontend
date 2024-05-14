@@ -96,7 +96,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
     const y = touch.clientY - rect.top + window.scrollY;
     setPainting(true);
     drawFn(x, y);
-    updateCanvasState();
   };
 
   const handleTouchMove = (e) => {
@@ -109,6 +108,7 @@ const Canvas = ({ isVisible, canvasRef }) => {
 
   const handleTouchEnd = () => {
     setPainting(false);
+    updateCanvasState();
   };
   // 캔버스 크기를 반응형으로 조절하기 위해 화면의 크기를 받아와서 조정
   const [width, setWidth] = useState();
@@ -131,7 +131,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
     const y = e.clientY - rect.top + window.scrollY;
     setPainting(true);
     drawFn(x, y);
-    updateCanvasState();
   };
 
   const handleMouseMove = (e) => {
@@ -145,6 +144,7 @@ const Canvas = ({ isVisible, canvasRef }) => {
 
   const handleMouseUp = () => {
     setPainting(false);
+    updateCanvasState();
   };
 
   //브러쉬 크기 변경
@@ -152,6 +152,10 @@ const Canvas = ({ isVisible, canvasRef }) => {
     console.log(brushSize);
     dispatch({ type: BRUSH_SIZE, brushSize: parseInt(event.target.value, 10) });
   };
+
+  useEffect(() => {
+    console.log("painting: ", painting, " erasing: ", erasing);
+  }, [painting, erasing]);
 
   return (
     <div
@@ -171,6 +175,7 @@ const Canvas = ({ isVisible, canvasRef }) => {
         height={width}
         style={{
           border: "4px solid #D9D9D9",
+          touchAction: "none",
         }}
       ></canvas>
       {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}
@@ -197,8 +202,13 @@ const Canvas = ({ isVisible, canvasRef }) => {
           onClick={() => {
             setErasing(false);
           }}
+          color={erasing ? "black" : "red"}
         />
-        <TfiEraser size={55} onClick={() => setErasing(true)} />
+        <TfiEraser
+          size={55}
+          onClick={() => setErasing(true)}
+          color={erasing ? "red" : "black"}
+        />
       </div>
       {/* 브러쉬 크기 조정  */}
       <div className={"flex flex-row justify-start items-center "}>

@@ -142,7 +142,7 @@ const Diary = ({ data }) => {
           onClick={updateDiary}
           disabled={isSaving}
         >
-          저장
+          수정
         </button>
       </div>
     </div>

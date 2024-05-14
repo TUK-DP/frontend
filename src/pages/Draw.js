@@ -69,7 +69,7 @@ const Draw = () => {
 
   const renderPhoto = () => {
     return keyword.map((cur, i) => (
-      <InfiniteScroll isVisible={index === i} keyword={keyword[i]} />
+      <InfiniteScroll isVisible={index === i} keyword={keyword[i]} key={i} />
     ));
   };
 
@@ -176,7 +176,6 @@ const Draw = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          touchAction: "none",
         }}
       >
         {renderCanvas()}

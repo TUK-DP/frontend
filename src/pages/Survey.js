@@ -27,16 +27,14 @@ function SurveyCop({ question, selectedResults, setSelectedResults, handleNextQu
 
   return (
     <div>
-      <div className={"flex w-full justify-between px-3 mb-[3rem] mt-[3rem]"}>
+      <div className="text-4xl w-full flex justify-between items-center font-bold h-[7rem] pt-3">
         {question.index === 1 ? (
           <FaChevronLeft size={"50px"} style={{ visibility: "hidden" }}/>
         ) : (
           <FaChevronLeft  onClick={handlePreviousQuestion} size={"50px"}/>
         )}
-        <div className="text-4xl w-full flex justify-center items-center font-bold">
           {question.index} 번
-        </div>
-        {question.index === 32 ? (
+          {question.index === 32 ? (
           <FaChevronRight size={"50px"} style={{ visibility: "hidden" }}/>
         ) : (
           <FaChevronRight onClick={handleNextQuestion} size={"50px"}/>

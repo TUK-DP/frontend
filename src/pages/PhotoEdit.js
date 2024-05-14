@@ -16,11 +16,6 @@ const PhotoEdit = ({}) => {
   const [imageDataUrl, setImageDataUrl] = useState([]);
   const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
   const [selected, setSelected] = useState(0);
-  const element = document.getElementById("limit");
-
-  // useEffect(() => {
-  //   console.log(element);
-  // }, [element]);
 
   const changeSelected = (i) => {
     setSelected(i);
@@ -32,11 +27,13 @@ const PhotoEdit = ({}) => {
       navigate("/diary/show", { state: { imageDataUrl } });
     }
   }, [imageDataUrl]);
+
   //캡쳐 후 이미지 저장
   const captureImage = () => {
     changeSelected(-1); // changeSelected 함수 실행
 
     setTimeout(() => {
+      const element = document.getElementById("photoEditArea");
       const formData = new FormData();
 
       html2canvas(element).then((canvas) => {
@@ -150,37 +147,30 @@ const PhotoEdit = ({}) => {
       {/* 그림 편집기 */}
       <div
         className={"border-4 border-[#D9D9D9] my-10 "}
-        style={{ width: width, height: width }}
+        style={{
+          width: width,
+          height: width,
+          backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,${bgOpacity}), rgba(255,255,255,${bgOpacity})), url(${process.env.PUBLIC_URL}/Background${backgroundUrl})`,
+          backgroundSize: "cover",
+        }}
+        id="photoEditArea"
       >
         <div
           id="limit"
           style={{
             // boxSizing: "border-box",
-            width: width - 8,
-            height: width - 8,
+            width: width - 28,
+            height: width - 28,
             display: "flex",
             flexWrap: "wrap",
             alignContent: "flex-start",
-            backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,${bgOpacity}), rgba(255,255,255,${bgOpacity})), url(${process.env.PUBLIC_URL}/Background${backgroundUrl})`,
-            backgroundSize: "cover",
+            margin: "10px",
+            position: "relative",
           }}
         >
           {/* 키워드 별 그림들 배치 */}
           {images.length > 0 ? (
             images.map((image, index) => (
-              // <Image
-              //   key={index}
-              //   index={index}
-              //   image={image}
-              // initialPo={{
-              //   x: (index % 3) * 100,
-              //   y: Math.floor(index / 3) * 100,
-              // }}
-              //   width={width}
-              //   selected={selected}
-              //   changeSelected={changeSelected}
-              //   limit={element}
-              // />
               <Image2
                 key={index}
                 image={image}

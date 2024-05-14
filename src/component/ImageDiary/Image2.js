@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 const Image2 = ({ image, initialPo, selected, changeSelected, index }) => {
-  // const nodeRef = useRef(null);
-  // const [position, setPosition] = useState({ x: initialPo.x, y: initialPo.y });
+  const [position, setPosition] = useState({ x: initialPo.x, y: initialPo.y });
   const handleClick = () => {
     changeSelected(index);
   };
+
   const handleStyles =
     selected == index
       ? {

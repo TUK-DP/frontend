@@ -35,9 +35,12 @@ import Signup from "./pages/Signup";
 import useAutoLogin from "./hooks/useAutoLogin";
 import Explain from "./pages/Explain.js";
 import Keyword from "./pages/Keyword.js";
+import useGetLocation from "./hooks/useGetLocation";
 
 function App() {
+  useGetLocation();
   let { loading } = useAutoLogin();
+
   if (loading) return null;
   return (
     <div className={"h-full"}>

@@ -67,12 +67,14 @@ export const useGetNearByCenter = ({ latitude, longitude }) => {
     setInputRadius("");
     setIsPositionFetchingDone(false);
 
-    if (window.postion) {
+    if (window.position) {
+      let newPosition = {
+        latitude: Number(window.position.latitude),
+        longitude: Number(window.position.longitude),
+      };
+      console.log(newPosition);
       // flutter web에서 위치 정보를 가져왔다면, 해당 위치 정보를 사용
-      setPosition({
-        latitude: Number(window.postion.latitude),
-        longitude: Number(window.postion.longitude),
-      });
+      setPosition(newPosition);
       setIsPositionFetchingDone(true);
       return;
     }

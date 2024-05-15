@@ -28,14 +28,14 @@ const Home = () => {
       const { isSuccess, message, result } = response.data;
       const recordData = {
         total: result.totalQuestionSize,
-        yesCount: result.yesCount
+        yesCount: result.yesCount,
       };
       setRecord(recordData);
     } catch (error) {
       console.log("이전 진단결과 조회 중 오류", error);
     }
   };
-  
+
   return (
     <div>
       <div
@@ -44,13 +44,23 @@ const Home = () => {
       >
         {record.yesCount != null ? (
           <div className="flex justify-center items-center flex-col my-4">
-            <div className="text-3xl text-[#82aae3] font-bold my-3">이전 진단 결과</div>
+            <div className="text-3xl text-[#82aae3] font-bold my-3">
+              이전 진단 결과
+            </div>
             <div className="bg-white rounded-2xl w-[80%] flex justify-center items-center flex-col h-20">
-              <div className="text-2xl">{record.yesCount >= 17 ? <div className="text-[#e15449] font-bold">치매 의심</div> : <div className="text-[#5fc25f] font-bold">저위험 단계</div>}</div>
-              <div className="text-2xl font-bold">{record.yesCount} / {record.total}</div>
+              <div className="text-2xl">
+                {record.yesCount >= 17 ? (
+                  <div className="text-[#e15449] font-bold">치매 의심</div>
+                ) : (
+                  <div className="text-[#5fc25f] font-bold">저위험 단계</div>
+                )}
+              </div>
+              <div className="text-2xl font-bold">
+                {record.yesCount} / {record.total}
+              </div>
             </div>
           </div>
-        ):(
+        ) : (
           <span className="text-2xl font-bold text-[#838383] mx-auto pt-8 mb-4">
             치매진단 기록이 없습니다
           </span>
@@ -59,7 +69,7 @@ const Home = () => {
           <div
             className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold text-lg mb-3"
             onClick={() => {
-              navigate("/surveyStart",{ state: {count: record.yesCount} });
+              navigate("/surveyStart", { state: { count: record.yesCount } });
             }}
           >
             치매진단 하러 가기

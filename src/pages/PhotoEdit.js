@@ -159,10 +159,11 @@ const PhotoEdit = ({}) => {
             backgroundSize: "cover",
             width: width - 8,
             height: width - 8,
-            display: "flex",
-            flexWrap: "wrap",
             alignContent: "flex-start",
             position: "relative",
+          }}
+          onClick={() => {
+            changeSelected(-1);
           }}
         >
           {/* 키워드 별 그림들 배치 */}

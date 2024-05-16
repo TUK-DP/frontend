@@ -48,7 +48,11 @@ const BeforeGame = () => {
         }}
       />
       <Button width="100%" height="60px" text="랭킹 보기" />
-      {isModalOpen && <Modal onClose={closeModal} content={gameInfo} />}
+      <Modal
+        onClose={closeModal}
+        content={gameInfo}
+        isModalOpen={isModalOpen}
+      />
     </div>
   );
 };

@@ -56,8 +56,8 @@ const InfiniteScroll = ({ isVisible, keyword }) => {
         }}
         ref={containerRef}
       >
-        {data.map((item) => {
-          return <img src={item} width={160} height={160} />;
+        {data.map((item, index) => {
+          return <img src={item} width={160} height={160} key={index} />;
         })}
       </div>
     </div>

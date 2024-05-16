@@ -53,6 +53,7 @@ const InfiniteScroll = ({ isVisible, keyword }) => {
           width: "100%",
           flexDirection: "row",
           overflowX: "auto",
+          border: "0.5px solid #e2e2e2",
         }}
         ref={containerRef}
       >

@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useState, useEffect } from "react";
-import "../styles/diary.css";
+import "../../styles/diary.css";
 import { useNavigate } from "react-router-dom";
-import DiaryController from "../api/diary.controller.js";
+import DiaryController from "../../api/diary.controller.js";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../component/Loading.js";
-import { CHANGE_DIARY } from "../redux/modules/DiaryInfo.js";
+import Loading from "../../component/Loading.js";
+import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
 
 const Diary = ({ data }) => {
   const navigate = useNavigate();

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "../styles/Calendar.css";
-import left from "../assets/left.png";
-import Right from "../assets/Right.png";
+import "../../styles/Calendar.css";
+import left from "../../assets/left.png";
+import Right from "../../assets/Right.png";
 import { useNavigate } from "react-router-dom";
 import DiaryShow from "./DiaryShow.js";
 import { useDispatch, useSelector } from "react-redux";
-import { CHANGE_DAY, CHANGE_MONTH } from "../redux/modules/DiaryDate.js";
-import { CHANGE_DIARY } from "../redux/modules/DiaryInfo.js";
-import DiaryController from "../api/diary.controller.js";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { CHANGE_DAY, CHANGE_MONTH } from "../../redux/modules/DiaryDate.js";
+import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
+import DiaryController from "../../api/diary.controller.js";
+import { SET_PAGENAME } from "../../redux/modules/PageName.js";
 
 const Calendar = () => {
   const dispatch = useDispatch();

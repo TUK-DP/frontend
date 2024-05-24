@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
-import Button from "../component/Button.js";
-import imgController from "../api/img.controller.js";
-import diaryController from "../api/diary.controller.js";
+import Button from "../../component/Button.js";
+import imgController from "../../api/img.controller.js";
+import diaryController from "../../api/diary.controller.js";
 import { useSelector } from "react-redux";
-import Image2 from "../component/ImageDiary/Image2.js";
+import Image2 from "../../component/ImageDiary/Image2.js";
 
 const PhotoEdit = ({}) => {
   const location = useLocation();

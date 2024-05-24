@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import GymButton from "../component/GymButton";
+import GymButton from "../../component/GymButton";
 import { useDispatch } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 
 const Gymnastics = () => {
   const dispatch = useDispatch();

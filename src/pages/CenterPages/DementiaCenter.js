@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import Search from "../assets/search.png";
-import { useGetNearByCenter } from "../hooks/useGetNearByCenter";
-import DementiaList from "../component/DementiaList";
+import Search from "../../assets/search.png";
+import { useGetNearByCenter } from "../../hooks/useGetNearByCenter";
+import DementiaList from "../../component/Center/DementiaList";
 import { useDispatch } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 
 const InputComp = ({ loading, value, onChange }) => {
   return (

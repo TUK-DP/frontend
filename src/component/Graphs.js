@@ -39,7 +39,6 @@ const Graph = ({
     getGraphData(diaryId);
   }, [diaryId]);
 
-
   useEffect(() => {
     if (!svgRef.current || loading) return;
 
@@ -99,8 +98,8 @@ const Graph = ({
     let linkText = linkGroup
       .append("text")
       .text((d) => {
-        if(d.type === "CONNECTED"){
-          return parseInt(d.tfidf * 10)/10;
+        if (d.type === "CONNECTED") {
+          return parseInt(d.tfidf * 10) / 10;
         }
       })
       .style("color", "#000")

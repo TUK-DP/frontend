@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import ChartGraph from "../component/ChartGraph";
+import ChartGraph from "../../component/Dementia/ChartGraph";
 import { useLocation } from "react-router-dom";
-import Button from "../component/Button";
+import Button from "../../component/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
-import Comparechart from "../component/CompareChart";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
+import Comparechart from "../../component/Dementia/CompareChart";
 
 const Surveyresult = () => {
   const dispatch = useDispatch();
@@ -63,11 +63,9 @@ const Surveyresult = () => {
             7. 우울증을 치료합니다. <br />
             8. 기억력이 떨어지면 조기에 진료를 받습니다. <br />
           </div>
-          <div className="text-2xl mb-4 mt-2">
-            진단결과 비교하기
-          </div>
+          <div className="text-2xl mb-4 mt-2">진단결과 비교하기</div>
           <div className="w-[96%]">
-            <Comparechart data={data}/>
+            <Comparechart data={data} />
           </div>
           <Button
             text="홈으로가기"

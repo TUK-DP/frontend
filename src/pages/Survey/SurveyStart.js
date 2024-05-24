@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Check from "../assets/check.png";
-import "../styles/SurveyStart.css";
+import Check from "../../assets/check.png";
+import "../../styles/SurveyStart.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
-import recordController from "../api/record.controller";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
+import recordController from "../../api/record.controller";
 
 const SurveyStart = () => {
   const dispatch = useDispatch();
@@ -28,10 +28,9 @@ const SurveyStart = () => {
   };
 
   const handleSubmit = () => {
-    if(record!=null){
-      navigate("/prevsurveyresult", {state:{count:record}});
-    }
-    else{
+    if (record != null) {
+      navigate("/prevsurveyresult", { state: { count: record } });
+    } else {
       navigate("/surveyerror");
     }
   };
@@ -66,7 +65,9 @@ const SurveyStart = () => {
         <div id="btn_survey" onClick={() => navigate("/survey")}>
           치매 진단하기
         </div>
-        <div id="btn_before" onClick={handleSubmit}>이전 진단결과</div>
+        <div id="btn_before" onClick={handleSubmit}>
+          이전 진단결과
+        </div>
       </div>
     </div>
   );

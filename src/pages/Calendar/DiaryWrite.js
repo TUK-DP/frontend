@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DiaryController from "../api/diary.controller";
+import DiaryController from "../../api/diary.controller";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../component/Loading";
-import Button from "../component/Button";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import Loading from "../../component/Loading";
+import Button from "../../component/Button";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 //일기 작성 페이지
 const Diary = () => {
   const dispatch = useDispatch();

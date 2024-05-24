@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "../index.css";
-import Right from "../assets/Right.png";
-import Left from "../assets/left.png";
+import "../../index.css";
+import Right from "../../assets/Right.png";
+import Left from "../../assets/left.png";
 import { useNavigate, useLocation } from "react-router-dom";
-import DiaryController from "../api/diary.controller.js";
+import DiaryController from "../../api/diary.controller.js";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName.js";
+import { SET_PAGENAME } from "../../redux/modules/PageName.js";
 const DiaryTest = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -74,7 +74,7 @@ const DiaryTest = () => {
       navigate("/diary/test/result", {
         state: {
           result: res.data.result,
-          diaryId: diaryId
+          diaryId: diaryId,
         },
       });
     } catch (err) {

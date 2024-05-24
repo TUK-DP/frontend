@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import KakaoMap from "../component/KakaoMap";
+import KakaoMap from "../../component/Center/KakaoMap";
 
 const CenterMap = () => {
   const location = useLocation();

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import QuizBox from "../component/QuizBox";
-import Button from "../component/Button";
+import QuizBox from "../../component/Quiz/QuizBox";
+import Button from "../../component/Button";
 import { useDispatch } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 
 const DiaryTestSubmit = () => {
   const dispatch = useDispatch();
@@ -37,12 +37,18 @@ const DiaryTestSubmit = () => {
           answer={item.answer}
         />
       ))}
-      <div className={"pb-5 w-full h-[155px] flex flex-col justify-between items-center"}>
+      <div
+        className={
+          "pb-5 w-full h-[155px] flex flex-col justify-between items-center"
+        }
+      >
         <Button
           width="90%"
           height="60px"
           text="키워드 그래프 보기"
-          onClick={() => navigate("/explain",{state:{diaryId: location.state.diaryId}})}
+          onClick={() =>
+            navigate("/explain", { state: { diaryId: location.state.diaryId } })
+          }
           fontSize="20px"
         />
         <Button

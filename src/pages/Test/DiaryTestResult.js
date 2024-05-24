@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 
 const DiaryTestResult = ({}) => {
   const dispatch = useDispatch();
@@ -15,9 +15,8 @@ const DiaryTestResult = ({}) => {
 
   const handleResultCheck = () => {
     navigate("/diary/test/submit", {
-      state: {list: answerList,
-      diaryId: location.state.diaryId
-  }});
+      state: { list: answerList, diaryId: location.state.diaryId },
+    });
   };
 
   return (

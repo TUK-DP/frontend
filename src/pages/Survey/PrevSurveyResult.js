@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import ChartGraph from "../component/ChartGraph";
+import ChartGraph from "../../component/Dementia/ChartGraph";
 import { useLocation } from "react-router-dom";
-import Button from "../component/Button";
+import Button from "../../component/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 
 const Surveyresult = () => {
   const dispatch = useDispatch();

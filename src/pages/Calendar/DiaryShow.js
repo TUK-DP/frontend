@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "../styles/DiaryEdit.css";
-import Diary from "../pages/Diary.js";
+import "../../styles/DiaryEdit.css";
+import Diary from "./Diary.js";
 import { useNavigate } from "react-router-dom";
-import DiaryController from "../api/diary.controller.js";
+import DiaryController from "../../api/diary.controller.js";
 import { useSelector } from "react-redux";
-import keywordController from "../api/keyword.controller.js";
+import keywordController from "../../api/keyword.controller.js";
 
 const DiaryEdit = () => {
   const [showDiary, setShowDiary] = useState(false);

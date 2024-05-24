@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import Canvas from "../component/ImageDiary/Canvas";
-import Palette from "../component/ImageDiary/Palette";
-import Button from "../component/Button";
-import keywordController from "../api/keyword.controller";
-import imgController from "../api/img.controller";
-import InfiniteScroll from "../component/ImageDiary/InfiniteScroll";
+import Canvas from "../../component/ImageDiary/Canvas";
+import Palette from "../../component/ImageDiary/Palette";
+import Button from "../../component/Button";
+import keywordController from "../../api/keyword.controller";
+import imgController from "../../api/img.controller";
+import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
 
 const Draw = () => {
   const dispatch = useDispatch();

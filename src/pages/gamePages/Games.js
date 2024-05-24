@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import gameImg1 from "../assets/gameImg1.png";
-import gameImg2 from "../assets/gameImg2.png";
-import gameImg3 from "../assets/gameImg3.png";
-import gameImg4 from "../assets/gameImg4.png";
-import gameImg5 from "../assets/gameImg5.png";
+import gameImg1 from "../../assets/gameImg1.png";
+import gameImg2 from "../../assets/gameImg2.png";
+import gameImg3 from "../../assets/gameImg3.png";
+import gameImg4 from "../../assets/gameImg4.png";
+import gameImg5 from "../../assets/gameImg5.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 
 const Games = () => {
   const dispatch = useDispatch();

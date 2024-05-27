@@ -60,11 +60,13 @@ const Toggle = () => {
 
   const buttonStyles = (size) => ({
     fontSize: size,
-    border: "1px solid #000",
+    fontWeight: "bold",
     borderRadius: "10px",
     height: "50px",
     width: "60px",
-    backgroundColor: currentFontSize === size ? "#ddd" : "#fff",
+    border: currentFontSize === size ? "" : "2px solid #ddd",
+    backgroundColor: currentFontSize === size ? "#82aae3" : "#e0f4ff",
+    color: "black",
   });
 
   return (

@@ -127,7 +127,7 @@ const Diary = ({ data }) => {
       >
         <button
           className={
-            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold mx-6"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
           onClick={deleteDiary}
@@ -136,7 +136,7 @@ const Diary = ({ data }) => {
         </button>
         <button
           className={
-            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold mx-6"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
           onClick={updateDiary}

@@ -70,7 +70,7 @@ const Toggle = () => {
   return (
     <div>
       <div className="flex justify-between items-center py-5 border-b-2">
-        <span className="text-lg">글씨 크기 조정하기</span>
+        <span className="text-lg">글씨 크기 조절하기</span>
         <button onClick={toggleDrop} style={{ fontSize: "20px" }}>
           {isDrop ? "▲" : "▼"}
         </button>
@@ -81,19 +81,19 @@ const Toggle = () => {
             onClick={() => fontSizeChange("16px")}
             style={buttonStyles("16px")}
           >
-            글씨
+            작게
           </button>
           <button
             onClick={() => fontSizeChange("18px")}
             style={buttonStyles("18px")}
           >
-            글씨
+            중간
           </button>
           <button
-            onClick={() => fontSizeChange("20px")}
-            style={buttonStyles("20px")}
+            onClick={() => fontSizeChange("22px")}
+            style={buttonStyles("22px")}
           >
-            글씨
+            크게
           </button>
         </div>
       )}

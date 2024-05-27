@@ -35,12 +35,14 @@ import Signup from "./pages/Signup";
 import useAutoLogin from "./hooks/useAutoLogin";
 import Explain from "./pages/Keyword/Explain.js";
 import Keyword from "./pages/Keyword/Keyword.js";
+import { useSelector } from "react-redux";
 
 function App() {
+  const fontSize = useSelector((state) => state.fontSize);
   let { loading } = useAutoLogin();
   if (loading) return null;
   return (
-    <div className={"h-full"}>
+    <div className={"h-full"} style={{ fontSize }}>
       <Header />
       <Routes>
         <Route element={<MainLayout />}>

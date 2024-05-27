@@ -47,6 +47,7 @@ const UserProfile = () => {
 
 const Toggle = () => {
   const dispatch = useDispatch();
+  const currentFontSize = useSelector((state) => state.fontSize);
   const [isDrop, setIsDrop] = useState(false);
 
   const fontSizeChange = (size) => {
@@ -57,47 +58,40 @@ const Toggle = () => {
     setIsDrop(!isDrop);
   };
 
+  const buttonStyles = (size) => ({
+    fontSize: size,
+    border: "1px solid #000",
+    borderRadius: "10px",
+    height: "50px",
+    width: "60px",
+    backgroundColor: currentFontSize === size ? "#ddd" : "#fff",
+  });
+
   return (
     <div>
       <div className="flex justify-between items-center py-5 border-b-2">
         <span className="text-lg">글씨 크기 조정하기</span>
-        <botton onClick={toggleDrop}>{isDrop ? "▲" : "▼"}</botton>
+        <button onClick={toggleDrop} style={{ fontSize: "20px" }}>
+          {isDrop ? "▲" : "▼"}
+        </button>
       </div>
       {isDrop && (
         <div className="flex justify-between items-center p-4 border-b-2">
           <button
             onClick={() => fontSizeChange("16px")}
-            style={{
-              fontSize: "16px",
-              border: "1px solid #000",
-              borderRadius: "10px",
-              height: "50px",
-              width: "60px",
-            }}
+            style={buttonStyles("16px")}
           >
             글씨
           </button>
           <button
             onClick={() => fontSizeChange("18px")}
-            style={{
-              fontSize: "18px",
-              border: "1px solid #000",
-              borderRadius: "10px",
-              height: "50px",
-              width: "60px",
-            }}
+            style={buttonStyles("18px")}
           >
             글씨
           </button>
           <button
             onClick={() => fontSizeChange("20px")}
-            style={{
-              fontSize: "20px",
-              border: "1px solid #000",
-              borderRadius: "10px",
-              height: "50px",
-              width: "60px",
-            }}
+            style={buttonStyles("20px")}
           >
             글씨
           </button>

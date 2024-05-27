@@ -12,7 +12,7 @@ const render = () => {
   const state = store.getState();
   const fontSize = state.fontSize;
 
-  document.getElementById("root").style.fontSize = fontSize;
+  document.documentElement.style.fontSize = fontSize;
 
   root.render(
     <Provider store={store}>

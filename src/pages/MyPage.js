@@ -90,8 +90,8 @@ const Toggle = () => {
             중간
           </button>
           <button
-            onClick={() => fontSizeChange("22px")}
-            style={buttonStyles("22px")}
+            onClick={() => fontSizeChange("20px")}
+            style={buttonStyles("20px")}
           >
             크게
           </button>

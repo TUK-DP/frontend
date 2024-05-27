@@ -67,7 +67,7 @@ const Home = () => {
         )}
         <div className="w-[95%] flex justify-end">
           <div
-            className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold mb-3"
+            className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold mb-3 text-xl"
             onClick={() => {
               navigate("/surveyStart", { state: { count: record.yesCount } });
             }}

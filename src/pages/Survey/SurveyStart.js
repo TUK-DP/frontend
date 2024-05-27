@@ -41,17 +41,14 @@ const SurveyStart = () => {
         <p className="font-bold text-4xl">치매 자가 진단법</p>
         <p className="text-2xl">총 32문항</p>
       </div>
-      <p className="text-2xl text-center">
-        발병 전후의 상태를 잘 아는 본인이 <br /> 치매환자의 인지기능에 대한
-        정보를 <br /> 제공함으로써 치매를 조기에 <br /> 발견할 수 있는 치매
-        선별검사
+      <p className="text-2xl text-center break-keep">
+        발병 전후의 상태를 잘 아는 본인이 치매환자의 인지기능에 대한 정보를
+        제공함으로써 치매를 조기에 발견할 수 있는 치매 선별검사
       </p>
       <div className="flex flex-col justify-center items-center w-[95%] h-auto rounded-2xl border-4 my-8 mx-auto">
-        <p className="text-xl w-full py-5 px-10 break-words text-center">
-          본 검사는 간단하게 치매여부를 <br />
-          평가해 볼 수 있는 간이 도구입니다.
-          <br /> 이 결과로 치매를 결정할 수 없으며
-          <br /> 반드시 전문의의 평가가 필요합니다.
+        <p className="text-xl w-full py-5 px-10 break-keep text-center">
+          본 검사는 간단하게 치매여부를 평가해 볼 수 있는 간이 도구입니다. 이
+          결과로 치매를 결정할 수 없으며 반드시 전문의의 평가가 필요합니다.
         </p>
         <div
           className="w-[90%] h-auto bg-[#e0f4ff] text-2xl rounded-xl border-4 flex justify-center items-center font-bold py-3"

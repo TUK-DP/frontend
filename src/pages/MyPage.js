@@ -63,7 +63,7 @@ const Toggle = () => {
     fontWeight: "bold",
     borderRadius: "10px",
     height: "50px",
-    width: "60px",
+    width: "75px",
     border: currentFontSize === size ? "" : "2px solid #ddd",
     backgroundColor: currentFontSize === size ? "#82aae3" : "#e0f4ff",
     color: "black",

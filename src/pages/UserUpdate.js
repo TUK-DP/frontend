@@ -22,14 +22,18 @@ const UserUpdate = () => {
   const navigate = useNavigate();
   //form 제출
   const onSubmit = async (data) => {
+    const userData = {
+      username: data.username,
+      nickname: data.nickname,
+      email: data.email,
+      password: data.password,
+      birth: data.birth,
+    };
     try {
-      // const res = await UserController.updateUser({
-      //   username,
-      //   nickname,
-      //   emai,
-      //   password,
-      //   birth,
-      // });
+      const res = await UserController.updateUser({
+        userId: userInfo.userId,
+        data: userData,
+      });
       navigate("/mypage");
     } catch (error) {
       console.log("정보 수정 중 오류", error);

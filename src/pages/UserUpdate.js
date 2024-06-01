@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 import Button from "../component/Button";
 import Modal from "../component/Modal";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
 
 const UserUpdate = () => {
   const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.UserInfo);
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "정보 수정" });
   }, []);
@@ -22,17 +23,16 @@ const UserUpdate = () => {
   //form 제출
   const onSubmit = async (data) => {
     try {
-      const res = await UserController.signUp({
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        nickname: data.nickname,
-        birth: data.birth,
-      });
-      console.log(res);
-      navigate("/login");
+      // const res = await UserController.updateUser({
+      //   username,
+      //   nickname,
+      //   emai,
+      //   password,
+      //   birth,
+      // });
+      navigate("/mypage");
     } catch (error) {
-      console.log(error);
+      console.log("정보 수정 중 오류", error);
     }
   };
   const [nickname, setNickname] = useState("");
@@ -73,7 +73,7 @@ const UserUpdate = () => {
           <label>이름</label>
           <input
             type="text"
-            placeholder="이름을 입력하세요."
+            placeholder={userInfo.username}
             {...register("username", {
               required: "빈 칸 없이 작성해주세요.",
               minLength: {
@@ -94,7 +94,7 @@ const UserUpdate = () => {
               {...nicknameRegister}
               onChange={handleChange}
               type="text"
-              placeholder="닉네임을 입력하세요."
+              placeholder={userInfo.nickname}
               style={{ width: "283px" }}
             />
             <Button
@@ -115,7 +115,7 @@ const UserUpdate = () => {
           <label>생년월일</label>
           <input
             type="date"
-            placeholder="생년월일을 입력하세요."
+            defaultValue={userInfo.birth}
             {...register("birth", { required: "빈 칸 없이 작성해주세요." })}
           />
           <div className="error-message">
@@ -126,7 +126,7 @@ const UserUpdate = () => {
           <label>이메일</label>
           <input
             type="text"
-            placeholder="이메일을 입력하세요."
+            placeholder={userInfo.email}
             {...register("email", {
               required: "빈 칸 없이 작성해주세요.",
               pattern: {

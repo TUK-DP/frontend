@@ -105,6 +105,7 @@ const Toggle = () => {
 
 const MyPage = () => {
   const dispatch = useDispatch();
+  let navigate = useNavigate();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "마이페이지" });
   }, []);
@@ -115,7 +116,11 @@ const MyPage = () => {
 
       {/* 마이페이지 리스트 */}
       <div className={"flex flex-col py-5 "}>
-        <MyPageList src={User} text="회원정보 수정" />
+        <MyPageList
+          src={User}
+          text="회원정보 수정"
+          onClick={() => navigate("/userupdate")}
+        />
         <MyPageList src={Diary} text="일기 관리" />
         <Toggle />
       </div>

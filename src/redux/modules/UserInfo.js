@@ -2,6 +2,7 @@ export const SET_USERINFO = "SET_USERINFO";
 
 export const initialState = {
   userId: "",
+  username: "",
   email: "",
   password: "",
   nickname: "",
@@ -19,6 +20,7 @@ export default function UserInfo(state = initialState, action) {
       return {
         ...state,
         userId: action.userId,
+        username: action.username,
         email: action.email,
         password: action.password,
         nickname: action.nickname,

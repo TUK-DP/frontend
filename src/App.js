@@ -35,6 +35,7 @@ import Signup from "./pages/Signup";
 import useAutoLogin from "./hooks/useAutoLogin";
 import Explain from "./pages/Keyword/Explain.js";
 import Keyword from "./pages/Keyword/Keyword.js";
+import UserUpdate from "./pages/UserUpdate.js";
 
 function App() {
   let { loading } = useAutoLogin();
@@ -79,6 +80,7 @@ function App() {
           <Route exact path={"/centermap"} element={<CenterMap />} />
           <Route exact path={"/explain"} element={<Explain />} />
           <Route exact path={"/keyword"} element={<Keyword />} />
+          <Route exact path={"/userupdate"} element={<UserUpdate />} />
           <Route
             exact
             path={"/prevsurveyresult"}

@@ -35,6 +35,7 @@ import Signup from "./pages/Signup";
 import useAutoLogin from "./hooks/useAutoLogin";
 import Explain from "./pages/Keyword/Explain.js";
 import Keyword from "./pages/Keyword/Keyword.js";
+import HelpForAi from "./pages/Calendar/HelpForAi.js";
 
 function App() {
   let { loading } = useAutoLogin();
@@ -85,6 +86,7 @@ function App() {
             element={<PrevSurveyResult />}
           />
           <Route exact path={"/surveyerror"} element={<SurveyError />} />
+          <Route exact path={"/draw/help"} element={<HelpForAi />} />
         </Route>
         <Route element={<SubLayout />}>
           <Route path={"/login"} element={<Login />} />

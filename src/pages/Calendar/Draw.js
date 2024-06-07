@@ -2,13 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SET_PAGENAME } from "../../redux/modules/PageName";
 import { useLocation, useNavigate } from "react-router-dom";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import {
+  IoIosArrowBack,
+  IoIosArrowDropdown,
+  IoIosArrowForward,
+} from "react-icons/io";
 import Canvas from "../../component/ImageDiary/Canvas";
 import Palette from "../../component/ImageDiary/Palette";
 import Button from "../../component/Button";
 import keywordController from "../../api/keyword.controller";
 import imgController from "../../api/img.controller";
 import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
+import SkyButton from "../../component/BackGroundSkyButton";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -144,6 +149,14 @@ const Draw = () => {
     }
   };
 
+  const handleClickAIButton = () => {
+    navigate("/draw/help", {
+      state: {
+        keyword: keyword[index],
+      },
+    });
+  };
+
   return (
     <div className={"flex flex-col m-2 gap-2"}>
       {/* 키워드 */}
@@ -167,6 +180,23 @@ const Draw = () => {
         {keyword.length > 0 && index === keyword.length - 1 && (
           <div style={{ width: "40px" }}></div>
         )}
+      </div>
+      {/* AI 도움 */}
+      <div className={"flex flex-col gap-2"}>
+        <p className={"text-[#7D7D7D] font-bold text-lg"}>
+          혹시 그림 그리기 어려우신가요?
+          <br />
+          아래 버튼을 누르면 이미지가 생성됩니다!
+        </p>
+        <SkyButton onClick={() => handleClickAIButton()} text="AI 도움 받기" />
+      </div>
+      <div
+        className={
+          "text-[#7D7D7D] font-bold text-lg flex flex-row justify-end items-center"
+        }
+      >
+        다른 사람 그림 보기
+        <IoIosArrowForward size={30} />
       </div>
       {/* 사진 띄워줄 부분 */}
       {isKeywordExist && renderPhoto()}

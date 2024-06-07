@@ -11,6 +11,7 @@ const EmailInputComp = ({ emailRegister, errors }) => {
         type="email"
         placeholder="이메일을 입력하세요."
         {...emailRegister}
+        className="input"
       />
       <div className="error-message">
         {errors.email && errors.email.message}
@@ -27,6 +28,7 @@ const PasswordInputComp = ({ passwordRegister, errors }) => {
         type="password"
         placeholder="비밀번호를 입력하세요."
         {...passwordRegister}
+        className="input"
       />
       <div className="error-message">
         {errors.password && errors.password.message}

@@ -3,18 +3,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../component/Button";
 import imgController from "../../api/img.controller";
 import SimpleImageSlider from "react-simple-image-slider";
+import Modal from "../../component/Modal";
 
 const HelpForAi = () => {
   const location = useLocation();
   const keyword = location.state.keyword;
   const navigate = useNavigate();
-
+  // AI가 생성한 이미지
   const [aiImages, setAiImages] = useState([]);
   const getImageForAI = async () => {
+    // prompt가 비어 있거나 keyword를 포함하지 않으면 모달을 표시
+    if (!prompt || !prompt.includes(keyword)) {
+      handleModal();
+      return;
+    }
+
     try {
       const res = await imgController.generateImage({
         password: "password",
-        prompt: "prompt",
+        prompt: prompt,
         n: 3,
       });
       console.log(res.data);
@@ -24,11 +31,23 @@ const HelpForAi = () => {
     }
   };
 
+  // 모달창
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  // 프롬포트
+  const [prompt, setPrompt] = useState("");
+  const handlePromptChange = (e) => {
+    setPrompt(e.target.value);
+  };
+
+  // 화면 크기 조절
   const resizeListener = () => {
     const size = window.innerWidth > 450 ? 450 : window.innerWidth;
     setFullWidth(Math.ceil(size * 0.9));
   };
-  // 화면 크기 조절
   useEffect(() => {
     resizeListener();
     window.addEventListener("resize", resizeListener);
@@ -44,9 +63,10 @@ const HelpForAi = () => {
   };
 
   const handleClickSelectButton = () => {
+    if (aiImages.length === 0) return;
     navigate("/draw/help/result", {
       state: {
-        keyword: keyword,
+        keyword: prompt,
         image: aiImages[currentIndex],
         fullWidth: fullWidth,
       },
@@ -78,6 +98,8 @@ const HelpForAi = () => {
             className={
               "border-4 h-full border-[#D9D9D9] flex-1 outline-none p-4"
             }
+            value={prompt}
+            onChange={handlePromptChange}
           />
           <button
             className={"bg-[#D9D9D9] text-white font-semibold px-2"}
@@ -100,9 +122,6 @@ const HelpForAi = () => {
               showNavs={true}
               navMargin={0}
               onStartSlide={onSlideChange}
-              onClick={(idx, event) => {
-                console.log(idx);
-              }}
             />
           )}
         </div>
@@ -115,9 +134,21 @@ const HelpForAi = () => {
             height="50px"
             onClick={handleClickSelectButton}
           />
-          <Button text="취소" width="50%" height="50px" />
+          <Button
+            text="취소"
+            width="50%"
+            height="50px"
+            onClick={() => navigate(-1)}
+          />
         </div>
       </div>
+      {isModalOpen && (
+        <Modal
+          isModalOpen={isModalOpen}
+          onClose={handleModal}
+          content="키워드를 포함시켜주세요"
+        />
+      )}
     </div>
   );
 };

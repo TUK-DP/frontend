@@ -173,7 +173,7 @@ const Draw = () => {
   };
 
   return (
-    <div className={"flex flex-col m-2 gap-2"}>
+    <div className={"flex flex-col m-2 gap-4"}>
       {/* 키워드 */}
       <div
         className={"flex items-center rounded-2xl h-16 overflow-x-scroll"}
@@ -229,6 +229,9 @@ const Draw = () => {
         {renderCanvas()}
       </div>
       {/* 색상팔레트 */}
+      <h2 className={"text-[#7D7D7D] pl-2 text-lg font-bold"}>
+        옆으로 넘겨서 더 많은 색상을 볼 수 있어요!
+      </h2>
       <Palette />
       <div>
         {keyword.length - 1 === index || keyword.length === 0 ? (

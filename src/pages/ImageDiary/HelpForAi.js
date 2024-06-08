@@ -33,7 +33,7 @@ const HelpForAi = () => {
           <input
             placeholder="예) 바나나 먹는 원숭이"
             className={
-              "border-4 h-full border-[#D9D9D9] flex-1 outline-none p-1"
+              "border-4 h-full border-[#D9D9D9] flex-1 outline-none p-4"
             }
           />
           <button className={"bg-[#D9D9D9] text-white font-semibold px-2"}>

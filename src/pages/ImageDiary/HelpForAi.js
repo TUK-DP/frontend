@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../component/Button";
 import imgController from "../../api/img.controller";
+import SimpleImageSlider from "react-simple-image-slider";
 
 const HelpForAi = () => {
   const location = useLocation();
   const keyword = location.state.keyword;
   const navigate = useNavigate();
-  const handleClickShowAiResultButton = () => {
-    navigate("/draw/help/result", { state: { keyword: keyword } });
-  };
+
   const [aiImages, setAiImages] = useState([]);
   const getImageForAI = async () => {
     try {
@@ -23,6 +22,35 @@ const HelpForAi = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const resizeListener = () => {
+    const size = window.innerWidth > 450 ? 450 : window.innerWidth;
+    setFullWidth(Math.ceil(size * 0.9));
+  };
+  // 화면 크기 조절
+  useEffect(() => {
+    resizeListener();
+    window.addEventListener("resize", resizeListener);
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, []);
+  const [fullWidth, setFullWidth] = useState();
+  //현재 슬라이더의 인덱스
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const onSlideChange = (index) => {
+    setCurrentIndex(index - 1);
+  };
+
+  const handleClickSelectButton = () => {
+    navigate("/draw/help/result", {
+      state: {
+        keyword: keyword,
+        image: aiImages[currentIndex],
+        fullWidth: fullWidth,
+      },
+    });
   };
   return (
     <div className={"flex flex-col p-2 justify-center items-center"}>
@@ -59,14 +87,35 @@ const HelpForAi = () => {
           </button>
         </div>
         <h2 className={"text-xl text-[#FF0000]"}>
-          키워드를 꼭 포함시켜서 그려주세요!
+          키워드를 꼭 포함시켜서 적어주세요!
         </h2>
         {/* AI가 생성한 그림 띄워주기 */}
-        <div>
-          {aiImages.length > 0 &&
-            aiImages.map((url, index) => {
-              return <img key={index} src={url} alt="AI Image" />;
-            })}
+        <div className={"relative mb-4"}>
+          {aiImages.length > 0 && (
+            <SimpleImageSlider
+              width={fullWidth}
+              height={fullWidth}
+              images={aiImages}
+              showBullets={true}
+              showNavs={true}
+              navMargin={0}
+              onStartSlide={onSlideChange}
+              onClick={(idx, event) => {
+                console.log(idx);
+              }}
+            />
+          )}
+        </div>
+        <div
+          className={"flex flex-row w-full gap-4 justify-center items-center"}
+        >
+          <Button
+            text="선택"
+            width="50%"
+            height="50px"
+            onClick={handleClickSelectButton}
+          />
+          <Button text="취소" width="50%" height="50px" />
         </div>
       </div>
     </div>

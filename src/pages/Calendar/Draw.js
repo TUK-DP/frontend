@@ -4,17 +4,19 @@ import { SET_PAGENAME } from "../../redux/modules/PageName";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   IoIosArrowBack,
-  IoIosArrowDropdown,
+  IoIosArrowDown,
+  IoIosArrowUp,
   IoIosArrowForward,
 } from "react-icons/io";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import Canvas from "../../component/ImageDiary/Canvas";
 import Palette from "../../component/ImageDiary/Palette";
 import Button from "../../component/Button";
 import keywordController from "../../api/keyword.controller";
 import imgController from "../../api/img.controller";
 import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
-import SkyButton from "../../component/BackGroundSkyButton";
-
+import SkyButton from "../../component/BackgroundSkyButton";
+import AIModal from "../../component/ImageDiary/AIModal";
 const Draw = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -34,6 +36,19 @@ const Draw = () => {
   const [savedImages, setSavedImages] = useState([]);
   //키워드가 존재하는 지의 여부
   const [isKeywordExist, setIsKeywordExist] = useState();
+  //다른 사람 그림 보기
+  const [showOtherDraw, setShowOtherDraw] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //다른 사람 그림 보기 클릭
+  const handleClickShowDraw = () => {
+    setShowOtherDraw(!showOtherDraw);
+    console.log(showOtherDraw);
+  };
+
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   useEffect(() => {
     //키워드가 없는 경우
@@ -182,24 +197,27 @@ const Draw = () => {
         )}
       </div>
       {/* AI 도움 */}
-      <div className={"flex flex-col gap-2"}>
-        <p className={"text-[#7D7D7D] font-bold text-lg"}>
+      <div className={"flex flex-row justify-center items-center h-10"}>
+        <p className={"text-[#7D7D7D] font-bold text-2xl"}>
           혹시 그림 그리기 어려우신가요?
-          <br />
-          아래 버튼을 누르면 이미지가 생성됩니다!
         </p>
-        <SkyButton onClick={() => handleClickAIButton()} text="AI 도움 받기" />
+        <AiOutlineExclamationCircle size={40} onClick={() => handleModal()} />
       </div>
       <div
         className={
-          "text-[#7D7D7D] font-bold text-lg flex flex-row justify-end items-center"
+          "text-[#7D7D7D] font-bold text-lg flex flex-row justify-center items-center"
         }
+        onClick={() => handleClickShowDraw()}
       >
         다른 사람 그림 보기
-        <IoIosArrowForward size={30} />
+        {showOtherDraw ? (
+          <IoIosArrowUp size={30} />
+        ) : (
+          <IoIosArrowDown size={30} />
+        )}
       </div>
       {/* 사진 띄워줄 부분 */}
-      {isKeywordExist && renderPhoto()}
+      {isKeywordExist && showOtherDraw && renderPhoto()}
       {/* Canvas */}
       <div
         style={{
@@ -226,6 +244,14 @@ const Draw = () => {
           />
         ) : null}
       </div>
+      {isModalOpen && (
+        <AIModal
+          onClose={handleModal}
+          content="혹시 그림 그리기 어려우신가요?
+          아래 버튼을 누르면 이미지가 생성됩니다!"
+          keyword={keyword[index]}
+        />
+      )}
     </div>
   );
 };

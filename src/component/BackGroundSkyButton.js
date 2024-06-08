@@ -4,7 +4,7 @@ const BackGroundSkyButton = ({ text, onClick }) => {
   return (
     <div
       className={
-        "flex justify-center items-center bg-[#E0F4FF] h-14 text-REMEMORY rounded-xl text-2xl font-bold"
+        "flex justify-center items-center bg-[#E0F4FF] h-14 text-REMEMORY rounded-xl text-2xl font-bold w-full"
       }
       onClick={onClick}
     >

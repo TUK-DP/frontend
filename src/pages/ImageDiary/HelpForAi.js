@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../component/Button";
 
 const HelpForAi = () => {
   const location = useLocation();
   const keyword = location.state.keyword;
-
+  const navigate = useNavigate();
+  const handleClickShowAiResultButton = () => {
+    navigate("/draw/help/result", { state: { keyword: keyword } });
+  };
   return (
     <div className={"flex flex-col p-2 justify-center items-center h-full"}>
       <h1
@@ -43,7 +46,13 @@ const HelpForAi = () => {
         {/* AI가 생성한 그림 띄워주기 */}
         <div className={"flex-1"}></div>
       </div>
-      <Button text="완료" width="100%" height="56px" fontSize="24px" />
+      <Button
+        text="완료"
+        width="100%"
+        height="56px"
+        fontSize="24px"
+        onClick={handleClickShowAiResultButton}
+      />
     </div>
   );
 };

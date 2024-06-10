@@ -10,19 +10,27 @@ import { SET_PAGENAME } from "../redux/modules/PageName";
 const UserUpdate = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.UserInfo);
-  useEffect(() => {
-    dispatch({ type: SET_PAGENAME, pageName: "정보 수정" });
-  }, []);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
+    reset,
   } = useForm();
-  const navigate = useNavigate();
-  //form 제출
+
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "정보 수정" });
+  }, [dispatch]);
+
+  useEffect(() => {
+    reset(userInfo);
+  }, [userInfo, reset]);
+
   const onSubmit = async (data) => {
     const userData = {
+      id: userInfo.userId,
       username: data.username,
       nickname: data.nickname,
       email: data.email,
@@ -30,30 +38,28 @@ const UserUpdate = () => {
       birth: data.birth,
     };
     try {
-      const res = await UserController.updateUser({
-        userId: userInfo.userId,
-        data: userData,
-      });
+      const response = await UserController.updateUser({ userData });
       navigate("/mypage");
     } catch (error) {
       console.log("정보 수정 중 오류", error);
     }
   };
+
   const [nickname, setNickname] = useState("");
   const nicknameRegister = register("nickname", {
     required: "빈 칸 없이 작성해주세요.",
   });
-  //onChange 두 번 호출
+
   const handleChange = (event) => {
     console.log(event.target.value);
     setNickname(event.target.value);
     nicknameRegister.onChange(event);
   };
-  //닉네임 중복확인
+
   const checkNickname = async () => {
-    if (nickname == "") return;
+    if (nickname === "") return;
     try {
-      const res = await UserController.checkNickname({ nickname: nickname });
+      const res = await UserController.checkNickname({ nickname });
       console.log(nickname);
       console.log(res);
       setIsNicknameExist(false);
@@ -63,12 +69,14 @@ const UserUpdate = () => {
     }
     setIsModalOpen(true);
   };
-  //닉네임 중복확인 결과 표시
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const [isNicknameExist, setIsNicknameExist] = useState();
+  const [isNicknameExist, setIsNicknameExist] = useState(false);
+
+  if (!userInfo) return null;
 
   return (
     <div className={"flex flex-col justify-center items-center my-4"}>
@@ -77,7 +85,7 @@ const UserUpdate = () => {
           <label>이름</label>
           <input
             type="text"
-            placeholder={userInfo.username}
+            defaultValue={userInfo.username}
             {...register("username", {
               required: "빈 칸 없이 작성해주세요.",
               minLength: {
@@ -94,11 +102,10 @@ const UserUpdate = () => {
           <label>닉네임</label>
           <div className={"flex flex-row justify-center items-center"}>
             <input
-              value={nickname}
               {...nicknameRegister}
               onChange={handleChange}
               type="text"
-              placeholder={userInfo.nickname}
+              defaultValue={userInfo.nickname}
               style={{ width: "283px" }}
             />
             <Button
@@ -106,9 +113,7 @@ const UserUpdate = () => {
               height="30px"
               text="확인"
               fontSize="15px"
-              onClick={() => {
-                checkNickname();
-              }}
+              onClick={checkNickname}
             />
           </div>
           <div className="error-message">
@@ -130,7 +135,7 @@ const UserUpdate = () => {
           <label>이메일</label>
           <input
             type="text"
-            placeholder={userInfo.email}
+            defaultValue={userInfo.email}
             {...register("email", {
               required: "빈 칸 없이 작성해주세요.",
               pattern: {
@@ -147,7 +152,7 @@ const UserUpdate = () => {
           <label>비밀번호</label>
           <input
             type="password"
-            placeholder="비밀번호를 입력하세요."
+            defaultValue={userInfo.password}
             {...register("password", {
               required: "빈 칸 없이 작성해주세요.",
               minLength: {

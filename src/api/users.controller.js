@@ -26,8 +26,8 @@ class UserController extends Api {
     });
   };
   // 회원 정보 수정
-  updateUser = async ({ userId, userData }) => {
-    return await this.patch(`/users/${userId}`, { data: userData });
+  updateUser = async (userData) => {
+    return await this.put("/users", { data: userData });
   };
   // 회원탈퇴
 }

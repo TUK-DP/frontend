@@ -15,7 +15,7 @@ label {
   font-size: large;
   line-height: 30px;
 }
-input {
+.input {
   width: 333px;
   display: block;
   align-items: flex-start;

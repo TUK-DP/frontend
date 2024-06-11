@@ -15,7 +15,7 @@ import Button from "../../component/Button";
 import keywordController from "../../api/keyword.controller";
 import imgController from "../../api/img.controller";
 import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
-import SkyButton from "../../component/BackgroundSkyButton";
+import SkyButton from "../../component/BackGroundSkyButton";
 import AIModal from "../../component/ImageDiary/AIModal";
 const Draw = () => {
   const dispatch = useDispatch();

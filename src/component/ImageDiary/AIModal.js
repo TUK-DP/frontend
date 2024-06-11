@@ -1,5 +1,5 @@
 import React from "react";
-import BackGroundSkyButton from "../BackgroundSkyButton";
+import BackGroundSkyButton from "../BackGroundSkyButton";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 

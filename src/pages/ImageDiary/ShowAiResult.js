@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import BackGroundSkyButton from "../../component/BackgroundSkyButton";
+import BackGroundSkyButton from "../../component/BackGroundSkyButton";
 import Button from "../../component/Button";
 import { style } from "d3";
 

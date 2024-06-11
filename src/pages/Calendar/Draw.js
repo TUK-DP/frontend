@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SET_PAGENAME } from "../../redux/modules/PageName";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   IoIosArrowBack,
   IoIosArrowDown,
@@ -15,20 +15,24 @@ import Button from "../../component/Button";
 import keywordController from "../../api/keyword.controller";
 import imgController from "../../api/img.controller";
 import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
-import SkyButton from "../../component/BackGroundSkyButton";
 import AIModal from "../../component/ImageDiary/AIModal";
+import { useRecoilState } from "recoil";
+import { indexState, keywordState } from "../../recoil/keywordState";
 const Draw = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
   }, []);
 
-  const location = useLocation();
   const navigate = useNavigate();
-  const [index, setIndex] = useState(0);
-  //키워드
+  const [index, setIndex] = useRecoilState(indexState);
+  const [keywordInfo, setKeywordInfo] = useRecoilState(keywordState);
+  useEffect(() => {
+    console.log(keywordInfo);
+  }, [keywordInfo]);
+  // //키워드
   const [keyword, setKeyword] = useState([]);
-  //키워드 아이디
+  // //키워드 아이디
   const [keywordId, setKeywordId] = useState([]);
   //캔버스들 저장
   const canvasRefs = useRef({});
@@ -52,16 +56,16 @@ const Draw = () => {
 
   useEffect(() => {
     //키워드가 없는 경우
-    if (location.state.length == 0) {
+    if (keywordInfo.length == 0) {
       setKeyword(["자유롭게 그려주세요"]);
       setIsKeywordExist(false);
     }
 
     //키워드가 있는 경우
-    if (location.state.length !== 0) {
+    if (keywordInfo.length !== 0) {
       setIsKeywordExist(true);
-      setKeyword(location.state.map((item) => item.keyword));
-      setKeywordId(location.state.map((item) => item.keywordId));
+      setKeyword(keywordInfo.map((item) => item.keyword));
+      setKeywordId(keywordInfo.map((item) => item.keywordId));
     }
   }, []);
 

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../component/Loading.js";
 import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
 
-const Diary = ({ data }) => {
+const Diary = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const textRef = useRef();
@@ -93,7 +93,7 @@ const Diary = ({ data }) => {
           <div
             id="btn_paint"
             onClick={() => {
-              navigate("/draw", { state: data });
+              navigate("/draw");
             }}
           >
             그림 그리기

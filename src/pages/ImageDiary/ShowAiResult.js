@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BackGroundSkyButton from "../../component/BackGroundSkyButton";
-import Button from "../../component/Button";
-import { style } from "d3";
 
 const ShowAiResult = () => {
   const location = useLocation();
@@ -20,7 +18,9 @@ const ShowAiResult = () => {
     setSelectedOpacityIndex(index);
   };
 
-  const saveEditImage = () => {};
+  const saveEditImage = () => {
+    navigate("/draw");
+  };
 
   return (
     <div className={"flex flex-col p-2 justify-center items-center"}>

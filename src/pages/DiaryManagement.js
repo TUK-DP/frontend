@@ -44,9 +44,31 @@ function SearchDiary() {
   const [endDate, setEndDate] = useState("");
   const [option, setOption] = useState("");
 
+  //현재 날짜
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const currentDay = String(currentDate.getDate()).padStart(2, "0");
+
+  //하루 전 날짜
+  const previousDate = new Date(currentDate);
+  previousDate.setDate(currentDate.getDate() - 1);
+  const previousYear = previousDate.getFullYear();
+  const previousMonth = String(previousDate.getMonth() + 1).padStart(2, "0");
+  const previousDay = String(previousDate.getDate()).padStart(2, "0");
+
+  const defaultDate = `${currentYear}-${currentMonth}-${currentDay}`;
+  const defaultPreviousDate = `${previousYear}-${previousMonth}-${previousDay}`;
+
+  useEffect(() => {
+    setStartDate(defaultPreviousDate);
+    setEndDate(defaultPreviousDate);
+  }, [defaultPreviousDate]);
+
   const handleStartDateChange = (event) => {
-    setStartDate(event.target.value);
-    if (event.target.value > endDate) {
+    const newStartDate = event.target.value;
+    setStartDate(newStartDate);
+    if (newStartDate > endDate) {
       setEndDate("");
     }
   };
@@ -61,6 +83,8 @@ function SearchDiary() {
         <input
           className="text-xl"
           type="date"
+          defaultValue={defaultPreviousDate}
+          max={endDate}
           value={startDate}
           onChange={handleStartDateChange}
         />
@@ -71,8 +95,10 @@ function SearchDiary() {
           className="text-xl"
           type="date"
           min={startDate}
-          value={endDate}
+          max={defaultDate}
           onChange={handleEndDateChange}
+          defaultValue={defaultDate}
+          value={endDate}
         />
         <div className="text-xl">까지</div>
       </div>

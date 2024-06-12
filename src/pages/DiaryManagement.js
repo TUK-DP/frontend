@@ -62,7 +62,7 @@ function SearchDiary() {
 
   useEffect(() => {
     setStartDate(defaultPreviousDate);
-    setEndDate(defaultPreviousDate);
+    setEndDate(defaultDate);
   }, [defaultPreviousDate]);
 
   const handleStartDateChange = (event) => {

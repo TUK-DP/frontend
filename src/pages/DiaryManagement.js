@@ -8,20 +8,21 @@ function DiaryListCop() {
   //날짜리스트랑 리스트 길이 추가 필요
   //날짜를 diarycontent로 넘겨주면 diarycontent에서 날짜에 해당하는 일기내용 보여주도록 추가 필요
   const navigate = useNavigate();
+  const diarydate = ["2024-05-13", "2024-05-14", "2024-05-15"];
+  const handleClick = (index) => {
+    navigate("/diarycontent", { state: diarydate[index] });
+  };
   return (
-    <div className="mt-3">
-      <div
-        className="text-xl h-[5rem] flex items-center border-b-2 border-[#82aae3]"
-        onClick={() => navigate("/diarycontent")}
-      >
-        1. 2024-05-13
-      </div>
-      <div
-        className="h-[5rem] text-xl flex items-center border-b-2 border-[#82aae3]"
-        onClick={() => navigate("/diarycontent")}
-      >
-        2. 2024-05-18
-      </div>
+    <div>
+      {diarydate.map((date, index) => (
+        <div
+          key={index}
+          className="text-xl h-[5rem] flex items-center border-b-2 border-[#82aae3]"
+          onClick={() => handleClick(index)}
+        >
+          {index + 1}. {date}
+        </div>
+      ))}
     </div>
   );
 }

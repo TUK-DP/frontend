@@ -37,6 +37,7 @@ import Explain from "./pages/Keyword/Explain.js";
 import Keyword from "./pages/Keyword/Keyword.js";
 import UserUpdate from "./pages/UserUpdate.js";
 import DiaryManagement from "./pages/DiaryManagement.js";
+import DiaryContent from "./pages/DiaryContent.js";
 
 function App() {
   let { loading } = useAutoLogin();
@@ -82,6 +83,7 @@ function App() {
           <Route exact path={"/explain"} element={<Explain />} />
           <Route exact path={"/keyword"} element={<Keyword />} />
           <Route exact path={"/userupdate"} element={<UserUpdate />} />
+          <Route exact path={"/diarycontent"} element={<DiaryContent />} />
           <Route
             exact
             path={"/diarymanagement"}

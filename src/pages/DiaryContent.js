@@ -1,20 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import "../styles/diary.css";
 import diaryController from "../api/diary.controller";
+import { useLocation } from "react-router-dom";
 
 const DiaryContent = () => {
-  const getDiary = () => {
+  const location = useLocation();
+  const date = location.state;
+  const userInfo = useSelector((state) => state.UserInfo);
+  const [diarydata, setData] = useState([]);
+  const getDiary = async () => {
     try {
-      const response = diaryController.searchDiary(3, "2024-05-13");
-      console.log(response.data);
+      const response = await diaryController.searchDiary({
+        userId: userInfo.userId,
+        date: date,
+      });
+      setData(response.data.result[0]);
     } catch (error) {
       console.error("일기 조회 중 오류", error);
     }
   };
+
+  useEffect(() => {
+    if (!diarydata.diaryId) {
+      getDiary();
+    }
+  }, [userInfo.userId, diarydata]);
+
   return (
     <div id="diary">
-      <div className="text-xl font-bold mt-4">일기 날짜</div>
-      <div id="draw">이미지</div>
+      <div className="text-xl font-bold mt-5">{diarydata.createDate}</div>
+      {diarydata.imgUrl !== null ? (
+        <div id="draw">
+          <img
+            src={diarydata.imgUrl}
+            style={{ width: "100%", height: "100%", borderRadius: "25px" }}
+          />
+        </div>
+      ) : (
+        <div className="mb-5"></div>
+      )}
       <div id="contentBox">
         <div
           style={{
@@ -31,6 +56,7 @@ const DiaryContent = () => {
           id="writeBox"
           className="text-lg"
           placeholder="일기를 작성해주세요."
+          value={diarydata.content}
         />
       </div>
     </div>

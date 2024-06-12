@@ -121,7 +121,11 @@ const MyPage = () => {
           text="회원정보 수정"
           onClick={() => navigate("/userupdate")}
         />
-        <MyPageList src={Diary} text="일기 관리" />
+        <MyPageList
+          src={Diary}
+          text="일기 관리"
+          onClick={() => navigate("/diarymanagement")}
+        />
         <Toggle />
       </div>
     </div>

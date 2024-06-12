@@ -4,16 +4,23 @@ import { SET_PAGENAME } from "../redux/modules/PageName";
 import { useNavigate } from "react-router-dom";
 import Button from "../component/Button";
 
-function DiaryListCop({ id }) {
+function DiaryListCop() {
   //날짜리스트랑 리스트 길이 추가 필요
+  //날짜를 diarycontent로 넘겨주면 diarycontent에서 날짜에 해당하는 일기내용 보여주도록 추가 필요
   const navigate = useNavigate();
   return (
     <div className="mt-3">
       <div
-        className="font-bold text-xl"
+        className="text-xl h-[5rem] flex items-center border-b-2 border-[#82aae3]"
         onClick={() => navigate("/diarycontent")}
       >
-        1. 날짜
+        1. 2024-05-13
+      </div>
+      <div
+        className="h-[5rem] text-xl flex items-center border-b-2 border-[#82aae3]"
+        onClick={() => navigate("/diarycontent")}
+      >
+        2. 2024-05-18
       </div>
     </div>
   );
@@ -38,16 +45,18 @@ function SearchDiary() {
   return (
     <div className="mt-3 border-b-2 pb-4">
       <div className="flex items-center">
-        <label>시작날짜 :</label>
+        <label className="text-xl">시작날짜 :</label>
         <input
+          className="text-xl"
           type="date"
           value={startDate}
           onChange={handleStartDateChange}
         ></input>
       </div>
       <div className="flex items-center mb-4">
-        <label>종료날짜 :</label>
+        <label className="text-xl">종료날짜 :</label>
         <input
+          className="text-xl"
           type="date"
           min={startDate}
           value={endDate}
@@ -82,7 +91,7 @@ const DiaryManagement = () => {
   return (
     <div>
       <SearchDiary />
-      <DiaryListCop id={userInfo.userId} />
+      <DiaryListCop />
     </div>
   );
 };

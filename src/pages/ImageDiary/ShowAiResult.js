@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import BackGroundSkyButton from "../../component/BackGroundSkyButton";
+import { imageState } from "../../recoil/keywordState";
 
 const ShowAiResult = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [image, setImage] = useRecoilState(imageState);
+
   const keyword = location.state.keyword;
   const imageUrl = location.state.image;
   const fullWidth = location.state.fullWidth;
-  const navigate = useNavigate();
   // 배경 투명도
+  const [bgOpacity, setBgOpacity] = useState(1);
   const bgOpacityList = ["30", "50", "70", "100"];
-  const [bgOpacity, setBgOpacity] = useState("1");
   const [selectedOpacityIndex, setSelectedOpacityIndex] = useState(3);
+
   // 투명도 변경
   const changeOpacity = (item, index) => {
     setBgOpacity(parseInt(item) * 0.01);
@@ -19,6 +24,13 @@ const ShowAiResult = () => {
   };
 
   const saveEditImage = () => {
+    const newImage = {
+      keyword: keyword,
+      imageUrl: imageUrl,
+      bgOpacity: bgOpacity,
+    };
+    setImage((prevImage) => [...prevImage, newImage]);
+
     navigate("/draw");
   };
 

@@ -16,14 +16,21 @@ import keywordController from "../../api/keyword.controller";
 import imgController from "../../api/img.controller";
 import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
 import AIModal from "../../component/ImageDiary/AIModal";
-import { useRecoilState } from "recoil";
-import { indexState, keywordState } from "../../recoil/keywordState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  imageState,
+  indexState,
+  keywordState,
+} from "../../recoil/keywordState";
 const Draw = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
   }, []);
-
+  const image = useRecoilValue(imageState);
+  useEffect(() => {
+    console.log(image);
+  }, []);
   const navigate = useNavigate();
   const [index, setIndex] = useRecoilState(indexState);
   const [keywordInfo, setKeywordInfo] = useRecoilState(keywordState);
@@ -82,11 +89,13 @@ const Draw = () => {
   // 캔버스 렌더링
   const renderCanvas = () => {
     canvasRefs.current = keyword.map(() => React.createRef());
+
     return keyword.map((cur, i) => (
       <Canvas
         key={i}
         isVisible={index === i}
         canvasRef={canvasRefs.current[i]}
+        canvasKeyword={cur}
       />
     ));
   };

@@ -5,8 +5,10 @@ import { TfiEraser } from "react-icons/tfi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BRUSH_SIZE, SELECT_COLOR } from "../../redux/modules/ImageDiary";
+import { imageState } from "../../recoil/keywordState";
+import { useRecoilValue } from "recoil";
 
-const Canvas = ({ isVisible, canvasRef }) => {
+const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
   const [getCtx, setGetCtx] = useState(null); //드로잉 영역
   const [painting, setPainting] = useState(false); //그리기 모드
   const [erasing, setErasing] = useState(false); //지우기 모드
@@ -14,14 +16,40 @@ const Canvas = ({ isVisible, canvasRef }) => {
   const brushSize = useSelector((state) => state.ImageDiary.brushSize);
   const selectedColor = useSelector((state) => state.ImageDiary.selectedColor);
   const dispatch = useDispatch();
+  const image = useRecoilValue(imageState);
   //드로잉 영역 초기 세팅
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
+    // Canvas에 배경 이미지 설정
+    if (image) {
+      const matchedImage = image.filter(
+        (item) => item.keyword === canvasKeyword
+      );
+      console.log(matchedImage);
+      if (matchedImage.length !== 0) {
+        const { keyword, imageUrl, bgOpacity } = matchedImage[0];
+        const bgImg = new Image();
+        bgImg.src = imageUrl;
+        bgImg.onload = () => {
+          ctx.globalAlpha = bgOpacity; // 투명도 설정
+          ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+          ctx.globalAlpha = 1; // 투명도 초기화
+        };
+      } else {
+        // 키워드에 맞는 이미지가 없을 경우 흰색 배경으로 설정
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    } else {
+      //이미지가 없을 경우 흰색 배경으로 설정
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
     ctx.lineJoin = "round"; //선이 꺽이는 부분의 스타일
-    ctx.fillStyle = "white"; //캔버스 배경색
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 1; //선의 두께
     ctx.strokeStyle = "#000000"; //선의 색
 
@@ -29,7 +57,7 @@ const Canvas = ({ isVisible, canvasRef }) => {
     dispatch({ type: BRUSH_SIZE, brushSize: 1 });
     setGetCtx(ctx);
     clearCanvas();
-  }, []);
+  }, [canvasKeyword, image]); // canvasKeyword와 image가 변경될 때마다 useEffect 실행
 
   // 브러쉬 크기, 펜 색상 변경 시 호출됨
   useEffect(() => {
@@ -152,10 +180,6 @@ const Canvas = ({ isVisible, canvasRef }) => {
     console.log(brushSize);
     dispatch({ type: BRUSH_SIZE, brushSize: parseInt(event.target.value, 10) });
   };
-
-  useEffect(() => {
-    console.log("painting: ", painting, " erasing: ", erasing);
-  }, [painting, erasing]);
 
   return (
     <div

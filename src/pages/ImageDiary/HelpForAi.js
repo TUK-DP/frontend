@@ -66,7 +66,7 @@ const HelpForAi = () => {
     if (aiImages.length === 0) return;
     navigate("/draw/help/result", {
       state: {
-        keyword: prompt,
+        keyword: keyword,
         image: aiImages[currentIndex],
         fullWidth: fullWidth,
       },

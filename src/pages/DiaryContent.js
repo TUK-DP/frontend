@@ -9,6 +9,15 @@ const DiaryContent = () => {
   const date = location.state;
   const userInfo = useSelector((state) => state.UserInfo);
   const [diarydata, setData] = useState([]);
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}년 ${month}월 ${day}일`;
+  };
+
   const getDiary = async () => {
     try {
       const response = await diaryController.searchDiary({
@@ -29,7 +38,9 @@ const DiaryContent = () => {
 
   return (
     <div id="diary">
-      <div className="text-xl font-bold mt-5">{diarydata.createDate}</div>
+      <div className="text-xl font-bold mt-5">
+        {formatDate(diarydata.createDate)}
+      </div>
       {diarydata.imgUrl !== null ? (
         <div id="draw">
           <img

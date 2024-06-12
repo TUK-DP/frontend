@@ -9,18 +9,30 @@ function DiaryListCop() {
   //날짜를 diarycontent로 넘겨주면 diarycontent에서 날짜에 해당하는 일기내용 보여주도록 추가 필요
   const navigate = useNavigate();
   const diarydate = ["2024-05-13", "2024-05-14", "2024-05-15"];
+  const formattedDates = diarydate.map((dateStr) => {
+    const date = new Date(dateStr);
+    const formattedDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+    return formattedDate;
+  });
   const handleClick = (index) => {
     navigate("/diarycontent", { state: diarydate[index] });
   };
   return (
     <div>
-      {diarydate.map((date, index) => (
+      {formattedDates.map((date, index) => (
         <div
-          key={index}
-          className="text-xl h-[5rem] flex items-center border-b-2 border-[#82aae3]"
+          className="my-3 flex bg-[#e0f4ff] h-[5rem] items-center justify-between px-2"
           onClick={() => handleClick(index)}
         >
-          {index + 1}. {date}
+          <div
+            key={index}
+            className="pl-3 text-[#7a7a7a] text-xl bg-white w-[50%] h-12 flex items-center rounded-xl"
+          >
+            {date}
+          </div>
+          <div className="text-xl text-[#82aae3] font-bold">
+            일기 확인하기 {">"}
+          </div>
         </div>
       ))}
     </div>
@@ -45,24 +57,24 @@ function SearchDiary() {
 
   return (
     <div className="mt-3 border-b-2 pb-4">
-      <div className="flex items-center">
-        <label className="text-xl">시작날짜 :</label>
+      <div className="flex items-center justify-evenly">
         <input
           className="text-xl"
           type="date"
           value={startDate}
           onChange={handleStartDateChange}
-        ></input>
+        />
+        <div className="text-xl">부터</div>
       </div>
-      <div className="flex items-center mb-4">
-        <label className="text-xl">종료날짜 :</label>
+      <div className="flex items-center mb-4 justify-evenly">
         <input
           className="text-xl"
           type="date"
           min={startDate}
           value={endDate}
           onChange={handleEndDateChange}
-        ></input>
+        />
+        <div className="text-xl">까지</div>
       </div>
       <div className="flex justify-end mb-3 text-xl">
         <select

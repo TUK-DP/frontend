@@ -32,7 +32,9 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
       if (matchedImage.length !== 0) {
         const { keyword, imageUrl, bgOpacity } = matchedImage[0];
         const bgImg = new Image();
-        bgImg.src = imageUrl;
+        bgImg.crossOrigin = "anonymous";
+        bgImg.src = imageUrl + "?timestamp=" + new Date().getTime();
+        console.log(bgImg.src);
         bgImg.onload = () => {
           ctx.globalAlpha = bgOpacity; // 투명도 설정
           ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);

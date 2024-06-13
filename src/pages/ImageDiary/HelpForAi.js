@@ -102,7 +102,7 @@ const HelpForAi = () => {
             onChange={handlePromptChange}
           />
           <button
-            className={"bg-[#D9D9D9] text-white font-semibold px-2"}
+            className={"bg-REMEMORY text-white font-semibold px-2"}
             onClick={getImageForAI}
           >
             완료

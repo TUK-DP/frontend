@@ -12,22 +12,26 @@ const HelpForAi = () => {
   // AI가 생성한 이미지
   const [aiImages, setAiImages] = useState([]);
   const getImageForAI = async () => {
-    // prompt가 비어 있거나 keyword를 포함하지 않으면 모달을 표시
-    if (!prompt || !prompt.includes(keyword)) {
+    // keyword가 "자유롭게 그려주세요"이거나, prompt가 keyword를 포함하는 경우
+    if (
+      keyword === "자유롭게 그려주세요" ||
+      (prompt && prompt.includes(keyword))
+    ) {
+      try {
+        const res = await imgController.generateImage({
+          password: "password",
+          prompt:
+            keyword === "자유롭게 그려주세요" ? "자유롭게 그려주세요" : prompt,
+          n: 3,
+        });
+        console.log(res.data);
+        setAiImages(res.data.result.urls);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      // 그 외의 경우 모달을 표시
       handleModal();
-      return;
-    }
-
-    try {
-      const res = await imgController.generateImage({
-        password: "password",
-        prompt: prompt,
-        n: 3,
-      });
-      console.log(res.data);
-      setAiImages(res.data.result.urls);
-    } catch (error) {
-      console.error(error);
     }
   };
 

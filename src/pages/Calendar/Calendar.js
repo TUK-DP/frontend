@@ -21,17 +21,18 @@ const Calendar = () => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // 페이지 이름 설정
     dispatch({ type: SET_PAGENAME, pageName: "캘린더" });
 
-    // location.state에서 날짜를 가져와서 state에 저장합니다.
     if (location.state) {
       const selectedDate = new Date(location.state);
       setSelectedDay(selectedDate.getDate());
       setSelectedMonth(selectedDate.getMonth() + 1);
       setSelectedYear(selectedDate.getFullYear());
+      setIsOpen(true);
     }
   }, [location.state]);
 
@@ -248,7 +249,7 @@ const Calendar = () => {
       </table>
       <hr style={{ borderColor: "#f8f8f8" }} />
       {/* 작성된 일기 없으면 버튼표시, 아니면 일기 표시 */}
-      {isGetDiaryComplete && isDiaryExist && <DiaryShow />}
+      {isGetDiaryComplete && isDiaryExist && <DiaryShow isOpen={isOpen} />}
       {isGetDiaryComplete && !isDiaryExist && (
         <div id="btnBox">
           <div

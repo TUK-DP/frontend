@@ -6,7 +6,7 @@ import DiaryController from "../../api/diary.controller.js";
 import { useSelector } from "react-redux";
 import keywordController from "../../api/keyword.controller.js";
 
-const DiaryEdit = () => {
+const DiaryEdit = ({ isOpen }) => {
   const [showDiary, setShowDiary] = useState(false);
 
   const userId = useSelector((state) => state.UserInfo.userId);
@@ -47,6 +47,10 @@ const DiaryEdit = () => {
   useEffect(() => {
     setShowDiary(false);
   }, [diaryId]);
+
+  useEffect(() => {
+    setShowDiary(isOpen);
+  }, [isOpen]);
 
   const getKeyword = async () => {
     try {

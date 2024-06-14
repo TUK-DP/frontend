@@ -2,21 +2,45 @@ import React, { useEffect, useState } from "react";
 import "../../styles/Calendar.css";
 import left from "../../assets/left.png";
 import Right from "../../assets/Right.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import DiaryShow from "./DiaryShow.js";
 import { useDispatch, useSelector } from "react-redux";
-import { CHANGE_DAY, CHANGE_MONTH } from "../../redux/modules/DiaryDate.js";
+import {
+  CHANGE_DAY,
+  CHANGE_MONTH,
+  CHANGE_YEAR,
+} from "../../redux/modules/DiaryDate.js";
 import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
 import DiaryController from "../../api/diary.controller.js";
 import { SET_PAGENAME } from "../../redux/modules/PageName.js";
 
 const Calendar = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
+  const [initialStateLoaded, setInitialStateLoaded] = useState(false);
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
+
   useEffect(() => {
+    // 페이지 이름 설정
     dispatch({ type: SET_PAGENAME, pageName: "캘린더" });
-  }, []);
+
+    // location.state에서 날짜를 가져와서 state에 저장합니다.
+    if (location.state) {
+      const selectedDate = new Date(location.state);
+      setSelectedDay(selectedDate.getDate());
+      setSelectedMonth(selectedDate.getMonth() + 1);
+      setSelectedYear(selectedDate.getFullYear());
+    }
+  }, [location.state]);
+
   const navigate = useNavigate();
-  const { year, month, day } = useSelector((state) => state.DiaryDate);
+  const {
+    year: reduxYear,
+    month: reduxMonth,
+    day: reduxDay,
+  } = useSelector((state) => state.DiaryDate);
   const [isDiaryExist, setIsDiaryExist] = useState();
   const [isGetDiaryComplete, setIsGetDiaryComplete] = useState(false);
   // userId는 한 번 로그인 이후 고정
@@ -28,6 +52,10 @@ const Calendar = () => {
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 +1 해줌
   const currentDay = currentDate.getDate();
+
+  const year = selectedYear || currentYear;
+  const month = selectedMonth || currentMonth;
+  const day = selectedDay || currentDay;
 
   const dateFormat = () => {
     const date = new Date(year, month - 1, day);

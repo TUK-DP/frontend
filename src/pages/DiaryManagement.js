@@ -15,7 +15,7 @@ function DiaryListCop() {
     return formattedDate;
   });
   const handleClick = (index) => {
-    navigate("/diarycontent", { state: diarydate[index] });
+    navigate("/calendar", { state: diarydate[index] });
   };
   return (
     <div>

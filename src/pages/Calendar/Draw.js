@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../../redux/modules/PageName";
 import { useNavigate } from "react-router-dom";
 import {
@@ -22,6 +22,7 @@ import {
   indexState,
   keywordState,
 } from "../../recoil/keywordState";
+import diaryController from "../../api/diary.controller";
 const Draw = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -32,15 +33,13 @@ const Draw = () => {
     console.log(image);
   }, []);
   const navigate = useNavigate();
-  const [index, setIndex] = useRecoilState(indexState);
+  const [index, setIndex] = useState(0);
   const [keywordInfo, setKeywordInfo] = useRecoilState(keywordState);
   useEffect(() => {
     console.log(keywordInfo);
   }, [keywordInfo]);
   // //키워드
   const [keyword, setKeyword] = useState([]);
-  // //키워드 아이디
-  const [keywordId, setKeywordId] = useState([]);
   //캔버스들 저장
   const canvasRefs = useRef({});
   //키워드별 사진 저장(base64 형태) -> photoedit으로 넘겨줌
@@ -65,6 +64,7 @@ const Draw = () => {
     //키워드가 없는 경우
     if (keywordInfo.length == 0) {
       setKeyword(["자유롭게 그려주세요"]);
+      console.log("키워드 없음");
       setIsKeywordExist(false);
     }
 
@@ -72,7 +72,6 @@ const Draw = () => {
     if (keywordInfo.length !== 0) {
       setIsKeywordExist(true);
       setKeyword(keywordInfo.map((item) => item.keyword));
-      setKeywordId(keywordInfo.map((item) => item.keywordId));
     }
   }, []);
 
@@ -106,24 +105,6 @@ const Draw = () => {
     ));
   };
 
-  // 키워드 별 사진 저장(base64 형태)
-  const base64Images = async () => {
-    const images = await Promise.all(
-      canvasRefs.current.map(async (canvasRef, i) => {
-        const image = await canvasRef.current.toDataURL();
-        return image;
-      })
-    );
-    setSavedImages(images);
-  };
-
-  useEffect(() => {
-    // 3. savedImages의 값을 photodiary 페이지에 넘겨주면서 페이지를 불러옴
-    if (savedImages.length > 0) {
-      navigate("/photoedit", { state: savedImages });
-    }
-  }, [savedImages]);
-
   //키워드 별 사진을 서버로 전송
   const postImg = async () => {
     try {
@@ -153,9 +134,9 @@ const Draw = () => {
   //키워드 별 이미지 저장
   const saveKeywordImg = async (photos) => {
     try {
-      const requests = keywordId.map(async (keyId, i) => {
+      const requests = keywordInfo.map(async (info, i) => {
         console.log(photos[i]);
-        return keywordController.saveKeywordImg(keyId, {
+        return keywordController.saveKeywordImg(info.keywordId, {
           imgUrl: photos[i],
         });
       });
@@ -165,24 +146,25 @@ const Draw = () => {
       console.log(err);
     }
   };
-
+  const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
+  // 이미지 저장
   const saveImage = async () => {
     try {
       const photos = await postImg(); // postImg 함수의 반환값을 받아옴
-      if (!isKeywordExist) return;
       console.log(photos);
-      await saveKeywordImg(photos); // saveKeywordImg 함수에 이미지 URL 배열 전달
+
+      if (!isKeywordExist) {
+        const res = await diaryController.saveDiaryImg(diaryId, {
+          imgUrl: photos[0],
+        });
+      }
+      if (isKeywordExist) {
+        await saveKeywordImg(photos); // saveKeywordImg 함수에 이미지 URL 배열 전달
+      }
+      navigate("/calendar");
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const handleClickAIButton = () => {
-    navigate("/draw/help", {
-      state: {
-        keyword: keyword[index],
-      },
-    });
   };
 
   return (
@@ -255,7 +237,6 @@ const Draw = () => {
             fontSize="30px"
             onClick={() => {
               saveImage();
-              base64Images();
             }}
           />
         ) : null}

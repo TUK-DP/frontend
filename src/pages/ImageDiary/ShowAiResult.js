@@ -22,14 +22,30 @@ const ShowAiResult = () => {
     setBgOpacity(parseInt(item) * 0.01);
     setSelectedOpacityIndex(index);
   };
-
+  // 이미지 저장
   const saveEditImage = () => {
     const newImage = {
       keyword: keyword,
       imageUrl: imageUrl,
       bgOpacity: bgOpacity,
     };
-    setImage((prevImage) => [...prevImage, newImage]);
+
+    setImage((prevImage) => {
+      // 같은 키워드에 2번 도움받는 경우, 기존 키워드의 이미지 덮어쓰기
+      const existingIndex = prevImage.findIndex(
+        (image) => image.keyword === keyword
+      );
+
+      if (existingIndex !== -1) {
+        // 같은 keyword를 가진 항목이 이미 존재하는 경우, 해당 항목을 업데이트
+        const updatedImages = [...prevImage];
+        updatedImages[existingIndex] = newImage;
+        return updatedImages;
+      } else {
+        // 같은 keyword를 가진 항목이 존재하지 않는 경우, 새 항목 추가
+        return [...prevImage, newImage];
+      }
+    });
 
     navigate("/draw");
   };

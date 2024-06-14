@@ -17,12 +17,9 @@ import imgController from "../../api/img.controller";
 import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
 import AIModal from "../../component/ImageDiary/AIModal";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  imageState,
-  indexState,
-  keywordState,
-} from "../../recoil/keywordState";
+import { imageState, keywordState } from "../../recoil/keywordState";
 import diaryController from "../../api/diary.controller";
+import html2canvas from "html2canvas";
 const Draw = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -131,7 +128,7 @@ const Draw = () => {
     }
   };
 
-  //키워드 별 이미지 저장
+  //키워드가 있는 경우 키워드별 이미지 저장
   const saveKeywordImg = async (photos) => {
     try {
       const requests = keywordInfo.map(async (info, i) => {
@@ -147,17 +144,20 @@ const Draw = () => {
     }
   };
   const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
+
   // 이미지 저장
   const saveImage = async () => {
     try {
       const photos = await postImg(); // postImg 함수의 반환값을 받아옴
       console.log(photos);
 
+      // 키워드가 없는 경우
       if (!isKeywordExist) {
         const res = await diaryController.saveDiaryImg(diaryId, {
           imgUrl: photos[0],
         });
       }
+      // 키워드가 있는 경우
       if (isKeywordExist) {
         await saveKeywordImg(photos); // saveKeywordImg 함수에 이미지 URL 배열 전달
       }
@@ -198,19 +198,21 @@ const Draw = () => {
         </p>
         <AiOutlineExclamationCircle size={40} onClick={() => handleModal()} />
       </div>
-      <div
-        className={
-          "text-[#7D7D7D] font-bold text-lg flex flex-row justify-center items-center"
-        }
-        onClick={() => handleClickShowDraw()}
-      >
-        다른 사람 그림 보기
-        {showOtherDraw ? (
-          <IoIosArrowUp size={30} />
-        ) : (
-          <IoIosArrowDown size={30} />
-        )}
-      </div>
+      {isKeywordExist && (
+        <div
+          className={
+            "text-[#7D7D7D] font-bold text-lg flex flex-row justify-center items-center"
+          }
+          onClick={() => handleClickShowDraw()}
+        >
+          다른 사람 그림 보기
+          {showOtherDraw ? (
+            <IoIosArrowUp size={30} />
+          ) : (
+            <IoIosArrowDown size={30} />
+          )}
+        </div>
+      )}
       {/* 사진 띄워줄 부분 */}
       {isKeywordExist && showOtherDraw && renderPhoto()}
       {/* Canvas */}

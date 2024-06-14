@@ -17,8 +17,11 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
   const selectedColor = useSelector((state) => state.ImageDiary.selectedColor);
   const dispatch = useDispatch();
   const image = useRecoilValue(imageState);
+
   //드로잉 영역 초기 세팅
 
+  const [imageUrl, setImageUrl] = useState("");
+  const [bgOpacity, setBgOpacity] = useState(1);
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -31,17 +34,11 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
       console.log(matchedImage);
       if (matchedImage.length !== 0) {
         const { keyword, imageUrl, bgOpacity } = matchedImage[0];
-        const bgImg = new Image();
-        bgImg.crossOrigin = "anonymous";
-        bgImg.src = imageUrl + "?timestamp=" + new Date().getTime();
-        console.log(bgImg.src);
-        bgImg.onload = () => {
-          ctx.globalAlpha = bgOpacity; // 투명도 설정
-          ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-          ctx.globalAlpha = 1; // 투명도 초기화
-        };
+        setImageUrl(imageUrl);
+        setBgOpacity(bgOpacity);
       } else {
         // 키워드에 맞는 이미지가 없을 경우 흰색 배경으로 설정
+
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
@@ -141,7 +138,7 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
     updateCanvasState();
   };
   // 캔버스 크기를 반응형으로 조절하기 위해 화면의 크기를 받아와서 조정
-  const [width, setWidth] = useState();
+  const [width, setWidth] = useState(window.innerWidth);
   const resizeListener = () => {
     const size = window.innerWidth > 450 ? 450 : window.innerWidth;
     setWidth(Math.ceil(size * 0.9));
@@ -153,7 +150,7 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
     return () => {
       window.removeEventListener("resize", resizeListener);
     };
-  }, []);
+  }, [window.innerWidth]);
   // 마우스 클릭 이벤트 핸들러 함수
   const handleMouseDown = (e) => {
     const rect = canvasRef.current.getBoundingClientRect();
@@ -194,14 +191,19 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        onMouseDown={handleMouseDown} // 마우스 클릭 이벤트 추가
-        onMouseMove={handleMouseMove} // 마우스 이동 이벤트 추가
-        onMouseUp={handleMouseUp} // 마우스 클릭 종료 이벤트 추가
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
         width={width}
         height={width}
         style={{
-          border: "4px solid #D9D9D9",
           touchAction: "none",
+          backgroundImage: `url(${imageUrl})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          border: "4px solid #D9D9D9",
+          // backgroundColor: "rgba(255, 255, 255, 0.5)",
+          opacity: bgOpacity,
         }}
       ></canvas>
       {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}

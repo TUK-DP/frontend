@@ -14,14 +14,13 @@ const HelpForAi = () => {
   const getImageForAI = async () => {
     // keyword가 "자유롭게 그려주세요"이거나, prompt가 keyword를 포함하는 경우
     if (
-      keyword === "자유롭게 그려주세요" ||
+      (keyword === "자유롭게 그려주세요" && prompt) ||
       (prompt && prompt.includes(keyword))
     ) {
       try {
         const res = await imgController.generateImage({
           password: "password",
-          prompt:
-            keyword === "자유롭게 그려주세요" ? "자유롭게 그려주세요" : prompt,
+          prompt: prompt,
           n: 3,
         });
         console.log(res.data);

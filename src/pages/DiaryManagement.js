@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
 import { useNavigate } from "react-router-dom";
 import Button from "../component/Button";
+import diaryController from "../api/diary.controller";
 
 function DiaryListCop() {
   //날짜리스트랑 리스트 길이 추가 필요
@@ -23,11 +24,9 @@ function DiaryListCop() {
         <div
           className="my-3 flex bg-[#e0f4ff] h-[5rem] items-center justify-between px-2"
           onClick={() => handleClick(index)}
+          key={index}
         >
-          <div
-            key={index}
-            className="pl-3 text-[#7a7a7a] text-xl bg-white w-[50%] h-12 flex items-center rounded-xl"
-          >
+          <div className="pl-3 text-[#7a7a7a] text-xl bg-white w-[50%] h-12 flex items-center rounded-xl">
             {date}
           </div>
           <div className="text-xl text-[#82aae3] font-bold">
@@ -39,7 +38,7 @@ function DiaryListCop() {
   );
 }
 
-function SearchDiary() {
+function SearchDiary({ id }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [option, setOption] = useState("");
@@ -77,6 +76,21 @@ function SearchDiary() {
     setEndDate(event.target.value);
   };
 
+  //기간별 일기 조회
+  const searchDiaryList = async () => {
+    try {
+      const response = await diaryController.searchDiaryList({
+        userId: id,
+        startDate: startDate,
+        finishDate: endDate,
+        sortBy: option,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("기간별 일기 조회 중 오류", error);
+    }
+  };
+
   return (
     <div className="mt-3 border-b-2 pb-4">
       <div className="flex items-center justify-evenly">
@@ -107,14 +121,11 @@ function SearchDiary() {
           value={option}
           onChange={(event) => setOption(event.target.value)}
         >
-          <option value="" disabled>
-            옵션을 선택하세요
-          </option>
-          <option value="option1">옵션 1</option>
-          <option value="option2">옵션 2</option>
+          <option value="DES_CREATE_DATE">내림차순</option>
+          <option value="ASC_CREATE_DATE">오름차순</option>
         </select>
       </div>
-      <Button text={"검색"} width={"100%"} />
+      <Button text={"검색"} width={"100%"} onClick={() => searchDiaryList()} />
     </div>
   );
 }
@@ -129,7 +140,7 @@ const DiaryManagement = () => {
 
   return (
     <div>
-      <SearchDiary />
+      <SearchDiary id={userInfo.userId} />
       <DiaryListCop />
     </div>
   );

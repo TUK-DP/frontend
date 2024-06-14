@@ -3,67 +3,62 @@ import { AiOutlineRollback } from "react-icons/ai";
 import { HiOutlinePaintBrush } from "react-icons/hi2";
 import { TfiEraser } from "react-icons/tfi";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { BRUSH_SIZE, SELECT_COLOR } from "../../redux/modules/ImageDiary";
 import { imageState } from "../../recoil/keywordState";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { brushSizeState, selectedColorState } from "../../recoil/canvasState";
 
 const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
   const [getCtx, setGetCtx] = useState(null); //드로잉 영역
   const [painting, setPainting] = useState(false); //그리기 모드
   const [erasing, setErasing] = useState(false); //지우기 모드
   const [history, setHistory] = useState([]); //실행 취소
-  const brushSize = useSelector((state) => state.ImageDiary.brushSize);
-  const selectedColor = useSelector((state) => state.ImageDiary.selectedColor);
-  const dispatch = useDispatch();
   const image = useRecoilValue(imageState);
 
-  //드로잉 영역 초기 세팅
+  const [brushSize, setBrushSize] = useRecoilState(brushSizeState); //브러쉬 크기
+  const [selectedColor, setSelectedColor] = useRecoilState(selectedColorState); //선택된 색상
 
   const [imageUrl, setImageUrl] = useState("");
   const [bgOpacity, setBgOpacity] = useState(1);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
 
-    // Canvas에 배경 이미지 설정
+  useEffect(() => {
+    const ctx = canvasRef.current.getContext("2d");
+    setGetCtx(ctx);
+    initializeCanvas(ctx);
+  }, [canvasKeyword]);
+  //드로잉 영역 초기 세팅
+  const initializeCanvas = (ctx) => {
+    ctx.lineJoin = "round"; //선이 꺽이는 부분의 스타일
+    ctx.lineWidth = 3; //선의 두께
+    ctx.strokeStyle = "#000000"; //선의 색
+
+    const canvas = canvasRef.current;
     if (image) {
       const matchedImage = image.filter(
         (item) => item.keyword === canvasKeyword
       );
-      console.log(matchedImage);
       if (matchedImage.length !== 0) {
-        const { keyword, imageUrl, bgOpacity } = matchedImage[0];
+        const { imageUrl, bgOpacity } = matchedImage[0];
         setImageUrl(imageUrl);
         setBgOpacity(bgOpacity);
       } else {
-        // 키워드에 맞는 이미지가 없을 경우 흰색 배경으로 설정
-
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
     } else {
-      //이미지가 없을 경우 흰색 배경으로 설정
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
+    setBrushSize(3);
+    setSelectedColor("#000000");
+  };
 
-    ctx.lineJoin = "round"; //선이 꺽이는 부분의 스타일
-    ctx.lineWidth = 1; //선의 두께
-    ctx.strokeStyle = "#000000"; //선의 색
-
-    dispatch({ type: SELECT_COLOR, selectedColor: "#000000" });
-    dispatch({ type: BRUSH_SIZE, brushSize: 1 });
-    setGetCtx(ctx);
-    clearCanvas();
-  }, [canvasKeyword, image]); // canvasKeyword와 image가 변경될 때마다 useEffect 실행
-
-  // 브러쉬 크기, 펜 색상 변경 시 호출됨
+  //브러쉬 크기, 펜 색상 변경 시 호출됨
   useEffect(() => {
     if (getCtx) {
       getCtx.lineWidth = brushSize;
       getCtx.strokeStyle = selectedColor;
     }
+    console.log(brushSize, selectedColor);
   }, [brushSize, selectedColor]);
 
   //그리기, 지우기 기능
@@ -177,7 +172,7 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
   //브러쉬 크기 변경
   const changeLineWidth = (event) => {
     console.log(brushSize);
-    dispatch({ type: BRUSH_SIZE, brushSize: parseInt(event.target.value, 10) });
+    setBrushSize(parseInt(event.target.value, 10));
   };
 
   return (
@@ -245,7 +240,7 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
         </p>
         <input
           type="range"
-          value={brushSize}
+          defaultValue="3"
           min="1"
           max="20"
           step="1"

@@ -1,11 +1,10 @@
 import React from "react";
-import { connect, useDispatch } from "react-redux";
-import { SELECT_COLOR } from "../../redux/modules/ImageDiary";
+import { useSetRecoilState } from "recoil";
+import { selectedColorState } from "../../recoil/canvasState";
 
 const Color = ({ color }) => {
-  const dispatch = useDispatch();
-  // const selectedcolor = useSelector((state) => state.ImageDiary.selectedColor);
   const borderColor = color === "#FFFFFF" ? "1px solid black" : "none";
+  const setSelectedColor = useSetRecoilState(selectedColorState);
   return (
     <div
       className={"w-14 h-14 rounded-full flex-shrink-0"}
@@ -13,7 +12,7 @@ const Color = ({ color }) => {
         backgroundColor: color,
         border: borderColor,
       }}
-      onClick={() => dispatch({ type: SELECT_COLOR, selectedColor: color })}
+      onClick={() => setSelectedColor(color)}
     ></div>
   );
 };

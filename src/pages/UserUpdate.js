@@ -6,6 +6,7 @@ import Modal from "../component/Modal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
+import axios from "axios";
 
 const UserUpdate = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,16 @@ const UserUpdate = () => {
     reset(userInfo);
   }, [userInfo, reset]);
 
+  const axiosInstance = axios.create({
+    baseURL: process.env.REACT_APP_SERVER_URL,
+  });
   const onSubmit = async (data) => {
+    const accessToken = localStorage.getItem("AccessToken");
+    if (!accessToken) {
+      console.error("엑세스 토큰이 없습니다.");
+      return;
+    }
+
     const userData = {
       id: userInfo.userId,
       username: data.username,
@@ -37,8 +47,14 @@ const UserUpdate = () => {
       password: data.password,
       birth: data.birth,
     };
+
     try {
-      const response = await UserController.updateUser({ userData });
+      const response = await axiosInstance.put("/users", userData, {
+        headers: {
+          AccessToken: `${accessToken}`,
+        },
+      });
+      console.log("성공");
       navigate("/mypage");
     } catch (error) {
       console.log("정보 수정 중 오류", error);
@@ -51,7 +67,6 @@ const UserUpdate = () => {
   });
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     setNickname(event.target.value);
     nicknameRegister.onChange(event);
   };
@@ -60,8 +75,6 @@ const UserUpdate = () => {
     if (nickname === "") return;
     try {
       const res = await UserController.checkNickname({ nickname });
-      console.log(nickname);
-      console.log(res);
       setIsNicknameExist(false);
     } catch (error) {
       console.log(error);
@@ -79,8 +92,8 @@ const UserUpdate = () => {
   if (!userInfo) return null;
 
   return (
-    <div className={"flex flex-col justify-center items-center my-4"}>
-      <form onSubmit={handleSubmit(onSubmit)} className={"mb-5"}>
+    <div className="flex flex-col justify-center items-center my-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
         <div className="inputField">
           <label>이름</label>
           <input
@@ -100,7 +113,7 @@ const UserUpdate = () => {
         </div>
         <div className="inputField">
           <label>닉네임</label>
-          <div className={"flex flex-row justify-center items-center"}>
+          <div className="flex flex-row justify-center items-center">
             <input
               {...nicknameRegister}
               onChange={handleChange}
@@ -152,7 +165,6 @@ const UserUpdate = () => {
           <label>비밀번호</label>
           <input
             type="password"
-            defaultValue={userInfo.password}
             {...register("password", {
               required: "빈 칸 없이 작성해주세요.",
               minLength: {

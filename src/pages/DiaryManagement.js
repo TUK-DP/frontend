@@ -5,18 +5,15 @@ import { useNavigate } from "react-router-dom";
 import Button from "../component/Button";
 import diaryController from "../api/diary.controller";
 
-function DiaryListCop() {
-  //날짜리스트랑 리스트 길이 추가 필요
-  //날짜를 diarycontent로 넘겨주면 diarycontent에서 날짜에 해당하는 일기내용 보여주도록 추가 필요
+function DiaryListCop({ diaryDates }) {
   const navigate = useNavigate();
-  const diarydate = ["2024-05-13", "2024-05-14", "2024-05-15"];
-  const formattedDates = diarydate.map((dateStr) => {
+  const formattedDates = diaryDates.map((dateStr) => {
     const date = new Date(dateStr);
     const formattedDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
     return formattedDate;
   });
   const handleClick = (index) => {
-    navigate("/calendar", { state: diarydate[index] });
+    navigate("/calendar", { state: diaryDates[index] });
   };
   return (
     <div>
@@ -38,18 +35,16 @@ function DiaryListCop() {
   );
 }
 
-function SearchDiary({ id }) {
+function SearchDiary({ id, setDiaries }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [option, setOption] = useState("");
 
-  //현재 날짜
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
   const currentDay = String(currentDate.getDate()).padStart(2, "0");
 
-  //하루 전 날짜
   const previousDate = new Date(currentDate);
   previousDate.setDate(currentDate.getDate() - 1);
   const previousYear = previousDate.getFullYear();
@@ -58,6 +53,10 @@ function SearchDiary({ id }) {
 
   const defaultDate = `${currentYear}-${currentMonth}-${currentDay}`;
   const defaultPreviousDate = `${previousYear}-${previousMonth}-${previousDay}`;
+
+  useEffect(() => {
+    searchDiaryList();
+  }, [option]);
 
   useEffect(() => {
     setStartDate(defaultPreviousDate);
@@ -76,7 +75,6 @@ function SearchDiary({ id }) {
     setEndDate(event.target.value);
   };
 
-  //기간별 일기 조회
   const searchDiaryList = async () => {
     try {
       const response = await diaryController.searchDiaryList({
@@ -85,7 +83,9 @@ function SearchDiary({ id }) {
         finishDate: endDate,
         sortBy: option,
       });
-      console.log(response.data);
+      const diaries = response.data.result.diaries;
+      const createDateList = diaries.map((diary) => diary.createDate);
+      setDiaries(createDateList);
     } catch (error) {
       console.error("기간별 일기 조회 중 오류", error);
     }
@@ -121,8 +121,8 @@ function SearchDiary({ id }) {
           value={option}
           onChange={(event) => setOption(event.target.value)}
         >
-          <option value="DES_CREATE_DATE">내림차순</option>
-          <option value="ASC_CREATE_DATE">오름차순</option>
+          <option value="DES_CREATE_DATE">최신순</option>
+          <option value="ASC_CREATE_DATE">오래된순</option>
         </select>
       </div>
       <Button text={"검색"} width={"100%"} onClick={() => searchDiaryList()} />
@@ -133,6 +133,7 @@ function SearchDiary({ id }) {
 const DiaryManagement = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.UserInfo);
+  const [diaries, setDiaries] = useState([]);
 
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "일기 관리" });
@@ -140,8 +141,8 @@ const DiaryManagement = () => {
 
   return (
     <div>
-      <SearchDiary id={userInfo.userId} />
-      <DiaryListCop />
+      <SearchDiary id={userInfo.userId} setDiaries={setDiaries} />
+      <DiaryListCop diaryDates={diaries} />
     </div>
   );
 };

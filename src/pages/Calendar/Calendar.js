@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   CHANGE_DAY,
   CHANGE_MONTH,
-  CHANGE_YEAR,
+  SET_DATE,
 } from "../../redux/modules/DiaryDate.js";
 import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
 import DiaryController from "../../api/diary.controller.js";
@@ -17,10 +17,6 @@ import { SET_PAGENAME } from "../../redux/modules/PageName.js";
 const Calendar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const [initialStateLoaded, setInitialStateLoaded] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
-  const [selectedYear, setSelectedYear] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -29,12 +25,24 @@ const Calendar = () => {
 
     if (location.state) {
       const selectedDate = new Date(location.state);
-      setSelectedDay(selectedDate.getDate());
-      setSelectedMonth(selectedDate.getMonth() + 1);
-      setSelectedYear(selectedDate.getFullYear());
+      dispatch({
+        type: SET_DATE,
+        year: selectedDate.getFullYear(),
+        month: selectedDate.getMonth() + 1,
+        day: selectedDate.getDate(),
+      });
       setIsOpen(true);
+    } else {
+      // location.state가 없을 때 현재 날짜로 초기화
+      const currentDate = new Date();
+      dispatch({
+        type: SET_DATE,
+        year: currentDate.getFullYear(),
+        month: currentDate.getMonth() + 1,
+        day: currentDate.getDate(),
+      });
     }
-  }, [location.state]);
+  }, [location.state, dispatch]);
 
   const navigate = useNavigate();
   const {
@@ -46,20 +54,9 @@ const Calendar = () => {
   const [isGetDiaryComplete, setIsGetDiaryComplete] = useState(false);
   // userId는 한 번 로그인 이후 고정
   const userId = useSelector((state) => state.UserInfo.userId);
-  const [imgUrl, setImgUrl] = useState(null);
-
-  // 현재 날짜를 가져옴
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 +1 해줌
-  const currentDay = currentDate.getDate();
-
-  const year = selectedYear || currentYear;
-  const month = selectedMonth || currentMonth;
-  const day = selectedDay || currentDay;
 
   const dateFormat = () => {
-    const date = new Date(year, month - 1, day);
+    const date = new Date(reduxYear, reduxMonth - 1, reduxDay);
     return (
       date.getFullYear() +
       "-" +
@@ -74,10 +71,17 @@ const Calendar = () => {
   //선택한 날의 일기 가져오기
   const getDiary = async () => {
     setIsGetDiaryComplete(false);
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentDay = currentDate.getDate();
+
     if (
-      year > currentYear ||
-      (year === currentYear && month > currentMonth) ||
-      (year === currentYear && month === currentMonth && day > currentDay)
+      reduxYear > currentYear ||
+      (reduxYear === currentYear && reduxMonth > currentMonth) ||
+      (reduxYear === currentYear &&
+        reduxMonth === currentMonth &&
+        reduxDay > currentDay)
     )
       return;
     try {
@@ -115,7 +119,7 @@ const Calendar = () => {
   useEffect(() => {
     // 일기 데이터 가져오기
     getDiary();
-  }, [year, month, day]);
+  }, [reduxYear, reduxMonth, reduxDay]);
 
   // 이전 달로 이동
   const prevMonth = () => {
@@ -129,13 +133,13 @@ const Calendar = () => {
 
   // 현재 달의 첫째 날의 요일을 반환합니다. (0: 일요일, 1: 월요일, ...)
   const getFirstDayOfMonth = () => {
-    const firstDayOfMonth = new Date(year, month - 1, 1);
+    const firstDayOfMonth = new Date(reduxYear, reduxMonth - 1, 1);
     return firstDayOfMonth.getDay();
   };
 
   // 현재 달의 날짜 배열 생성 (날짜와 요일을 모두 포함)
   const getDaysInMonth = () => {
-    const daysInMonth = new Date(year, month, 0).getDate();
+    const daysInMonth = new Date(reduxYear, reduxMonth, 0).getDate();
     const days = [];
 
     // 빈 셀을 삽입하여 첫째 날이 올바른 요일에 위치하도록 합니다.
@@ -170,7 +174,7 @@ const Calendar = () => {
     let cells = [];
 
     days.forEach((selectDay, index) => {
-      const isSelected = selectDay !== "" && day === selectDay;
+      const isSelected = selectDay !== "" && reduxDay === selectDay;
 
       if (index % 7 !== 0) {
         cells.push(
@@ -221,7 +225,7 @@ const Calendar = () => {
           <span
             style={{ fontSize: "20px", fontWeight: "bold", color: "#999999" }}
           >
-            {`${year}년 ${month}월`}
+            {`${reduxYear}년 ${reduxMonth}월`}
           </span>
           <img
             src={Right}

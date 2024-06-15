@@ -4,6 +4,7 @@ import Button from "../../component/Button";
 import imgController from "../../api/img.controller";
 import SimpleImageSlider from "react-simple-image-slider";
 import Modal from "../../component/Modal";
+import Loading from "../../component/Loading";
 
 const HelpForAi = () => {
   const location = useLocation();
@@ -11,6 +12,7 @@ const HelpForAi = () => {
   const navigate = useNavigate();
   // AI가 생성한 이미지
   const [aiImages, setAiImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const getImageForAI = async () => {
     // keyword가 "자유롭게 그려주세요"이거나, prompt가 keyword를 포함하는 경우
     if (
@@ -18,6 +20,7 @@ const HelpForAi = () => {
       (prompt && prompt.includes(keyword))
     ) {
       try {
+        setIsLoading(true);
         const res = await imgController.generateImage({
           password: "password",
           prompt: prompt,
@@ -28,6 +31,7 @@ const HelpForAi = () => {
       } catch (error) {
         console.error(error);
       }
+      setIsLoading(false);
     } else {
       // 그 외의 경우 모달을 표시
       handleModal();
@@ -152,6 +156,7 @@ const HelpForAi = () => {
           content="키워드를 포함시켜주세요"
         />
       )}
+      {isLoading && <Loading text="그림 생성 중..." />}
     </div>
   );
 };

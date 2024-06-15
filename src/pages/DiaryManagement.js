@@ -17,11 +17,7 @@ function DiaryListCop({ diaryDates }) {
   };
   return (
     <div>
-      {diaryDates.length === 0 ? (
-        <div className="text-xl flex justify-center mt-3">
-          일기가 존재하지 않습니다.
-        </div>
-      ) : (
+      {diaryDates.length > 0 ? (
         <div>
           {formattedDates.map((date, index) => (
             <div
@@ -37,6 +33,10 @@ function DiaryListCop({ diaryDates }) {
               </div>
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="text-xl flex justify-center mt-3">
+          일기가 존재하지 않습니다.
         </div>
       )}
     </div>

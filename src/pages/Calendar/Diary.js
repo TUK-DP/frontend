@@ -5,15 +5,15 @@ import DiaryController from "../../api/diary.controller.js";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../component/Loading.js";
 import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
+import SimpleImageSlider from "react-simple-image-slider";
 
 const Diary = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const textRef = useRef();
-  const [isImage, setIsImage] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { diaryId, content, date, imgUrl } = useSelector(
+  const { diaryId, content, date, keywords } = useSelector(
     (state) => state.DiaryInfo
   );
 
@@ -26,7 +26,6 @@ const Diary = () => {
     textarea.style.height = "auto"; // Reset height to auto
     textarea.style.height = textarea.scrollHeight + "px";
   }, []);
-
   useEffect(() => {
     handleResizeHeight();
   }, [handleResizeHeight]);
@@ -57,8 +56,8 @@ const Diary = () => {
         type: CHANGE_DIARY,
         diaryId: diaryInfo.diaryId,
         content: diaryInfo.content,
-        imgUrl: diaryInfo.imgUrl,
         date: diaryInfo.createDate,
+        keywords: diaryInfo.keywords,
       });
       setIsSaving(false);
     } catch (error) {
@@ -83,13 +82,8 @@ const Diary = () => {
   return (
     <div id="diary">
       {isSaving ? <Loading text="일기 수정 중..." /> : null}
-      <div id="draw">
-        {imgUrl !== null ? (
-          <img
-            src={imgUrl}
-            style={{ width: "100%", height: "100%", borderRadius: "25px" }}
-          />
-        ) : (
+      <div id="draw" className={"relative"}>
+        {keywords[0] == null || keywords[0].imgUrl == null ? (
           <div
             id="btn_paint"
             onClick={() => {
@@ -98,6 +92,19 @@ const Diary = () => {
           >
             그림 그리기
           </div>
+        ) : (
+          <SimpleImageSlider
+            width="100%"
+            height="100%"
+            images={keywords.map((keyword) => {
+              return keyword.imgUrl;
+            })}
+            showBullets={false}
+            showNavs={true}
+            navMargin={0}
+            bgColor={"#FFFFFF"}
+            style={{ borderRadius: "20px" }}
+          />
         )}
       </div>
       <div id="contentBox">

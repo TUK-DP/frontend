@@ -7,7 +7,7 @@ const initialState = {
   diaryId: 0,
   content: "",
   date: 0,
-  imgUrl: null,
+  keywords: [],
 };
 
 export default function DiaryInfo(state = initialState, action) {
@@ -18,7 +18,7 @@ export default function DiaryInfo(state = initialState, action) {
         diaryId: action.diaryId,
         content: action.content,
         date: action.date,
-        imgUrl: action.imgUrl,
+        keywords: action.keywords,
       };
 
     default:

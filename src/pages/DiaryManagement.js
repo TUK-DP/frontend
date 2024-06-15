@@ -17,20 +17,28 @@ function DiaryListCop({ diaryDates }) {
   };
   return (
     <div>
-      {formattedDates.map((date, index) => (
-        <div
-          className="my-3 flex bg-[#e0f4ff] h-[5rem] items-center justify-between px-2"
-          onClick={() => handleClick(index)}
-          key={index}
-        >
-          <div className="pl-3 text-[#7a7a7a] text-xl bg-white w-[50%] h-12 flex items-center rounded-xl">
-            {date}
-          </div>
-          <div className="text-xl text-[#82aae3] font-bold">
-            일기 확인하기 {">"}
-          </div>
+      {diaryDates.length === 0 ? (
+        <div className="text-xl flex justify-center mt-3">
+          일기가 존재하지 않습니다.
         </div>
-      ))}
+      ) : (
+        <div>
+          {formattedDates.map((date, index) => (
+            <div
+              className="my-3 flex bg-[#e0f4ff] h-[5rem] items-center justify-between px-2"
+              onClick={() => handleClick(index)}
+              key={index}
+            >
+              <div className="pl-3 text-[#7a7a7a] text-xl bg-white w-[50%] h-12 flex items-center rounded-xl">
+                {date}
+              </div>
+              <div className="text-xl text-[#82aae3] font-bold">
+                일기 확인하기 {">"}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

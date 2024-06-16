@@ -30,7 +30,6 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
 
   useEffect(() => {
     if (canvasRef === null) return;
-    console.log(index);
     initializeCanvas();
   }, []);
 
@@ -44,7 +43,6 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
 
   //드로잉 영역 초기 세팅
   const initializeCanvas = () => {
-    console.log(canvasRef.current);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     setGetCtx(ctx);
@@ -102,22 +100,6 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
     const ctx = canvas.getContext("2d");
     const currentState = ctx.getImageData(0, 0, canvas.width, canvas.height);
     setHistory((prevHistory) => [...prevHistory, currentState]);
-  };
-
-  //실행 취소
-  const unDo = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-
-    history.pop(); // 현재 상태 제거
-
-    if (history.length > 1) {
-      const prevState = history[history.length - 1];
-      ctx.putImageData(prevState, 0, 0);
-      return;
-    }
-
-    clearCanvas();
   };
 
   // 터치 이벤트 핸들러 함수
@@ -205,7 +187,11 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
       {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}
       <div className={"flex justify-between items-center mt-[10px] mb-[15px]"}>
         <TrashButton clearCanvas={clearCanvas} />
-        <UnDoButton unDo={unDo} />
+        <UnDoButton
+          canvasRef={canvasRef}
+          clearCanvas={clearCanvas}
+          history={history}
+        />
         <SelectedColor selectedColor={selectedColor} />
         <BrushButton drawMode={drawMode} setDrawMode={setDrawMode} />
         <EraserButton drawMode={drawMode} setDrawMode={setDrawMode} />
@@ -229,7 +215,23 @@ const TrashButton = ({ clearCanvas }) => {
   );
 };
 
-const UnDoButton = ({ unDo }) => {
+const UnDoButton = ({ canvasRef, history, clearCanvas }) => {
+  //실행 취소
+  const unDo = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    history.pop(); // 현재 상태 제거
+
+    if (history.length > 1) {
+      const prevState = history[history.length - 1];
+      ctx.putImageData(prevState, 0, 0);
+      return;
+    }
+
+    clearCanvas();
+  };
+
   return <AiOutlineRollback size={55} onClick={unDo} />;
 };
 
@@ -268,7 +270,7 @@ const EraserButton = ({ drawMode, setDrawMode }) => {
 
 const ChangeBrushSizeRangeComp = ({ brushSize, setBrushSize }) => {
   const changeLineWidth = (event) => {
-    setBrushSize(parseInt(event.target.value, 10));
+    setBrushSize(parseInt(event.target.value));
   };
 
   return (
@@ -282,6 +284,7 @@ const ChangeBrushSizeRangeComp = ({ brushSize, setBrushSize }) => {
         min="1"
         max="20"
         step="1"
+        value={brushSize}
         onChange={changeLineWidth}
         className={"w-3/5"}
       />

@@ -7,12 +7,20 @@ import { imageState } from "../../recoil/keywordState";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { brushSizeState, selectedColorState } from "../../recoil/canvasState";
 
-const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
+const INPUT_START = "start";
+const INPUT_MOVE = "move";
+const INPUT_END = "end";
+
+const BRUSH_MODE = "brush";
+const ERASER_MODE = "eraser";
+
+const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
   const [getCtx, setGetCtx] = useState(null); //드로잉 영역
-  const [painting, setPainting] = useState(false); //그리기 모드
-  const [erasing, setErasing] = useState(false); //지우기 모드
+  const [screenInputMode, setScreenInputMode] = useState(INPUT_END); // 터치, 마우스 입력 모드
+
+  const [drawMode, setDrawMode] = useState(BRUSH_MODE); // 그리기 모드
   const [history, setHistory] = useState([]); //실행 취소
-  const image = useRecoilValue(imageState);
+  const images = useRecoilValue(imageState);
 
   const [brushSize, setBrushSize] = useRecoilState(brushSizeState); //브러쉬 크기
   const [selectedColor, setSelectedColor] = useRecoilState(selectedColorState); //선택된 색상
@@ -21,63 +29,63 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
   const [bgOpacity, setBgOpacity] = useState(1);
 
   useEffect(() => {
-    const ctx = canvasRef.current.getContext("2d");
-    setGetCtx(ctx);
-    initializeCanvas(ctx);
-  }, [canvasKeyword]);
+    if (canvasRef === null) return;
+    console.log(index);
+    initializeCanvas();
+  }, []);
+
+  //브러쉬 크기, 펜 색상 변경 시 호출됨
+  useEffect(() => {
+    if (canvasRef === null || getCtx === null) return;
+    getCtx.lineWidth = brushSize;
+    getCtx.strokeStyle = selectedColor;
+    console.log(brushSize, selectedColor);
+  }, [brushSize, selectedColor]);
+
   //드로잉 영역 초기 세팅
-  const initializeCanvas = (ctx) => {
+  const initializeCanvas = () => {
+    console.log(canvasRef.current);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    setGetCtx(ctx);
+
     ctx.lineJoin = "round"; //선이 꺽이는 부분의 스타일
     ctx.lineWidth = 3; //선의 두께
     ctx.strokeStyle = "#000000"; //선의 색
 
-    const canvas = canvasRef.current;
-    if (image) {
-      const matchedImage = image.filter(
+    if (images) {
+      const matchedImage = images.find(
         (item) => item.keyword === canvasKeyword
       );
-      if (matchedImage.length !== 0) {
-        const { imageUrl, bgOpacity } = matchedImage[0];
-        setImageUrl(imageUrl);
-        setBgOpacity(bgOpacity);
-      } else {
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-    } else {
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      setImageUrl(matchedImage?.imageUrl);
+      setBgOpacity(matchedImage?.bgOpacity);
     }
-    setBrushSize(3);
+
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
     setSelectedColor("#000000");
   };
 
-  //브러쉬 크기, 펜 색상 변경 시 호출됨
-  useEffect(() => {
-    if (getCtx) {
-      getCtx.lineWidth = brushSize;
-      getCtx.strokeStyle = selectedColor;
-    }
-    console.log(brushSize, selectedColor);
-  }, [brushSize, selectedColor]);
-
   //그리기, 지우기 기능
   const drawFn = (x, y) => {
-    if (!painting) {
-      getCtx.beginPath();
-      getCtx.moveTo(x, y);
-    } else {
-      if (erasing) {
-        getCtx.clearRect(
-          x - brushSize,
-          y - brushSize,
-          brushSize * 2,
-          brushSize * 2
-        );
-      } else {
-        getCtx.lineTo(x, y);
-        getCtx.stroke();
-      }
+    const ctx = canvasRef.current.getContext("2d");
+
+    // 그리기전이라면 그리기 시작
+    if (screenInputMode === INPUT_END) {
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      return;
+    }
+
+    // 그리기 모드에 따라 그리기 또는 지우기
+    if (drawMode === ERASER_MODE) {
+      ctx.clearRect(x - brushSize, y - brushSize, brushSize * 2, brushSize * 2);
+    }
+
+    if (drawMode === BRUSH_MODE) {
+      ctx.lineTo(x, y);
+      ctx.stroke();
     }
   };
 
@@ -100,14 +108,16 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
   const unDo = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+
+    history.pop(); // 현재 상태 제거
+
     if (history.length > 1) {
-      history.pop(); // 현재 상태 제거
       const prevState = history[history.length - 1];
       ctx.putImageData(prevState, 0, 0);
-    } else {
-      history.pop();
-      clearCanvas();
+      return;
     }
+
+    clearCanvas();
   };
 
   // 터치 이벤트 핸들러 함수
@@ -116,7 +126,7 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
     const rect = canvasRef.current.getBoundingClientRect();
     const x = touch.clientX - rect.left + window.scrollX;
     const y = touch.clientY - rect.top + window.scrollY;
-    setPainting(true);
+    setScreenInputMode(INPUT_START);
     drawFn(x, y);
   };
 
@@ -125,11 +135,12 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
     const rect = canvasRef.current.getBoundingClientRect();
     const x = touch.clientX - rect.left + window.scrollX;
     const y = touch.clientY - rect.top + window.scrollY;
+    setScreenInputMode(INPUT_MOVE);
     drawFn(x, y);
   };
 
   const handleTouchEnd = () => {
-    setPainting(false);
+    setScreenInputMode(INPUT_END);
     updateCanvasState();
   };
   // 캔버스 크기를 반응형으로 조절하기 위해 화면의 크기를 받아와서 조정
@@ -146,17 +157,18 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
       window.removeEventListener("resize", resizeListener);
     };
   }, [window.innerWidth]);
+
   // 마우스 클릭 이벤트 핸들러 함수
   const handleMouseDown = (e) => {
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left + window.scrollX;
     const y = e.clientY - rect.top + window.scrollY;
-    setPainting(true);
+    setScreenInputMode(INPUT_START);
     drawFn(x, y);
   };
 
   const handleMouseMove = (e) => {
-    if (painting) {
+    if (screenInputMode === INPUT_START || screenInputMode === INPUT_MOVE) {
       const rect = canvasRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left + window.scrollX;
       const y = e.clientY - rect.top + window.scrollY;
@@ -165,22 +177,12 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
   };
 
   const handleMouseUp = () => {
-    setPainting(false);
+    setScreenInputMode(INPUT_END);
     updateCanvasState();
   };
 
-  //브러쉬 크기 변경
-  const changeLineWidth = (event) => {
-    console.log(brushSize);
-    setBrushSize(parseInt(event.target.value, 10));
-  };
-
   return (
-    <div
-      style={{
-        display: isVisible ? "block" : "none",
-      }}
-    >
+    <div style={{ display: isVisible ? "block" : "none" }}>
       <canvas
         ref={canvasRef}
         onTouchStart={handleTouchStart}
@@ -197,57 +199,92 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword }) => {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           border: "4px solid #D9D9D9",
-          // backgroundColor: "rgba(255, 255, 255, 0.5)",
           opacity: bgOpacity,
         }}
-      ></canvas>
+      />
       {/* 전체삭제, 뒤로가기, 브러쉬, 지우개 */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          margin: "10px 0px 15px 0px",
-          alignItems: "center",
-        }}
-      >
-        <IoTrashOutline size={55} onClick={clearCanvas} />
-        <AiOutlineRollback size={55} onClick={unDo} />
-        <div
-          style={{
-            backgroundColor: `${selectedColor}`,
-            width: "120px ",
-            borderRadius: "30px",
-            height: "40px",
-          }}
-        ></div>
-        <HiOutlinePaintBrush
-          size={55}
-          onClick={() => {
-            setErasing(false);
-          }}
-          color={erasing ? "black" : "red"}
-        />
-        <TfiEraser
-          size={55}
-          onClick={() => setErasing(true)}
-          color={erasing ? "red" : "black"}
-        />
+      <div className={"flex justify-between items-center mt-[10px] mb-[15px]"}>
+        <TrashButton clearCanvas={clearCanvas} />
+        <UnDoButton unDo={unDo} />
+        <SelectedColor selectedColor={selectedColor} />
+        <BrushButton drawMode={drawMode} setDrawMode={setDrawMode} />
+        <EraserButton drawMode={drawMode} setDrawMode={setDrawMode} />
       </div>
       {/* 브러쉬 크기 조정  */}
-      <div className={"flex flex-row justify-start items-center "}>
-        <p className={"text-xl w-2/5 text-nowrap text-start "}>
-          브러쉬 크기 {brushSize}
-        </p>
-        <input
-          type="range"
-          defaultValue="3"
-          min="1"
-          max="20"
-          step="1"
-          onChange={changeLineWidth}
-          className={"w-3/5"}
-        />
-      </div>
+      <ChangeBrushSizeRangeComp
+        brushSize={brushSize}
+        setBrushSize={setBrushSize}
+      />
+    </div>
+  );
+};
+
+const TrashButton = ({ clearCanvas }) => {
+  return (
+    <IoTrashOutline
+      size={55}
+      onClick={clearCanvas}
+      className={"cursor-pointer"}
+    />
+  );
+};
+
+const UnDoButton = ({ unDo }) => {
+  return <AiOutlineRollback size={55} onClick={unDo} />;
+};
+
+const SelectedColor = ({ selectedColor }) => {
+  return (
+    <div
+      style={{
+        backgroundColor: `${selectedColor}`,
+        width: "120px ",
+        borderRadius: "30px",
+        height: "40px",
+      }}
+    />
+  );
+};
+
+const BrushButton = ({ drawMode, setDrawMode }) => {
+  return (
+    <HiOutlinePaintBrush
+      size={55}
+      onClick={() => setDrawMode(BRUSH_MODE)}
+      color={drawMode === BRUSH_MODE ? "red" : "black"}
+    />
+  );
+};
+
+const EraserButton = ({ drawMode, setDrawMode }) => {
+  return (
+    <TfiEraser
+      size={55}
+      onClick={() => setDrawMode(ERASER_MODE)}
+      color={drawMode === ERASER_MODE ? "red" : "black"}
+    />
+  );
+};
+
+const ChangeBrushSizeRangeComp = ({ brushSize, setBrushSize }) => {
+  const changeLineWidth = (event) => {
+    setBrushSize(parseInt(event.target.value, 10));
+  };
+
+  return (
+    <div className={"flex flex-row justify-start items-center "}>
+      <p className={"text-xl w-2/5 text-nowrap text-start "}>
+        브러쉬 크기 {brushSize}
+      </p>
+      <input
+        type="range"
+        defaultValue="3"
+        min="1"
+        max="20"
+        step="1"
+        onChange={changeLineWidth}
+        className={"w-3/5"}
+      />
     </div>
   );
 };

@@ -20,6 +20,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { imageState, keywordState } from "../../recoil/keywordState";
 import diaryController from "../../api/diary.controller";
 import html2canvas from "html2canvas";
+
 const Draw = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -32,13 +33,14 @@ const Draw = () => {
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [keywordInfo, setKeywordInfo] = useRecoilState(keywordState);
-  useEffect(() => {
-    console.log(keywordInfo);
-  }, [keywordInfo]);
   // //키워드
-  const [keyword, setKeyword] = useState([]);
+  const [keyword, setKeyword] = useState(
+    keywordInfo.map((item) => item.keyword)
+  );
   //캔버스들 저장
-  const canvasRefs = useRef({});
+  const [canvasRefs, setCanvasRefs] = useState(
+    keywordInfo.map(() => React.createRef())
+  );
   //키워드별 사진 저장(base64 형태) -> photoedit으로 넘겨줌
   const [savedImages, setSavedImages] = useState([]);
   //키워드가 존재하는 지의 여부
@@ -59,16 +61,15 @@ const Draw = () => {
 
   useEffect(() => {
     //키워드가 없는 경우
-    if (keywordInfo.length == 0) {
-      setKeyword(["자유롭게 그려주세요"]);
+    if (keywordInfo.length === 0) {
       console.log("키워드 없음");
       setIsKeywordExist(false);
+      setKeyword(["자유롭게 그려주세요"]);
     }
 
     //키워드가 있는 경우
     if (keywordInfo.length !== 0) {
       setIsKeywordExist(true);
-      setKeyword(keywordInfo.map((item) => item.keyword));
     }
   }, []);
 
@@ -84,28 +85,28 @@ const Draw = () => {
   };
   // 캔버스 렌더링
   const renderCanvas = () => {
-    canvasRefs.current = keyword.map(() => React.createRef());
-
     return keyword.map((cur, i) => (
       <Canvas
         key={i}
         isVisible={index === i}
-        canvasRef={canvasRefs.current[i]}
+        // canvasRef={canvasRefs.current[i]}
+        canvasRef={canvasRefs[i]}
         canvasKeyword={cur}
+        index={i}
       />
     ));
   };
 
   const renderPhoto = () => {
     return keyword.map((cur, i) => (
-      <InfiniteScroll isVisible={index === i} keyword={keyword[i]} key={i} />
+      <InfiniteScroll isVisible={index === i} keyword={cur} key={i} />
     ));
   };
 
   //키워드 별 사진을 서버로 전송
   const postImg = async () => {
     try {
-      const requests = canvasRefs.current.map(async (canvasRef, i) => {
+      const requests = canvasRefs.map(async (canvasRef, i) => {
         const formData = new FormData();
         await new Promise((resolve, reject) => {
           canvasRef.current.toBlob((blob) => {
@@ -121,8 +122,7 @@ const Draw = () => {
       });
 
       const responses = await Promise.all(requests);
-      const photo = responses.map((res) => res.data.result.imageUrl);
-      return photo; // 이미지 URL 배열 반환
+      return responses.map((res) => res.data.result.imageUrl); // 이미지 URL 배열 반환
     } catch (err) {
       console.log(err);
     }

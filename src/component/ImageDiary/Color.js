@@ -8,9 +8,8 @@ const Color = ({ color }) => {
   const borderColor = color === "#FFFFFF" ? "1px solid black" : "none";
   return (
     <div
+      className={"w-14 h-14 rounded-full flex-shrink-0"}
       style={{
-        width: "55px",
-        height: "50px",
         backgroundColor: color,
         border: borderColor,
       }}

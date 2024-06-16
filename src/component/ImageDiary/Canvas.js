@@ -2,7 +2,7 @@ import { IoTrashOutline } from "react-icons/io5";
 import { AiOutlineRollback } from "react-icons/ai";
 import { HiOutlinePaintBrush } from "react-icons/hi2";
 import { TfiEraser } from "react-icons/tfi";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { imageState } from "../../recoil/keywordState";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { brushSizeState, selectedColorState } from "../../recoil/canvasState";
@@ -18,6 +18,8 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
   const [getCtx, setGetCtx] = useState(null); //드로잉 영역
   const [screenInputMode, setScreenInputMode] = useState(INPUT_END); // 터치, 마우스 입력 모드
 
+  const bgCanvasRef = useRef(null);
+
   const [drawMode, setDrawMode] = useState(BRUSH_MODE); // 그리기 모드
   const [history, setHistory] = useState([]); //실행 취소
   const images = useRecoilValue(imageState);
@@ -25,7 +27,9 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
   const [brushSize, setBrushSize] = useRecoilState(brushSizeState); //브러쉬 크기
   const [selectedColor, setSelectedColor] = useRecoilState(selectedColorState); //선택된 색상
 
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(
+    "https://tukorea-dp.s3.amazonaws.com/image/test.png"
+  );
   const [bgOpacity, setBgOpacity] = useState(1);
 
   useEffect(() => {
@@ -45,10 +49,14 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
   const initializeCanvas = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    setGetCtx(ctx);
+
+    const bgCtx = bgCanvasRef.current.getContext("2d");
+    const backgroundImage = new Image();
+    backgroundImage.src = imageUrl;
+    bgCtx.drawImage(backgroundImage, 0, 0, 300, 150);
 
     ctx.lineJoin = "round"; //선이 꺽이는 부분의 스타일
-    ctx.lineWidth = 3; //선의 두께
+    ctx.lineWidth = brushSize; //선의 두께
     ctx.strokeStyle = "#000000"; //선의 색
 
     if (images) {
@@ -62,6 +70,7 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    setGetCtx(ctx);
     setSelectedColor("#000000");
   };
 
@@ -164,7 +173,10 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
   };
 
   return (
-    <div style={{ display: isVisible ? "block" : "none" }}>
+    <div
+      style={{ display: isVisible ? "block" : "none" }}
+      className={"relative"}
+    >
       <canvas
         ref={canvasRef}
         onTouchStart={handleTouchStart}
@@ -177,10 +189,19 @@ const Canvas = ({ isVisible, canvasRef, canvasKeyword, index }) => {
         height={width}
         style={{
           touchAction: "none",
-          backgroundImage: `url(${imageUrl})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
           border: "4px solid #D9D9D9",
+          zIndex: 100,
+        }}
+      />
+      <canvas
+        ref={bgCanvasRef}
+        id={"bgCanvas"}
+        className={
+          "absolute top-0 left-0 border-[4px] box-content border-white bg-cover -z-10 bg-no-repeat"
+        }
+        style={{
+          width: width + "px",
+          height: width + "px",
           opacity: bgOpacity,
         }}
       />
@@ -269,6 +290,10 @@ const EraserButton = ({ drawMode, setDrawMode }) => {
 };
 
 const ChangeBrushSizeRangeComp = ({ brushSize, setBrushSize }) => {
+  useEffect(() => {
+    setBrushSize(brushSize);
+  }, []);
+
   const changeLineWidth = (event) => {
     setBrushSize(parseInt(event.target.value));
   };

@@ -97,6 +97,7 @@ const UserUpdate = () => {
         <div className="inputField">
           <label>이름</label>
           <input
+            className="input"
             type="text"
             defaultValue={userInfo.username}
             {...register("username", {
@@ -115,6 +116,7 @@ const UserUpdate = () => {
           <label>닉네임</label>
           <div className="flex flex-row justify-center items-center">
             <input
+              className="input"
               {...nicknameRegister}
               onChange={handleChange}
               type="text"
@@ -136,6 +138,7 @@ const UserUpdate = () => {
         <div className="inputField">
           <label>생년월일</label>
           <input
+            className="input"
             type="date"
             defaultValue={userInfo.birth}
             {...register("birth", { required: "빈 칸 없이 작성해주세요." })}
@@ -147,6 +150,7 @@ const UserUpdate = () => {
         <div className="inputField">
           <label>이메일</label>
           <input
+            className="input"
             type="text"
             defaultValue={userInfo.email}
             {...register("email", {
@@ -164,6 +168,7 @@ const UserUpdate = () => {
         <div className="inputField">
           <label>비밀번호</label>
           <input
+            className="input"
             type="password"
             {...register("password", {
               required: "빈 칸 없이 작성해주세요.",
@@ -180,6 +185,7 @@ const UserUpdate = () => {
         <div className="inputField">
           <label>비밀번호 확인</label>
           <input
+            className="input"
             type="password"
             placeholder="비밀번호를 입력하세요."
             {...register("passwordChk", {

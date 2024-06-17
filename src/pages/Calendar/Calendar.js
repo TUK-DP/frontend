@@ -84,7 +84,7 @@ const Calendar = () => {
       const filteredDates = Object.keys(currentMonthData).filter(
         (date) => currentMonthData[date].isExist
       );
-      console.log(filteredDates);
+      setMark(filteredDates);
     } catch (error) {
       console.error("일기 유무 리스트 가져오기 중 오류", error);
     }
@@ -137,10 +137,7 @@ const Calendar = () => {
   };
 
   useEffect(() => {
-    // 첫 렌더링 시와 연도, 달이 변경될 때마다 일기 유무 리스트를 가져옵니다.
     checkDiaryList();
-  }, [reduxYear, reduxMonth]);
-  useEffect(() => {
     // 일기 데이터 가져오기
     getDiary();
   }, [reduxYear, reduxMonth, reduxDay]);
@@ -200,33 +197,35 @@ const Calendar = () => {
     days.forEach((selectDay, index) => {
       const isSelected = selectDay !== "" && reduxDay === selectDay;
 
+      // 현재 선택한 날짜의 날짜 문자열을 생성합니다.
+      const dateStr = `${selectDay.toString()}`;
+
+      // mark 배열에 포함된 숫자들과 일치하는지 확인합니다.
+      const isDiaryExistForDay = mark.includes(dateStr);
+
+      let cellClassNames = "";
       if (index % 7 !== 0) {
-        cells.push(
-          <td
-            key={index}
-            className={`${selectDay === "" ? "empty" : ""} ${
-              isSelected ? "selected" : ""
-            }`}
-            onClick={() => handleDateClick(selectDay)}
-          >
-            {selectDay}
-          </td>
-        );
+        cellClassNames = `${selectDay === "" ? "empty" : ""} ${isSelected ? "selected" : ""}`;
       } else {
         rows.push(cells);
         cells = [];
-        cells.push(
-          <td
-            key={index}
-            className={`${selectDay === "" ? "empty" : ""} ${
-              isSelected ? "selected" : ""
-            }`}
-            onClick={() => handleDateClick(selectDay)}
-          >
-            {selectDay}
-          </td>
-        );
+        cellClassNames = `${selectDay === "" ? "empty" : ""} ${isSelected ? "selected" : ""}`;
       }
+
+      cells.push(
+        <td
+          key={index}
+          className={`relative p-2 ${cellClassNames}`}
+          onClick={() => handleDateClick(selectDay)}
+        >
+          {selectDay}
+          {isDiaryExistForDay && (
+            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
+              <div className="w-2 h-2 bg-[#82aae3] rounded-full"></div>
+            </div>
+          )}
+        </td>
+      );
 
       if (index === days.length - 1) {
         rows.push(cells);

@@ -26,6 +26,15 @@ class UserController extends Api {
     });
   };
   // 회원 정보 수정
+  updateUser = async ({ userData, accessToken }) => {
+    return await this.put("/users", userData, {
+      headers: {
+        AccessToken: `${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   // 회원탈퇴
 }
 

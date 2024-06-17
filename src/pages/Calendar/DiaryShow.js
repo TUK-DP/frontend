@@ -6,7 +6,7 @@ import DiaryController from "../../api/diary.controller.js";
 import { useSelector } from "react-redux";
 import keywordController from "../../api/keyword.controller.js";
 
-const DiaryEdit = () => {
+const DiaryEdit = ({ isOpen }) => {
   const [showDiary, setShowDiary] = useState(false);
 
   const userId = useSelector((state) => state.UserInfo.userId);
@@ -48,6 +48,10 @@ const DiaryEdit = () => {
     setShowDiary(false);
   }, [diaryId]);
 
+  useEffect(() => {
+    setShowDiary(isOpen);
+  }, [isOpen]);
+
   const getKeyword = async () => {
     try {
       const response = await keywordController.getKeyword(diaryId);
@@ -72,7 +76,7 @@ const DiaryEdit = () => {
       <div className={"flex justify-between items-center py-8 bg-[#e0f4ff]  "}>
         <button
           className={
-            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold mx-6 text-xl"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
           onClick={handleDiaryTestClick}
@@ -81,7 +85,7 @@ const DiaryEdit = () => {
         </button>
         <button
           className={
-            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold mx-6 text-xl"
           }
           style={{
             boxShadow: " 3px 3px 3px rgb(200, 200, 200)",
@@ -96,7 +100,7 @@ const DiaryEdit = () => {
         </button>
         <button
           className={
-            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold mx-6 text-xl"
           }
           style={{
             boxShadow: " 3px 3px 3px rgb(200, 200, 200)",

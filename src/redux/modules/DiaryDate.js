@@ -1,6 +1,7 @@
 export const CHANGE_YEAR = "CHANGE_YEAR";
 export const CHANGE_MONTH = "CHANGE_MONTH";
 export const CHANGE_DAY = "CHANGE_DAY";
+export const SET_DATE = "SET_DATE";
 
 const initialState = {
   year: parseInt(new Date().getFullYear(), 10),
@@ -45,7 +46,13 @@ export default function DiaryDate(state = initialState, action) {
         ...state,
         day: action.number,
       };
-
+    case SET_DATE:
+      return {
+        ...state,
+        year: action.year,
+        month: action.month,
+        day: action.day,
+      };
     default:
       return state;
   }

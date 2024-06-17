@@ -4,6 +4,7 @@ import Button from "../../component/Button";
 import imgController from "../../api/img.controller";
 import SimpleImageSlider from "react-simple-image-slider";
 import Modal from "../../component/Modal";
+import Loading from "../../component/Loading";
 
 const HelpForAi = () => {
   const location = useLocation();
@@ -11,23 +12,29 @@ const HelpForAi = () => {
   const navigate = useNavigate();
   // AI가 생성한 이미지
   const [aiImages, setAiImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const getImageForAI = async () => {
-    // prompt가 비어 있거나 keyword를 포함하지 않으면 모달을 표시
-    if (!prompt || !prompt.includes(keyword)) {
+    // keyword가 "자유롭게 그려주세요"이거나, prompt가 keyword를 포함하는 경우
+    if (
+      (keyword === "자유롭게 그려주세요" && prompt) ||
+      (prompt && prompt.includes(keyword))
+    ) {
+      try {
+        setIsLoading(true);
+        const res = await imgController.generateImage({
+          password: "password",
+          prompt: prompt,
+          n: 3,
+        });
+        console.log(res.data);
+        setAiImages(res.data.result.urls);
+      } catch (error) {
+        console.error(error);
+      }
+      setIsLoading(false);
+    } else {
+      // 그 외의 경우 모달을 표시
       handleModal();
-      return;
-    }
-
-    try {
-      const res = await imgController.generateImage({
-        password: "password",
-        prompt: prompt,
-        n: 3,
-      });
-      console.log(res.data);
-      setAiImages(res.data.result.urls);
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -66,7 +73,7 @@ const HelpForAi = () => {
     if (aiImages.length === 0) return;
     navigate("/draw/help/result", {
       state: {
-        keyword: prompt,
+        keyword: keyword,
         image: aiImages[currentIndex],
         fullWidth: fullWidth,
       },
@@ -102,7 +109,7 @@ const HelpForAi = () => {
             onChange={handlePromptChange}
           />
           <button
-            className={"bg-[#D9D9D9] text-white font-semibold px-2"}
+            className={"bg-REMEMORY text-white font-semibold px-2"}
             onClick={getImageForAI}
           >
             완료
@@ -149,6 +156,7 @@ const HelpForAi = () => {
           content="키워드를 포함시켜주세요"
         />
       )}
+      {isLoading && <Loading text="그림 생성 중..." />}
     </div>
   );
 };

@@ -126,8 +126,9 @@ const Calendar = () => {
         type: CHANGE_DIARY,
         diaryId: diaryInfo.diaryId,
         content: diaryInfo.content,
-        imgUrl: diaryInfo.imgUrl,
         date: diaryInfo.createDate,
+        keywords: diaryInfo.keywords,
+        imgUrl: diaryInfo.imgUrl,
       });
       setIsDiaryExist(true);
     } catch (error) {

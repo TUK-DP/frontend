@@ -1,26 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import BackGroundSkyButton from "../../component/BackGroundSkyButton";
-import Button from "../../component/Button";
-import { style } from "d3";
+import { imageState } from "../../recoil/keywordState";
 
 const ShowAiResult = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [image, setImage] = useRecoilState(imageState);
+
   const keyword = location.state.keyword;
   const imageUrl = location.state.image;
   const fullWidth = location.state.fullWidth;
-  const navigate = useNavigate();
   // 배경 투명도
+  const [bgOpacity, setBgOpacity] = useState(1);
   const bgOpacityList = ["30", "50", "70", "100"];
-  const [bgOpacity, setBgOpacity] = useState("1");
   const [selectedOpacityIndex, setSelectedOpacityIndex] = useState(3);
+
   // 투명도 변경
   const changeOpacity = (item, index) => {
     setBgOpacity(parseInt(item) * 0.01);
     setSelectedOpacityIndex(index);
   };
+  // 이미지 저장
+  const saveEditImage = () => {
+    const newImage = {
+      keyword: keyword,
+      imageUrl: imageUrl,
+      bgOpacity: bgOpacity,
+    };
 
-  const saveEditImage = () => {};
+    setImage((prevImage) => {
+      // 같은 키워드에 2번 도움받는 경우, 기존 키워드의 이미지 덮어쓰기
+      const existingIndex = prevImage.findIndex(
+        (image) => image.keyword === keyword
+      );
+
+      if (existingIndex !== -1) {
+        // 같은 keyword를 가진 항목이 이미 존재하는 경우, 해당 항목을 업데이트
+        const updatedImages = [...prevImage];
+        updatedImages[existingIndex] = newImage;
+        return updatedImages;
+      } else {
+        // 같은 keyword를 가진 항목이 존재하지 않는 경우, 새 항목 추가
+        return [...prevImage, newImage];
+      }
+    });
+
+    navigate("/draw");
+  };
 
   return (
     <div className={"flex flex-col p-2 justify-center items-center"}>

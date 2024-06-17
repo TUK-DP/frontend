@@ -107,6 +107,7 @@ const Diary = () => {
         {diaryImages.length === 0 && (
           <div
             id="btn_paint"
+            className="text-xl"
             onClick={() => {
               navigate("/draw");
             }}
@@ -141,6 +142,7 @@ const Diary = () => {
         </div>
         <textarea
           id="writeBox"
+          className="text-lg"
           placeholder="일기를 작성해주세요."
           ref={textRef}
           onChange={handleContentChange}
@@ -154,7 +156,7 @@ const Diary = () => {
       >
         <button
           className={
-            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold mx-6 text-xl"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
           onClick={deleteDiary}
@@ -163,7 +165,7 @@ const Diary = () => {
         </button>
         <button
           className={
-            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold text-lg mx-6"
+            "bg-[#82aae3] text-white w-40 h-10 flex justify-center items-center rounded-xl font-bold mx-6 text-xl"
           }
           style={{ boxShadow: " 3px 3px 3px rgb(200, 200, 200)" }}
           onClick={updateDiary}

@@ -1,10 +1,12 @@
 import User from "../assets/user.png";
 import MyPageList from "../component/MyPageList";
 import Diary from "../assets/diary.png";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { SET_PAGENAME } from "../redux/modules/PageName";
 import { useNavigate } from "react-router-dom";
+import { setFontSize } from "../redux/modules/fontSize";
 
 const UserProfile = () => {
   let navigate = useNavigate();
@@ -43,8 +45,67 @@ const UserProfile = () => {
   );
 };
 
+const Toggle = () => {
+  const dispatch = useDispatch();
+  const currentFontSize = useSelector((state) => state.fontSize);
+  const [isDrop, setIsDrop] = useState(false);
+
+  const fontSizeChange = (size) => {
+    dispatch(setFontSize(size));
+  };
+
+  const toggleDrop = () => {
+    setIsDrop(!isDrop);
+  };
+
+  const buttonStyles = (size) => ({
+    fontSize: size,
+    fontWeight: "bold",
+    borderRadius: "10px",
+    height: "50px",
+    width: "75px",
+    border: currentFontSize === size ? "" : "2px solid #ddd",
+    backgroundColor: currentFontSize === size ? "#82aae3" : "#e0f4ff",
+    color: "black",
+  });
+
+  return (
+    <div>
+      <div className="flex justify-between items-center py-5 border-b-2">
+        <span className="text-lg">글씨 크기 조절하기</span>
+        <button onClick={toggleDrop} style={{ fontSize: "20px" }}>
+          {isDrop ? "▲" : "▼"}
+        </button>
+      </div>
+      {isDrop && (
+        <div className="flex justify-between items-center p-4 border-b-2">
+          <button
+            onClick={() => fontSizeChange("16px")}
+            style={buttonStyles("16px")}
+          >
+            작게
+          </button>
+          <button
+            onClick={() => fontSizeChange("18px")}
+            style={buttonStyles("18px")}
+          >
+            중간
+          </button>
+          <button
+            onClick={() => fontSizeChange("20px")}
+            style={buttonStyles("20px")}
+          >
+            크게
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const MyPage = () => {
   const dispatch = useDispatch();
+  let navigate = useNavigate();
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "마이페이지" });
   }, []);
@@ -55,8 +116,17 @@ const MyPage = () => {
 
       {/* 마이페이지 리스트 */}
       <div className={"flex flex-col py-5 "}>
-        <MyPageList src={User} text="회원정보 수정" />
-        <MyPageList src={Diary} text="일기 관리" />
+        <MyPageList
+          src={User}
+          text="회원정보 수정"
+          onClick={() => navigate("/userupdate")}
+        />
+        <MyPageList
+          src={Diary}
+          text="일기 관리"
+          onClick={() => navigate("/diarymanagement")}
+        />
+        <Toggle />
       </div>
     </div>
   );

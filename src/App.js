@@ -34,9 +34,11 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import useAutoLogin from "./hooks/useAutoLogin";
 import Explain from "./pages/Keyword/Explain.js";
-import Keyword from "./pages/Keyword/Keyword.js";
+import UserUpdate from "./pages/UserUpdate.js";
+import DiaryManagement from "./pages/DiaryManagement.js";
 import HelpForAi from "./pages/ImageDiary/HelpForAi.js";
 import ShowAiResult from "./pages/ImageDiary/ShowAiResult.js";
+import Keyword from "./pages/Keyword/Keyword.js";
 
 function App() {
   let { loading } = useAutoLogin();
@@ -81,6 +83,12 @@ function App() {
           <Route exact path={"/centermap"} element={<CenterMap />} />
           <Route exact path={"/explain"} element={<Explain />} />
           <Route exact path={"/keyword"} element={<Keyword />} />
+          <Route exact path={"/userupdate"} element={<UserUpdate />} />
+          <Route
+            exact
+            path={"/diarymanagement"}
+            element={<DiaryManagement />}
+          />
           <Route
             exact
             path={"/prevsurveyresult"}

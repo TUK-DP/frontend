@@ -5,6 +5,8 @@ import imgController from "../../api/img.controller";
 import SimpleImageSlider from "react-simple-image-slider";
 import Modal from "../../component/Modal";
 import Loading from "../../component/Loading";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { apiKeyStore } from "../../recoil/apiKeyStore";
 
 const HelpForAi = () => {
   const location = useLocation();
@@ -13,6 +15,8 @@ const HelpForAi = () => {
   // AI가 생성한 이미지
   const [aiImages, setAiImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const apiKeyState = useRecoilValue(apiKeyStore);
+
   const getImageForAI = async () => {
     // keyword가 "자유롭게 그려주세요"이거나, prompt가 keyword를 포함하는 경우
     if (
@@ -22,7 +26,7 @@ const HelpForAi = () => {
       try {
         setIsLoading(true);
         const res = await imgController.generateImage({
-          password: "password",
+          password: apiKeyState.apiKey,
           prompt: prompt,
           n: 3,
         });

@@ -1,35 +1,53 @@
-import User from "../assets/user.png";
-import MyPageList from "../component/MyPageList";
-import Diary from "../assets/diary.png";
-import { useState } from "react";
+import User from "../../assets/user.png";
+import Left from "../../assets/left.png";
+import MyPageItem from "../../component/MyPageItem";
+import Diary from "../../assets/diary.png";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 import { useNavigate } from "react-router-dom";
-import { setFontSize } from "../redux/modules/fontSize";
+import { setFontSize } from "../../redux/modules/fontSize";
+import { USER_UPDATE_PAGE_PATH } from "./UserUpdate";
+import { DIARY_MANAGEMENT_PAGE_PATH } from "./DiaryManagement";
+import { API_KEY_INPUT_PAGE_PATH } from "./APIKeyInput";
+
+const MyPage = () => {
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "마이페이지" });
+  }, []);
+
+  return (
+    <div className={"flex justify-start flex-col px-5 py-2.5 h-full"}>
+      {/* 사진, 이름, 닉네임 */}
+      <UserProfile />
+
+      {/* 마이페이지 리스트 */}
+      <div className={"flex flex-col py-5 "}>
+        <MyPageItem
+          src={User}
+          text="회원정보 수정"
+          onClick={() => navigate(USER_UPDATE_PAGE_PATH)}
+        />
+        <MyPageItem
+          src={Left}
+          text="API KEY 입력하기"
+          onClick={() => navigate(API_KEY_INPUT_PAGE_PATH)}
+        />
+        <MyPageItem
+          src={Diary}
+          text="일기 관리"
+          onClick={() => navigate(DIARY_MANAGEMENT_PAGE_PATH)}
+        />
+        <FontSizeToggleButton />
+      </div>
+    </div>
+  );
+};
 
 const UserProfile = () => {
-  let navigate = useNavigate();
-
   let userInfo = useSelector((state) => state.UserInfo);
-
-  const LogOutButton = () => {
-    const logout = () => {
-      localStorage.clear();
-      navigate("/login");
-    };
-
-    return (
-      <div className={"absolute right-2.5 top-2.5"}>
-        <button
-          onClick={logout}
-          className={"font-bold border-2 rounded-lg p-1"}
-        >
-          로그아웃
-        </button>
-      </div>
-    );
-  };
 
   return (
     <div
@@ -45,7 +63,24 @@ const UserProfile = () => {
   );
 };
 
-const Toggle = () => {
+const LogOutButton = () => {
+  let navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
+  return (
+    <div className={"absolute right-2.5 top-2.5"}>
+      <button onClick={logout} className={"font-bold border-2 rounded-lg p-1"}>
+        로그아웃
+      </button>
+    </div>
+  );
+};
+
+const FontSizeToggleButton = () => {
   const dispatch = useDispatch();
   const currentFontSize = useSelector((state) => state.fontSize);
   const [isDrop, setIsDrop] = useState(false);
@@ -103,32 +138,4 @@ const Toggle = () => {
   );
 };
 
-const MyPage = () => {
-  const dispatch = useDispatch();
-  let navigate = useNavigate();
-  useEffect(() => {
-    dispatch({ type: SET_PAGENAME, pageName: "마이페이지" });
-  }, []);
-  return (
-    <div className={"flex justify-start flex-col px-5 py-2.5 h-full"}>
-      {/* 사진, 이름, 닉네임 */}
-      <UserProfile />
-
-      {/* 마이페이지 리스트 */}
-      <div className={"flex flex-col py-5 "}>
-        <MyPageList
-          src={User}
-          text="회원정보 수정"
-          onClick={() => navigate("/userupdate")}
-        />
-        <MyPageList
-          src={Diary}
-          text="일기 관리"
-          onClick={() => navigate("/diarymanagement")}
-        />
-        <Toggle />
-      </div>
-    </div>
-  );
-};
 export default MyPage;

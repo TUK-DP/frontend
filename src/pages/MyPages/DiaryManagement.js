@@ -1,9 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_PAGENAME } from "../redux/modules/PageName";
+import { SET_PAGENAME } from "../../redux/modules/PageName";
 import { useNavigate } from "react-router-dom";
-import Button from "../component/Button";
-import diaryController from "../api/diary.controller";
+import Button from "../../component/Button";
+import diaryController from "../../api/diary.controller";
+
+export const DIARY_MANAGEMENT_PAGE_PATH = "/diarymanagement";
+
+const DiaryManagement = () => {
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.UserInfo);
+  const [diaries, setDiaries] = useState([]);
+
+  useEffect(() => {
+    dispatch({ type: SET_PAGENAME, pageName: "일기 관리" });
+  }, [dispatch]);
+
+  return (
+    <div>
+      <SearchDiary id={userInfo.userId} setDiaries={setDiaries} />
+      <DiaryListCop diaryDates={diaries} />
+    </div>
+  );
+};
 
 function DiaryListCop({ diaryDates }) {
   const navigate = useNavigate();
@@ -137,22 +156,5 @@ function SearchDiary({ id, setDiaries }) {
     </div>
   );
 }
-
-const DiaryManagement = () => {
-  const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.UserInfo);
-  const [diaries, setDiaries] = useState([]);
-
-  useEffect(() => {
-    dispatch({ type: SET_PAGENAME, pageName: "일기 관리" });
-  }, [dispatch]);
-
-  return (
-    <div>
-      <SearchDiary id={userInfo.userId} setDiaries={setDiaries} />
-      <DiaryListCop diaryDates={diaries} />
-    </div>
-  );
-};
 
 export default DiaryManagement;

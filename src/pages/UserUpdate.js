@@ -27,6 +27,7 @@ const UserUpdate = () => {
 
   useEffect(() => {
     reset(userInfo);
+    console.log(userInfo);
   }, [userInfo, reset]);
 
   const axiosInstance = axios.create({

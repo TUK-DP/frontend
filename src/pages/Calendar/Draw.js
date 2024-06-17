@@ -31,6 +31,7 @@ const Draw = () => {
   );
   //캔버스들 저장
   const canvasRefs = useRef(keywordInfo.map((_) => React.createRef()));
+  const canvasBgRefs = useRef(keywordInfo.map((_) => React.createRef()));
 
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
@@ -53,14 +54,19 @@ const Draw = () => {
         isKeywordExist={keywordInfo.length !== 0}
       />
       {/* Canvas */}
-      <CanvasList Keywords={keyword} canvasRefs={canvasRefs} index={index} />
+      <CanvasList
+        Keywords={keyword}
+        canvasRefs={canvasRefs}
+        canvasBgRefs={canvasBgRefs}
+        index={index}
+      />
       {/* 색상팔레트 */}
       <Palette />
       {/* 저장 버튼 */}
       <SaveImageButton
-        keyword={keyword}
         index={index}
         canvasRefs={canvasRefs}
+        canvasBgRefs={canvasBgRefs}
         keywordInfo={keywordInfo}
       />
     </div>
@@ -166,91 +172,97 @@ const ShowOtherDrawSlider = ({ keywords, index, isKeywordExist }) => {
   );
 };
 
-const SaveImageButton = ({ keyword, index, canvasRefs, keywordInfo }) => {
-  let navigate = useNavigate();
-
-  const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
-
+const SaveImageButton = ({ index, canvasRefs, canvasBgRefs, keywordInfo }) => {
   const isKeywordExist = keywordInfo.length !== 0;
-
-  //키워드 별 사진을 서버로 전송
-  const postImg = async () => {
-    try {
-      const requests = canvasRefs.map(async (canvasRef, i) => {
-        const formData = new FormData();
-        await new Promise((resolve, reject) => {
-          canvasRef.current.toBlob((blob) => {
-            if (blob) {
-              formData.append("image", blob, i + "image.png");
-              resolve();
-            } else {
-              reject(new Error("Failed to convert canvas to blob."));
-            }
-          });
-        });
-        return imgController.uploadImg(formData);
-      });
-
-      const responses = await Promise.all(requests);
-      return responses.map((res) => res.data.result.imageUrl); // 이미지 URL 배열 반환
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  //키워드가 있는 경우 키워드별 이미지 저장
-  const saveKeywordImg = async (photos) => {
-    try {
-      const requests = keywordInfo.map(async (info, i) => {
-        console.log(photos[i]);
-        return keywordController.saveKeywordImg(info.keywordId, {
-          imgUrl: photos[i],
-        });
-      });
-      const responses = await Promise.all(requests);
-      console.log(responses);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // 이미지 저장
-  const saveImage = async () => {
-    try {
-      const photos = await postImg(); // postImg 함수의 반환값을 받아옴
-      console.log(photos);
-
-      // 키워드가 없는 경우
-      if (!isKeywordExist) {
-        const res = await diaryController.saveDiaryImg(diaryId, {
-          imgUrl: photos[0],
-        });
-      }
-      // 키워드가 있는 경우
-      if (isKeywordExist) {
-        await saveKeywordImg(photos); // saveKeywordImg 함수에 이미지 URL 배열 전달
-      }
-      navigate("/calendar");
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { saveAllCanvasDrawToKeywordImage } = useSaveCanvasImage({
+    canvasRefs,
+    canvasBgRefs,
+    keywordInfo,
+    isKeywordExist,
+  });
 
   return (
     <div>
-      {keyword.length - 1 === index && (
+      {canvasRefs.current.length - 1 === index && (
         <Button
           width="100%"
           height="60px"
           text="완료"
           fontSize="30px"
           onClick={() => {
-            saveImage();
+            saveAllCanvasDrawToKeywordImage();
           }}
         />
       )}
     </div>
   );
+};
+
+const useSaveCanvasImage = ({
+  canvasRefs,
+  canvasBgRefs,
+  isKeywordExist,
+  keywordInfo,
+}) => {
+  let navigate = useNavigate();
+  //키워드 별 사진을 서버로 전송
+  const saveAllCanvasDrawToKeywordImage = async () => {
+    const uploadCanvasDrawRequests = new Array(canvasRefs.length).map(
+      async (_, i) => {
+        return uploadCanvas({ i });
+      }
+    );
+
+    const uploadedImageUrls = await Promise.all(uploadCanvasDrawRequests);
+
+    const saveKeywordRequests = new Array(canvasRefs.length).map(
+      async (_, i) => {
+        return saveKeywordImageUrl({ i, uploadedImageUrls });
+      }
+    );
+
+    await Promise.all(saveKeywordRequests);
+    navigate("/calendar");
+  };
+
+  const uploadCanvas = async ({ i }) => {
+    const canvas = canvasRefs.current[i].current;
+    const bgCanvas = canvasBgRefs.current[i].current;
+
+    const ctx = canvas.getContext("2d");
+    const bgCtx = bgCanvas.getContext("2d");
+
+    bgCtx.drawImage(canvas, 0, 0);
+
+    bgCtx.globalAlpha = 1.0;
+
+    const formData = new FormData();
+    const blob = await new Promise((resolve, reject) => {
+      bgCanvas.toBlob((blob) => {
+        console.log(blob);
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject();
+        }
+      });
+    });
+
+    formData.append("image", blob, "image.png");
+
+    const response = await imgController.uploadImg(formData);
+
+    return response.data.result.imageUrl;
+  };
+
+  const saveKeywordImageUrl = async ({ i, uploadedImageUrls }) => {
+    return keywordController.saveKeywordImg(keywordInfo[i].keywordId, {
+      imgUrl: uploadedImageUrls[i],
+    });
+  };
+
+  //키워드가 있는 경우 키워드별 이미지 저장
+  return { saveAllCanvasDrawToKeywordImage };
 };
 
 export default Draw;

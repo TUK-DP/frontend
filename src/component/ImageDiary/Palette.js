@@ -16,11 +16,16 @@ const Palette = ({}) => {
     "#E500FF",
   ];
   return (
-    <div className={"flex flex-row overflow-x-auto gap-2"}>
-      {colors.map((item, idx) => (
-        <Color key={idx} color={item} />
-      ))}
-    </div>
+    <>
+      <h2 className={"text-[#7D7D7D] pl-2 text-lg font-bold"}>
+        옆으로 넘겨서 더 많은 색상을 볼 수 있어요!
+      </h2>
+      <div className={"flex flex-row overflow-x-auto gap-2"}>
+        {colors.map((item, idx) => (
+          <Color key={idx} color={item} />
+        ))}
+      </div>
+    </>
   );
 };
 

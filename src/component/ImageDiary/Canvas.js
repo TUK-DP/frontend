@@ -139,7 +139,6 @@ const BackGroundCanvas = ({ bgCanvasRef, width, canvasKeyword, arrIdx }) => {
     const findAiImages = images.find((cur) => {
       return cur.keyword === canvasKeyword;
     });
-    console.log(findAiImages);
     if (findAiImages) {
       console.log(findAiImages.bgOpacity);
       bgCtx.globalAlpha = findAiImages.bgOpacity;
@@ -169,6 +168,7 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
   useEffect(() => {
     //드로잉 영역 초기 세팅
     const canvas = canvasRef.current;
+    const bgCanvas = canvasBgRef.current;
     const ctx = canvas.getContext("2d");
     const bgCtx = canvasBgRef.current.getContext("2d");
 
@@ -192,8 +192,8 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
       backgroundImage.src =
         findAiSuggest.imageUrl + `?v=${new Date().getTime()}`;
       backgroundImage.onload = () => {
-        bgCtx.drawImage(backgroundImage, 0, 0, 300, 150);
-        canvasBgRef.current.style.opacity = findAiSuggest.bgOpacity;
+        bgCtx.drawImage(backgroundImage, 0, 0, bgCanvas.width, bgCanvas.height);
+        canvasBgRef.current.globalAlpha = findAiSuggest.bgOpacity;
       };
     }
   }, []);

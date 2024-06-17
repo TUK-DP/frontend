@@ -178,7 +178,6 @@ const SaveImageButton = ({ index, canvasRefs, canvasBgRefs, keywordInfo }) => {
     canvasRefs,
     canvasBgRefs,
     keywordInfo,
-    isKeywordExist,
   });
 
   return (
@@ -198,28 +197,27 @@ const SaveImageButton = ({ index, canvasRefs, canvasBgRefs, keywordInfo }) => {
   );
 };
 
-const useSaveCanvasImage = ({
-  canvasRefs,
-  canvasBgRefs,
-  isKeywordExist,
-  keywordInfo,
-}) => {
+const useSaveCanvasImage = ({ canvasRefs, canvasBgRefs, keywordInfo }) => {
   let navigate = useNavigate();
   //키워드 별 사진을 서버로 전송
   const saveAllCanvasDrawToKeywordImage = async () => {
-    const uploadCanvasDrawRequests = new Array(canvasRefs.length).map(
-      async (_, i) => {
-        return uploadCanvas({ i });
-      }
-    );
+    const uploadCanvasDrawRequests = Array.from({
+      length: canvasRefs.current.length,
+    }).map(async (_, i) => {
+      return uploadCanvas({ i });
+    });
 
     const uploadedImageUrls = await Promise.all(uploadCanvasDrawRequests);
 
-    const saveKeywordRequests = new Array(canvasRefs.length).map(
-      async (_, i) => {
-        return saveKeywordImageUrl({ i, uploadedImageUrls });
-      }
-    );
+    console.log(uploadedImageUrls);
+
+    const saveKeywordRequests = Array.from({
+      length: canvasRefs.current.length,
+    }).map(async (_, i) => {
+      return saveKeywordImageUrl({ i, uploadedImageUrls });
+    });
+
+    console.log(saveKeywordRequests);
 
     await Promise.all(saveKeywordRequests);
     navigate("/calendar");
@@ -228,17 +226,20 @@ const useSaveCanvasImage = ({
   const uploadCanvas = async ({ i }) => {
     const canvas = canvasRefs.current[i].current;
     const bgCanvas = canvasBgRefs.current[i].current;
+    // resultCanvas 컴포넌트 생성
+    const resultCanvas = document.createElement("canvas");
+    resultCanvas.width = canvas.width;
+    resultCanvas.height = canvas.height;
 
-    const ctx = canvas.getContext("2d");
-    const bgCtx = bgCanvas.getContext("2d");
+    const resultCtx = resultCanvas.getContext("2d");
 
-    bgCtx.drawImage(canvas, 0, 0);
-
-    bgCtx.globalAlpha = 1.0;
+    resultCtx.drawImage(bgCanvas, 0, 0, canvas.width, canvas.height);
+    resultCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+    resultCtx.globalAlpha = 1.0;
 
     const formData = new FormData();
     const blob = await new Promise((resolve, reject) => {
-      bgCanvas.toBlob((blob) => {
+      resultCanvas.toBlob((blob) => {
         console.log(blob);
         if (blob) {
           resolve(blob);

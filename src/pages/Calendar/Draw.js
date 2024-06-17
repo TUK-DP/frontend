@@ -19,6 +19,7 @@ import { useRecoilState } from "recoil";
 import { keywordState } from "../../recoil/keywordState";
 import diaryController from "../../api/diary.controller";
 import { useNavigate } from "react-router-dom";
+import DiaryController from "../../api/diary.controller";
 
 const Draw = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,8 @@ const Draw = () => {
     //키워드가 없는 경우
     if (keywordInfo.length === 0) {
       setKeyword(["자유롭게 그려주세요"]);
+      canvasRefs.current.push(React.createRef());
+      canvasBgRefs.current.push(React.createRef());
     }
   }, []);
 
@@ -178,6 +181,7 @@ const SaveImageButton = ({ index, canvasRefs, canvasBgRefs, keywordInfo }) => {
     canvasRefs,
     canvasBgRefs,
     keywordInfo,
+    isKeywordExist,
   });
 
   return (
@@ -197,57 +201,49 @@ const SaveImageButton = ({ index, canvasRefs, canvasBgRefs, keywordInfo }) => {
   );
 };
 
-const useSaveCanvasImage = ({ canvasRefs, canvasBgRefs, keywordInfo }) => {
+const useSaveCanvasImage = ({
+  canvasRefs,
+  canvasBgRefs,
+  keywordInfo,
+  isKeywordExist,
+}) => {
   let navigate = useNavigate();
+  const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
   //키워드 별 사진을 서버로 전송
   const saveAllCanvasDrawToKeywordImage = async () => {
-    const uploadCanvasDrawRequests = Array.from({
-      length: canvasRefs.current.length,
-    }).map(async (_, i) => {
-      return uploadCanvas({ i });
-    });
+    const uploadCanvasDrawRequests = [];
 
-    const uploadedImageUrls = await Promise.all(uploadCanvasDrawRequests);
+    for (let i = 0; i < canvasRefs.current.length; i++) {
+      uploadCanvasDrawRequests.push(
+        uploadCanvasImageToUrl({
+          canvas: canvasRefs.current[i].current,
+          bgCanvas: canvasBgRefs.current[i].current,
+        })
+      );
+    }
 
-    console.log(uploadedImageUrls);
+    let uploadedImageUrls = await Promise.all(uploadCanvasDrawRequests);
 
-    const saveKeywordRequests = Array.from({
-      length: canvasRefs.current.length,
-    }).map(async (_, i) => {
-      return saveKeywordImageUrl({ i, uploadedImageUrls });
-    });
+    let saveKeywordRequests = [];
 
-    console.log(saveKeywordRequests);
+    for (let i = 0; i < canvasRefs.current.length; i++) {
+      saveKeywordRequests.push(
+        saveKeywordImageUrl({
+          keywordInfo: keywordInfo[i],
+          uploadedImageUrl: uploadedImageUrls[i],
+        })
+      );
+    }
 
     await Promise.all(saveKeywordRequests);
     navigate("/calendar");
   };
 
-  const uploadCanvas = async ({ i }) => {
-    const canvas = canvasRefs.current[i].current;
-    const bgCanvas = canvasBgRefs.current[i].current;
-    // resultCanvas 컴포넌트 생성
-    const resultCanvas = document.createElement("canvas");
-    resultCanvas.width = canvas.width;
-    resultCanvas.height = canvas.height;
-
-    const resultCtx = resultCanvas.getContext("2d");
-
-    resultCtx.drawImage(bgCanvas, 0, 0, canvas.width, canvas.height);
-    resultCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
-    resultCtx.globalAlpha = 1.0;
-
+  const uploadCanvasImageToUrl = async ({ canvas, bgCanvas }) => {
     const formData = new FormData();
-    const blob = await new Promise((resolve, reject) => {
-      resultCanvas.toBlob((blob) => {
-        console.log(blob);
-        if (blob) {
-          resolve(blob);
-        } else {
-          reject();
-        }
-      });
-    });
+
+    let resultCanvas = mergeCanvas({ canvas, bgCanvas });
+    const blob = await canvasToBlob({ canvas: resultCanvas });
 
     formData.append("image", blob, "image.png");
 
@@ -256,14 +252,50 @@ const useSaveCanvasImage = ({ canvasRefs, canvasBgRefs, keywordInfo }) => {
     return response.data.result.imageUrl;
   };
 
-  const saveKeywordImageUrl = async ({ i, uploadedImageUrls }) => {
-    return keywordController.saveKeywordImg(keywordInfo[i].keywordId, {
-      imgUrl: uploadedImageUrls[i],
-    });
+  const saveKeywordImageUrl = async ({ keywordInfo, uploadedImageUrl }) => {
+    //키워드가 있는 경우 키워드별 이미지 저장
+    if (isKeywordExist) {
+      return await keywordController.saveKeywordImg(keywordInfo.keywordId, {
+        imgUrl: uploadedImageUrl,
+      });
+    }
+    // 키워드가 없는 경우 다이어리 이미지 저장
+    else {
+      return await DiaryController.saveDiaryImg(diaryId, {
+        imgUrl: uploadedImageUrl,
+      });
+    }
   };
 
-  //키워드가 있는 경우 키워드별 이미지 저장
   return { saveAllCanvasDrawToKeywordImage };
+};
+
+const mergeCanvas = ({ canvas, bgCanvas }) => {
+  // resultCanvas 컴포넌트 생성
+  const resultCanvas = document.createElement("canvas");
+  resultCanvas.width = canvas.width;
+  resultCanvas.height = canvas.height;
+
+  const resultCtx = resultCanvas.getContext("2d");
+
+  resultCtx.drawImage(bgCanvas, 0, 0, canvas.width, canvas.height);
+  resultCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+  resultCtx.globalAlpha = 1.0;
+
+  return resultCanvas;
+};
+
+const canvasToBlob = async ({ canvas }) => {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      console.log(blob);
+      if (blob) {
+        resolve(blob);
+      } else {
+        reject();
+      }
+    });
+  });
 };
 
 export default Draw;

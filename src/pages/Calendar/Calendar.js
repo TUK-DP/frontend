@@ -74,6 +74,7 @@ const Calendar = () => {
         content: diaryInfo.content,
         date: diaryInfo.createDate,
         keywords: diaryInfo.keywords,
+        imgUrl: diaryInfo.imgUrl,
       });
       setIsDiaryExist(true);
     } catch (error) {

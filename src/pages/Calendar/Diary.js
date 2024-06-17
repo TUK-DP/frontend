@@ -13,9 +13,11 @@ const Diary = () => {
   const textRef = useRef();
   const [isSaving, setIsSaving] = useState(false);
 
-  const { diaryId, content, date, keywords } = useSelector(
+  const { diaryId, content, date, keywords, imgUrl } = useSelector(
     (state) => state.DiaryInfo
   );
+
+  const [diaryImages, setDiaryImages] = useState([]);
 
   const userId = useSelector((state) => state.UserInfo.userId);
 
@@ -58,6 +60,7 @@ const Diary = () => {
         content: diaryInfo.content,
         date: diaryInfo.createDate,
         keywords: diaryInfo.keywords,
+        imgUrl: diaryInfo.imgUrl,
       });
       setIsSaving(false);
     } catch (error) {
@@ -79,11 +82,29 @@ const Diary = () => {
     }
   };
 
+  useEffect(() => {
+    if (imgUrl) {
+      setDiaryImages([imgUrl]);
+      return;
+    }
+
+    if (keywords.length === 0 || keywords[0].imgUrl == null) {
+      setDiaryImages([]);
+      return;
+    }
+
+    setDiaryImages(
+      keywords.map((keyword) => {
+        return keyword.imgUrl;
+      })
+    );
+  }, []);
+
   return (
     <div id="diary">
       {isSaving ? <Loading text="일기 수정 중..." /> : null}
       <div id="draw" className={"relative"}>
-        {keywords[0] == null || keywords[0].imgUrl == null ? (
+        {diaryImages.length === 0 && (
           <div
             id="btn_paint"
             onClick={() => {
@@ -92,13 +113,12 @@ const Diary = () => {
           >
             그림 그리기
           </div>
-        ) : (
+        )}
+        {diaryImages.length > 0 && (
           <SimpleImageSlider
             width="100%"
             height="100%"
-            images={keywords.map((keyword) => {
-              return keyword.imgUrl;
-            })}
+            images={diaryImages}
             showBullets={false}
             showNavs={true}
             navMargin={0}

@@ -87,6 +87,7 @@ const Calendar = () => {
       setMark(filteredDates);
     } catch (error) {
       console.error("일기 유무 리스트 가져오기 중 오류", error);
+      setMark([]);
     }
   };
   //선택한 날의 일기 가져오기
@@ -137,7 +138,10 @@ const Calendar = () => {
   };
 
   useEffect(() => {
+    // 첫 렌더링 시와 연도, 달이 변경될 때마다 일기 유무 리스트를 가져옵니다.
     checkDiaryList();
+  }, [reduxYear, reduxMonth]);
+  useEffect(() => {
     // 일기 데이터 가져오기
     getDiary();
   }, [reduxYear, reduxMonth, reduxDay]);
@@ -145,11 +149,13 @@ const Calendar = () => {
   // 이전 달로 이동
   const prevMonth = () => {
     dispatch({ type: CHANGE_MONTH, number: -1 });
+    setMark([]);
   };
 
   // 다음 달로 이동
   const nextMonth = () => {
     dispatch({ type: CHANGE_MONTH, number: 1 });
+    setMark([]);
   };
 
   // 현재 달의 첫째 날의 요일을 반환합니다. (0: 일요일, 1: 월요일, ...)

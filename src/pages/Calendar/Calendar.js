@@ -13,11 +13,13 @@ import {
 import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
 import DiaryController from "../../api/diary.controller.js";
 import { SET_PAGENAME } from "../../redux/modules/PageName.js";
+import diaryController from "../../api/diary.controller.js";
 
 const Calendar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [mark, setMark] = useState([]);
 
   useEffect(() => {
     // 페이지 이름 설정
@@ -42,6 +44,7 @@ const Calendar = () => {
         day: currentDate.getDate(),
       });
     }
+    checkDiaryList();
   }, [location.state, dispatch]);
 
   const navigate = useNavigate();
@@ -68,6 +71,24 @@ const Calendar = () => {
     );
   };
 
+  //일기 유무 리스트 가져오기
+  const checkDiaryList = async () => {
+    try {
+      const response = await diaryController.checkDiaryList({
+        userId,
+        year: reduxYear,
+        month: reduxMonth,
+      });
+      const { result } = response.data;
+      const currentMonthData = result[`${reduxYear}-${reduxMonth}`];
+      const filteredDates = Object.keys(currentMonthData).filter(
+        (date) => currentMonthData[date].isExist
+      );
+      console.log(filteredDates);
+    } catch (error) {
+      console.error("일기 유무 리스트 가져오기 중 오류", error);
+    }
+  };
   //선택한 날의 일기 가져오기
   const getDiary = async () => {
     setIsGetDiaryComplete(false);
@@ -89,7 +110,6 @@ const Calendar = () => {
         userId: userId,
         date: dateFormat(),
       });
-      console.log(res.data);
 
       //일기가 존재하지 않음
       if (res.data.result.length == 0) {
@@ -116,6 +136,10 @@ const Calendar = () => {
     setIsGetDiaryComplete(true);
   };
 
+  useEffect(() => {
+    // 첫 렌더링 시와 연도, 달이 변경될 때마다 일기 유무 리스트를 가져옵니다.
+    checkDiaryList();
+  }, [reduxYear, reduxMonth]);
   useEffect(() => {
     // 일기 데이터 가져오기
     getDiary();

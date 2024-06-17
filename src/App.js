@@ -38,6 +38,7 @@ import UserUpdate from "./pages/UserUpdate.js";
 import DiaryManagement from "./pages/DiaryManagement.js";
 import HelpForAi from "./pages/ImageDiary/HelpForAi.js";
 import ShowAiResult from "./pages/ImageDiary/ShowAiResult.js";
+import Keyword from "./pages/Keyword/Keyword.js";
 
 function App() {
   let { loading } = useAutoLogin();

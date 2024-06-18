@@ -57,5 +57,11 @@ class DiaryController extends Api {
       `/diary/list?userId=${userId}&startDate=${startDate}&finishDate=${finishDate}&sortBy=${sortBy}`
     );
   };
+  //기간별 일기 유무 리스트 가져오기
+  checkDiaryList = async ({ userId, year, month }) => {
+    return await this.get(
+      `/diary/check?userId=${userId}&year=${year}&month=${month}`
+    );
+  };
 }
 export default new DiaryController();

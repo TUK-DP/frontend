@@ -77,6 +77,10 @@ function SearchDiary({ id, setDiaries }) {
     }
   }, [query.startDate, query.endDate, query.sortBy]);
 
+  useEffect(() => {
+    searchDiaryList(startDate, endDate, option);
+  }, [option]);
+
   const handleStartDateChange = (event) => {
     const newStartDate = event.target.value;
     setStartDate(newStartDate);

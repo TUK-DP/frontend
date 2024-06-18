@@ -6,7 +6,6 @@ import Modal from "../component/Modal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
-import axios from "axios";
 
 const UserUpdate = () => {
   const dispatch = useDispatch();
@@ -30,9 +29,6 @@ const UserUpdate = () => {
     console.log(userInfo);
   }, [userInfo, reset]);
 
-  const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL,
-  });
   const onSubmit = async (data) => {
     const accessToken = localStorage.getItem("AccessToken");
     if (!accessToken) {
@@ -50,11 +46,7 @@ const UserUpdate = () => {
     };
 
     try {
-      const response = await axiosInstance.put("/users", userData, {
-        headers: {
-          AccessToken: `${accessToken}`,
-        },
-      });
+      await UserController.updateUser({ userData, accessToken });
       console.log("성공");
       navigate("/mypage");
     } catch (error) {

@@ -100,10 +100,10 @@ function SearchDiary({ id, setDiaries }) {
   };
 
   return (
-    <div className="mt-3 border-b-2 pb-4">
-      <div className="flex items-center justify-evenly">
+    <div className="mt-5 border-b-2 pb-4">
+      <div className="flex items-center justify-evenly mb-5">
         <input
-          className="text-xl"
+          className="text-xl border-b-2 border-[#82aae3] w-[75%]"
           type="date"
           defaultValue={defaultPreviousDate}
           max={endDate}
@@ -114,7 +114,7 @@ function SearchDiary({ id, setDiaries }) {
       </div>
       <div className="flex items-center mb-4 justify-evenly">
         <input
-          className="text-xl"
+          className="text-xl border-b-2 border-[#82aae3] w-[75%]"
           type="date"
           min={startDate}
           max={defaultDate}

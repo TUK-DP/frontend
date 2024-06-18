@@ -102,11 +102,6 @@ function SearchDiary({ id, setDiaries }) {
     end = endDate,
     sortBy = option
   ) => {
-    navigate({
-      pathname: location.pathname,
-      search: `?startDate=${start}&endDate=${end}&sortBy=${sortBy}`,
-    });
-
     try {
       const response = await diaryController.searchDiaryList({
         userId: id,
@@ -117,6 +112,11 @@ function SearchDiary({ id, setDiaries }) {
       const diaries = response.data.result.diaries;
       const createDateList = diaries.map((diary) => diary.createDate);
       setDiaries(createDateList);
+
+      navigate(
+        `${location.pathname}?startDate=${start}&endDate=${end}&sortBy=${sortBy}`,
+        { replace: true }
+      );
     } catch (error) {
       console.error("기간별 일기 조회 중 오류", error);
     }
@@ -151,7 +151,11 @@ function SearchDiary({ id, setDiaries }) {
           <option value="ASC_CREATE_DATE">오래된순</option>
         </select>
       </div>
-      <Button text={"검색"} width={"100%"} onClick={() => searchDiaryList()} />
+      <Button
+        text={"검색"}
+        width={"100%"}
+        onClick={() => searchDiaryList(startDate, endDate, option)}
+      />
     </div>
   );
 }

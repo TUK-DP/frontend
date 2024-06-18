@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_PAGENAME } from "../redux/modules/PageName";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../component/Button";
 import diaryController from "../api/diary.controller";
+import queryString from "query-string";
 
 function DiaryListCop({ diaryDates }) {
   const navigate = useNavigate();
@@ -48,6 +49,11 @@ function SearchDiary({ id, setDiaries }) {
   const [endDate, setEndDate] = useState("");
   const [option, setOption] = useState("");
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const query = queryString.parse(location.search);
+
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -63,13 +69,13 @@ function SearchDiary({ id, setDiaries }) {
   const defaultPreviousDate = `${previousYear}-${previousMonth}-${previousDay}`;
 
   useEffect(() => {
-    searchDiaryList();
-  }, [option]);
-
-  useEffect(() => {
-    setStartDate(defaultPreviousDate);
-    setEndDate(defaultDate);
-  }, [defaultPreviousDate]);
+    setStartDate(query.startDate || defaultPreviousDate);
+    setEndDate(query.endDate || defaultDate);
+    setOption(query.sortBy || "DES_CREATE_DATE");
+    if (query.startDate && query.endDate) {
+      searchDiaryList(query.startDate, query.endDate, query.sortBy);
+    }
+  }, [query.startDate, query.endDate, query.sortBy]);
 
   const handleStartDateChange = (event) => {
     const newStartDate = event.target.value;
@@ -83,13 +89,26 @@ function SearchDiary({ id, setDiaries }) {
     setEndDate(event.target.value);
   };
 
-  const searchDiaryList = async () => {
+  const handleOptionChange = (event) => {
+    setOption(event.target.value);
+  };
+
+  const searchDiaryList = async (
+    start = startDate,
+    end = endDate,
+    sortBy = option
+  ) => {
+    navigate({
+      pathname: location.pathname,
+      search: `?startDate=${start}&endDate=${end}&sortBy=${sortBy}`,
+    });
+
     try {
       const response = await diaryController.searchDiaryList({
         userId: id,
-        startDate: startDate,
-        finishDate: endDate,
-        sortBy: option,
+        startDate: start,
+        finishDate: end,
+        sortBy: sortBy,
       });
       const diaries = response.data.result.diaries;
       const createDateList = diaries.map((diary) => diary.createDate);
@@ -105,7 +124,6 @@ function SearchDiary({ id, setDiaries }) {
         <input
           className="text-xl border-b-2 border-[#82aae3] w-[75%]"
           type="date"
-          defaultValue={defaultPreviousDate}
           max={endDate}
           value={startDate}
           onChange={handleStartDateChange}
@@ -119,16 +137,12 @@ function SearchDiary({ id, setDiaries }) {
           min={startDate}
           max={defaultDate}
           onChange={handleEndDateChange}
-          defaultValue={defaultDate}
           value={endDate}
         />
         <div className="text-xl">까지</div>
       </div>
       <div className="flex justify-end mb-3 text-xl">
-        <select
-          value={option}
-          onChange={(event) => setOption(event.target.value)}
-        >
+        <select value={option} onChange={handleOptionChange}>
           <option value="DES_CREATE_DATE">최신순</option>
           <option value="ASC_CREATE_DATE">오래된순</option>
         </select>

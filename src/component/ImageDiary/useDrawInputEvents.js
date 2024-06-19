@@ -62,14 +62,6 @@ export const useDrawInputEvents = ({
   };
 
   // 캔버스 상태를 히스토리에 업데이트하는 함수
-  // const updateCanvasState = () => {
-  //   let canvas = canvasRef.current;
-  //   let ctx = canvas.getContext("2d");
-  //   const currentState = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  //   setHistory((prevHistory) => [...prevHistory, currentState]);
-  //   const updatedState = updateValueByKey(canvasKeyword, currentState);
-  //   setCanvasState(updatedState);
-  // };
   const updateCanvasState = () => {
     let canvas = canvasRef.current;
     let ctx = canvas.getContext("2d");

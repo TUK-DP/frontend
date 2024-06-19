@@ -15,7 +15,7 @@ import keywordController from "../../api/keyword.controller";
 import imgController from "../../api/img.controller";
 import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
 import AIModal from "../../component/ImageDiary/AIModal";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { keywordState } from "../../recoil/keywordState";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../../api/diary.controller";
@@ -42,10 +42,6 @@ const Draw = () => {
     }
   }, [dispatch, keywordInfo]);
 
-  // useEffect(() => {
-  //   initializeCanvasState();
-  // }, []);
-
   useEffect(() => {
     keyword.forEach((cur) => {
       const canvas = canvasRefs.current[keyword.indexOf(cur)].current;
@@ -55,19 +51,7 @@ const Draw = () => {
         ctx.putImageData(imageData, 0, 0);
       }
     });
-    console.log(canvasState);
   });
-
-  // const initializeCanvasState = () => {
-  //   const initialCanvasState = {};
-  //   keyword.forEach((cur) => {
-  //     const canvas = canvasRefs.current[keyword.indexOf(cur)].current;
-  //     const ctx = canvas.getContext("2d");
-  //     const currentState = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  //     initialCanvasState[cur] = currentState;
-  //   });
-  //   setCanvasState(initialCanvasState);
-  // };
 
   return (
     <div className={"flex flex-col m-2 gap-4"}>

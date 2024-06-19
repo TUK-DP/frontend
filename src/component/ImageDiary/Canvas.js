@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { imageState } from "../../recoil/keywordState";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { brushSizeState, selectedColorState } from "../../recoil/canvasState";
@@ -145,7 +145,6 @@ const BackGroundCanvas = ({ bgCanvasRef, width, canvasKeyword, arrIdx }) => {
       return cur.keyword === canvasKeyword;
     });
     if (findAiImages) {
-      console.log(findAiImages.bgOpacity);
       bgCtx.globalAlpha = findAiImages.bgOpacity;
     }
   }, [images]);
@@ -192,7 +191,6 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
 
     // 있다면 이미지를 배경에 그려줌
     if (findAiSuggest) {
-      console.log(findAiSuggest);
       const backgroundImage = new Image();
       backgroundImage.crossOrigin = "anonymous";
       backgroundImage.src =
@@ -204,17 +202,6 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
     }
   }, []);
 
-  // const updateValueByKey = (targetKey, newValue) => {
-  //   return canvasState.map((item) => {
-  //     if (item.hasOwnProperty(targetKey)) {
-  //       return {
-  //         ...item,
-  //         [targetKey]: newValue,
-  //       };
-  //     }
-  //     return item;
-  //   });
-  // };
   //canvas 화면 전체 지우기
   const clearCanvas = () => {
     const canvas = canvasRef.current;
@@ -226,8 +213,6 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
       [canvasKeyword]: currentState,
     };
     setCanvasState(updatedState);
-    // const updatedState = updateValueByKey(canvasKeyword, "");
-    // setCanvasState(updatedState);
   };
 
   return { clearCanvas };

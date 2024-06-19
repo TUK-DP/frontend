@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DiaryController from "../../api/diary.controller.js";
 import { useSelector } from "react-redux";
 import keywordController from "../../api/keyword.controller.js";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { imageState, keywordState } from "../../recoil/keywordState.js";
 import { canvasDrawingState } from "../../recoil/canvasDrawingState.js";
 

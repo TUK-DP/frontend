@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../component/Loading.js";
 import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
 import SimpleImageSlider from "react-simple-image-slider";
+import TextareaAutosize from "react-textarea-autosize";
 
 const Diary = () => {
   const navigate = useNavigate();
@@ -22,16 +23,6 @@ const Diary = () => {
   const userId = useSelector((state) => state.UserInfo.userId);
 
   const [newContent, setNewContent] = useState(content);
-
-  const handleResizeHeight = useCallback(() => {
-    const textarea = textRef.current;
-    textarea.style.height = "auto"; // Reset height to auto
-    textarea.style.height = textarea.scrollHeight + "px";
-  }, []);
-
-  useEffect(() => {
-    handleResizeHeight();
-  }, [handleResizeHeight]);
 
   const handleContentChange = (e) => {
     setNewContent(e.target.value);
@@ -98,21 +89,6 @@ const Diary = () => {
     );
   }, []);
 
-  const handleScroll = (e) => {
-    e.preventDefault();
-    textRef.current.scrollTop = textRef.current.scrollHeight;
-  };
-
-  const handleInput = (e) => {
-    const textarea = e.target;
-    const scrollTop = textarea.scrollTop;
-    const scrollHeight = textarea.scrollHeight;
-
-    textarea.scrollTop = scrollTop;
-    textarea.style.height = "auto";
-    textarea.style.height = scrollHeight + "px";
-  };
-
   return (
     <div id="diary">
       {isSaving ? <Loading text="일기 수정 중..." /> : null}
@@ -153,15 +129,13 @@ const Diary = () => {
         >
           오늘의 일기
         </div>
-        <textarea
+        <TextareaAutosize
           id="writeBox"
           className="text-lg"
           placeholder="일기를 작성해주세요."
           ref={textRef}
           onChange={handleContentChange}
           value={newContent}
-          onInput={handleInput}
-          onScroll={handleScroll}
         />
       </div>
       <div

@@ -5,7 +5,7 @@ import imgController from "../../api/img.controller";
 import SimpleImageSlider from "react-simple-image-slider";
 import Modal from "../../component/Modal";
 import Loading from "../../component/Loading";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { apiKeyStore } from "../../recoil/apiKeyStore";
 
 const HelpForAi = () => {
@@ -28,9 +28,8 @@ const HelpForAi = () => {
         const res = await imgController.generateImage({
           password: apiKeyState.apiKey,
           prompt: prompt,
-          n: 3,
+          n: 2,
         });
-        console.log(res.data);
         setAiImages(res.data.result.urls);
       } catch (error) {
         console.error(error);

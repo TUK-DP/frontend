@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { imageState } from "../../recoil/keywordState";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { brushSizeState, selectedColorState } from "../../recoil/canvasState";
@@ -12,6 +12,7 @@ import {
   UnDoButton,
 } from "./DrawTools";
 import { INPUT_END, useDrawInputEvents } from "./useDrawInputEvents";
+import { canvasDrawingState } from "../../recoil/canvasDrawingState";
 
 export const CanvasList = ({ Keywords, canvasRefs, canvasBgRefs, index }) => {
   return (
@@ -60,6 +61,7 @@ const Canvas = ({
         drawMode={drawMode}
         width={width}
         arrIdx={arrIdx}
+        canvasKeyword={canvasKeyword}
       />
       <BackGroundCanvas
         bgCanvasRef={canvasBgRef}
@@ -74,6 +76,7 @@ const Canvas = ({
           canvasRef={canvasRef}
           clearCanvas={clearCanvas}
           history={history}
+          canvasKeyword={canvasKeyword}
         />
         <SelectedColor />
         <BrushButton drawMode={drawMode} setDrawMode={setDrawMode} />
@@ -93,6 +96,7 @@ const DrawCanvas = ({
   drawMode,
   width,
   arrIdx,
+  canvasKeyword,
 }) => {
   const {
     handleTouchStart,
@@ -107,6 +111,7 @@ const DrawCanvas = ({
     screenInputMode,
     setScreenInputMode,
     setHistory,
+    canvasKeyword,
   });
 
   return (
@@ -140,7 +145,6 @@ const BackGroundCanvas = ({ bgCanvasRef, width, canvasKeyword, arrIdx }) => {
       return cur.keyword === canvasKeyword;
     });
     if (findAiImages) {
-      console.log(findAiImages.bgOpacity);
       bgCtx.globalAlpha = findAiImages.bgOpacity;
     }
   }, [images]);
@@ -164,6 +168,7 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
   const [brushSize, _] = useRecoilState(brushSizeState); //브러쉬 크기
   const [selectedColor, setSelectedColor] = useRecoilState(selectedColorState); //선택된 색상
   const aiImages = useRecoilValue(imageState);
+  const [canvasState, setCanvasState] = useRecoilState(canvasDrawingState);
 
   useEffect(() => {
     //드로잉 영역 초기 세팅
@@ -186,7 +191,6 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
 
     // 있다면 이미지를 배경에 그려줌
     if (findAiSuggest) {
-      console.log(findAiSuggest);
       const backgroundImage = new Image();
       backgroundImage.crossOrigin = "anonymous";
       backgroundImage.src =
@@ -203,6 +207,12 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const currentState = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const updatedState = {
+      ...canvasState,
+      [canvasKeyword]: currentState,
+    };
+    setCanvasState(updatedState);
   };
 
   return { clearCanvas };

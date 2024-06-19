@@ -124,7 +124,6 @@ const Diary = () => {
             showNavs={true}
             navMargin={0}
             bgColor={"#FFFFFF"}
-            style={{ borderRadius: "20px" }}
           />
         )}
       </div>

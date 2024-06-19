@@ -17,55 +17,58 @@ import InfiniteScroll from "../../component/ImageDiary/InfiniteScroll";
 import AIModal from "../../component/ImageDiary/AIModal";
 import { useRecoilState } from "recoil";
 import { keywordState } from "../../recoil/keywordState";
-import diaryController from "../../api/diary.controller";
 import { useNavigate } from "react-router-dom";
 import DiaryController from "../../api/diary.controller";
+import { canvasDrawingState } from "../../recoil/canvasDrawingState";
 
 const Draw = () => {
+  const [canvasState, setCanvasState] = useRecoilState(canvasDrawingState);
   const dispatch = useDispatch();
-
   const [index, setIndex] = useState(0);
   const [keywordInfo, _] = useRecoilState(keywordState);
-  //키워드
   const [keyword, setKeyword] = useState(
     keywordInfo.map((item) => item.keyword)
   );
-  //캔버스들 저장
   const canvasRefs = useRef(keywordInfo.map((_) => React.createRef()));
   const canvasBgRefs = useRef(keywordInfo.map((_) => React.createRef()));
 
   useEffect(() => {
     dispatch({ type: SET_PAGENAME, pageName: "그림일기" });
 
-    //키워드가 없는 경우
     if (keywordInfo.length === 0) {
       setKeyword(["자유롭게 그려주세요"]);
       canvasRefs.current.push(React.createRef());
       canvasBgRefs.current.push(React.createRef());
     }
-  }, []);
+  }, [dispatch, keywordInfo]);
+
+  useEffect(() => {
+    keyword.forEach((cur) => {
+      const canvas = canvasRefs.current[keyword.indexOf(cur)].current;
+      const ctx = canvas.getContext("2d");
+      const imageData = canvasState[cur];
+      if (imageData) {
+        ctx.putImageData(imageData, 0, 0);
+      }
+    });
+  });
 
   return (
     <div className={"flex flex-col m-2 gap-4"}>
       <KeywordNavigation index={index} setIndex={setIndex} keywords={keyword} />
-      {/* AI 도움 */}
       <AISuggestionTextAndIconAndModal keywords={keyword} index={index} />
-      {/* 다른 사람의 키워드 사진 띄워줄 부분 */}
       <ShowOtherDrawSlider
         keywords={keyword}
         index={index}
         isKeywordExist={keywordInfo.length !== 0}
       />
-      {/* Canvas */}
       <CanvasList
         Keywords={keyword}
         canvasRefs={canvasRefs}
         canvasBgRefs={canvasBgRefs}
         index={index}
       />
-      {/* 색상팔레트 */}
       <Palette />
-      {/* 저장 버튼 */}
       <SaveImageButton
         index={index}
         canvasRefs={canvasRefs}
@@ -80,16 +83,16 @@ const KeywordNavigation = ({ keywords, index, setIndex }) => {
   const isFirstIndex = index === 0;
   const isLastIndex = index === keywords.length - 1;
 
-  //다음 키워드 제시
   const getNextKeyword = () => {
     if (index === keywords.length - 1) return;
     setIndex((index) => index + 1);
   };
-  //이전 키워드 제시
+
   const getPrevKeyword = () => {
-    if (keywords === 0) return;
+    if (index === 0) return;
     setIndex((index) => index - 1);
   };
+
   return (
     <div
       className={
@@ -123,8 +126,7 @@ const AISuggestionTextAndIconAndModal = ({ keywords, index }) => {
       {isModalOpen && (
         <AIModal
           onClose={handleModal}
-          content="혹시 그림 그리기 어려우신가요?
-          아래 버튼을 누르면 이미지가 생성됩니다!"
+          content="혹시 그림 그리기 어려우신가요? 아래 버튼을 누르면 이미지가 생성됩니다!"
           keyword={keywords[index]}
         />
       )}
@@ -139,10 +141,8 @@ const AISuggestionTextAndIconAndModal = ({ keywords, index }) => {
 };
 
 const ShowOtherDrawSlider = ({ keywords, index, isKeywordExist }) => {
-  //다른 사람 그림 보기
   const [showOtherDraw, setShowOtherDraw] = useState(false);
 
-  //다른 사람 그림 보기 클릭
   const handleClickShowDraw = () => {
     setShowOtherDraw(!showOtherDraw);
   };
@@ -209,7 +209,6 @@ const useSaveCanvasImage = ({
 }) => {
   let navigate = useNavigate();
   const diaryId = useSelector((state) => state.DiaryInfo.diaryId);
-  //키워드 별 사진을 서버로 전송
   const saveAllCanvasDrawToKeywordImage = async () => {
     const uploadCanvasDrawRequests = [];
 
@@ -272,14 +271,11 @@ const useSaveCanvasImage = ({
   };
 
   const saveKeywordImageUrl = async ({ keywordInfo, uploadedImageUrl }) => {
-    //키워드가 있는 경우 키워드별 이미지 저장
     if (isKeywordExist) {
       return await keywordController.saveKeywordImg(keywordInfo.keywordId, {
         imgUrl: uploadedImageUrl,
       });
-    }
-    // 키워드가 없는 경우 다이어리 이미지 저장
-    else {
+    } else {
       return await DiaryController.saveDiaryImg(diaryId, {
         imgUrl: uploadedImageUrl,
       });
@@ -290,7 +286,6 @@ const useSaveCanvasImage = ({
 };
 
 const mergeCanvas = ({ canvas, bgCanvas }) => {
-  // resultCanvas 컴포넌트 생성
   const resultCanvas = document.createElement("canvas");
   resultCanvas.width = canvas.width;
   resultCanvas.height = canvas.height;

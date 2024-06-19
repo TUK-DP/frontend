@@ -222,7 +222,17 @@ const useSaveCanvasImage = ({
       );
     }
 
-    let uploadedImageUrls = await Promise.all(uploadCanvasDrawRequests);
+    let uploadedImageUrls;
+
+    try {
+      uploadedImageUrls = await Promise.all(uploadCanvasDrawRequests);
+    } catch (e) {
+      console.log(e);
+      console.log(
+        "이미지를 blob데이터로 변환하는데 실패했습니다. 다시 시도해 주세요"
+      );
+      return;
+    }
 
     let saveKeywordRequests = [];
 
@@ -235,7 +245,16 @@ const useSaveCanvasImage = ({
       );
     }
 
-    await Promise.all(saveKeywordRequests);
+    try {
+      await Promise.all(saveKeywordRequests);
+    } catch (e) {
+      console.log(e);
+      console.log(
+        "이미지를 서버에 저장하는데 실패했습니다. 다시 시도해 주세요"
+      );
+      return;
+    }
+
     navigate("/calendar");
   };
 
@@ -288,11 +307,10 @@ const mergeCanvas = ({ canvas, bgCanvas }) => {
 const canvasToBlob = async ({ canvas }) => {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
-      console.log(blob);
       if (blob) {
         resolve(blob);
       } else {
-        reject();
+        reject(new Error("blob 데이터 변환 실패"));
       }
     });
   });

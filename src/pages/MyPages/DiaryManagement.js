@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { SET_PAGENAME } from "../../redux/modules/PageName";
-import { useNavigate } from "react-router-dom";
 import Button from "../../component/Button";
 import diaryController from "../../api/diary.controller";
 

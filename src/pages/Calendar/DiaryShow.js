@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import DiaryController from "../../api/diary.controller.js";
 import { useSelector } from "react-redux";
 import keywordController from "../../api/keyword.controller.js";
-import { useSetRecoilState } from "recoil";
-import { keywordState } from "../../recoil/keywordState.js";
 
 const DiaryEdit = ({ isOpen }) => {
   const [showDiary, setShowDiary] = useState(false);
@@ -16,8 +14,8 @@ const DiaryEdit = ({ isOpen }) => {
     (state) => state.DiaryInfo
   );
 
-  const setKeywordState = useSetRecoilState(keywordState);
-  const resetKeywordState = useSetRecoilState(keywordState);
+  const [data, setData] = useState([]);
+
   const fetchData = async () => {
     try {
       const response = await DiaryController.getQuiz({
@@ -47,7 +45,6 @@ const DiaryEdit = ({ isOpen }) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    resetKeywordState();
     setShowDiary(false);
   }, [diaryId]);
 
@@ -59,11 +56,15 @@ const DiaryEdit = ({ isOpen }) => {
     try {
       const response = await keywordController.getKeyword(diaryId);
       const { isSuccess, result } = response.data;
-      setKeywordState(result);
 
       if (result.length == 0) {
         return;
       }
+      setData(
+        result.map((item, index) => {
+          return { keywordId: item.keywordId, keyword: item.keyword };
+        })
+      );
       console.log(result);
     } catch (error) {
       console.error("Error fetching quiz data:", error);
@@ -110,7 +111,7 @@ const DiaryEdit = ({ isOpen }) => {
           일기닫기
         </button>
       </div>
-      {showDiary && <Diary />}
+      {showDiary && <Diary data={data} />}
     </div>
   );
 };

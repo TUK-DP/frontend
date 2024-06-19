@@ -1,4 +1,4 @@
-const MyPageItem = ({ src, text, onClick }) => {
+const MyPageList = ({ src, text, onClick }) => {
   return (
     <div
       onClick={onClick}
@@ -9,4 +9,4 @@ const MyPageItem = ({ src, text, onClick }) => {
     </div>
   );
 };
-export default MyPageItem;
+export default MyPageList;

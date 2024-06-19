@@ -2,7 +2,7 @@ export const SET_USERINFO = "SET_USERINFO";
 
 export const initialState = {
   userId: "",
-  username: "",
+  username: "", // 여기에 username 필드가 포함되어야 합니다.
   email: "",
   password: "",
   nickname: "",

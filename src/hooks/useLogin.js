@@ -52,7 +52,6 @@ const useLogin = () => {
     dispatch({
       type: SET_USERINFO,
       ...info,
-      username: info.username,
     });
     navigate("/");
   };

@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import UserController from "../../api/users.controller";
+import UserController from "../api/users.controller";
 import { useForm } from "react-hook-form";
-import Button from "../../component/Button";
-import Modal from "../../component/Modal";
+import Button from "../component/Button";
+import Modal from "../component/Modal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-<<<<<<< HEAD:src/pages/UserUpdate.js
 import { SET_PAGENAME } from "../redux/modules/PageName";
-=======
-import { SET_PAGENAME } from "../../redux/modules/PageName";
-import axios from "axios";
->>>>>>> develop:src/pages/MyPages/UserUpdate.js
-
-export const USER_UPDATE_PAGE_PATH = "/userupdate";
 
 const UserUpdate = () => {
   const dispatch = useDispatch();

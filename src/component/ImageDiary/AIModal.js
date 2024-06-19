@@ -1,5 +1,6 @@
 import React from "react";
 import BackGroundSkyButton from "../BackGroundSkyButton";
+import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 const AIModal = ({ onClose, content, keyword }) => {
@@ -10,7 +11,7 @@ const AIModal = ({ onClose, content, keyword }) => {
   return (
     <div
       className={
-        "w-full h-full fixed top-0 left-0 flex justify-center items-center bg-opacity-30 bg-black z-10"
+        "w-full h-full fixed top-0 left-0 flex justify-center items-center bg-opacity-30 bg-black"
       }
     >
       <div className={"absolute bg-white w-4/5 h-fit py-7 px-3 rounded-2xl"}>

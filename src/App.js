@@ -24,7 +24,7 @@ import Surveyresult from "./pages/Survey/SurveyResult.js";
 import BeforeGame from "./pages/gamePages/BeforeGame";
 import Gymnastics from "./pages/Gym/Gymnastics";
 import GymnasticsVideo from "./pages/Gym/GymnasticsVideo";
-import MyPage from "./pages/MyPages/MyPage";
+import MyPage from "./pages/MyPage";
 import CenterMap from "./pages/CenterPages/CenterMap";
 import PrevSurveyResult from "./pages/Survey/PrevSurveyResult";
 import SurveyError from "./pages/Survey/SurveyError";
@@ -34,19 +34,11 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import useAutoLogin from "./hooks/useAutoLogin";
 import Explain from "./pages/Keyword/Explain.js";
-import UserUpdate, {
-  USER_UPDATE_PAGE_PATH,
-} from "./pages/MyPages/UserUpdate.js";
-import DiaryManagement, {
-  DIARY_MANAGEMENT_PAGE_PATH,
-} from "./pages/MyPages/DiaryManagement.js";
+import UserUpdate from "./pages/UserUpdate.js";
+import DiaryManagement from "./pages/DiaryManagement.js";
 import HelpForAi from "./pages/ImageDiary/HelpForAi.js";
 import ShowAiResult from "./pages/ImageDiary/ShowAiResult.js";
 import Keyword from "./pages/Keyword/Keyword.js";
-import {
-  API_KEY_INPUT_PAGE_PATH,
-  APIKeyInput,
-} from "./pages/MyPages/APIKeyInput";
 
 function App() {
   let { loading } = useAutoLogin();
@@ -91,16 +83,11 @@ function App() {
           <Route exact path={"/centermap"} element={<CenterMap />} />
           <Route exact path={"/explain"} element={<Explain />} />
           <Route exact path={"/keyword"} element={<Keyword />} />
-          <Route exact path={USER_UPDATE_PAGE_PATH} element={<UserUpdate />} />
+          <Route exact path={"/userupdate"} element={<UserUpdate />} />
           <Route
             exact
-            path={DIARY_MANAGEMENT_PAGE_PATH}
+            path={"/diarymanagement"}
             element={<DiaryManagement />}
-          />
-          <Route
-            exact
-            path={API_KEY_INPUT_PAGE_PATH}
-            element={<APIKeyInput />}
           />
           <Route
             exact

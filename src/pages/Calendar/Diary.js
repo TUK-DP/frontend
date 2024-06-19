@@ -28,20 +28,19 @@ const Diary = () => {
     textarea.style.height = "auto"; // Reset height to auto
     textarea.style.height = textarea.scrollHeight + "px";
   }, []);
+
   useEffect(() => {
     handleResizeHeight();
   }, [handleResizeHeight]);
 
   const handleContentChange = (e) => {
-    // 내용이 변경될 때마다 높이 조정
-    handleResizeHeight();
     setNewContent(e.target.value);
   };
 
   // 다이어리 수정
   const updateDiary = async () => {
     try {
-      if (newContent == "") {
+      if (newContent === "") {
         return alert("내용을 작성해주세요.");
       }
       setIsSaving(true);
@@ -74,7 +73,6 @@ const Diary = () => {
     try {
       const res = await DiaryController.deleteDiary(diaryId);
       console.log("일기가 삭제되었습니다.");
-      // window.location.reload();
       navigate("/");
     } catch (error) {
       setIsSaving(false);
@@ -99,6 +97,21 @@ const Diary = () => {
       })
     );
   }, []);
+
+  const handleScroll = (e) => {
+    e.preventDefault();
+    textRef.current.scrollTop = textRef.current.scrollHeight;
+  };
+
+  const handleInput = (e) => {
+    const textarea = e.target;
+    const scrollTop = textarea.scrollTop;
+    const scrollHeight = textarea.scrollHeight;
+
+    textarea.scrollTop = scrollTop;
+    textarea.style.height = "auto";
+    textarea.style.height = scrollHeight + "px";
+  };
 
   return (
     <div id="diary">
@@ -147,6 +160,8 @@ const Diary = () => {
           ref={textRef}
           onChange={handleContentChange}
           value={newContent}
+          onInput={handleInput}
+          onScroll={handleScroll}
         />
       </div>
       <div

@@ -6,7 +6,7 @@ import DiaryController from "../../api/diary.controller.js";
 import { useSelector } from "react-redux";
 import keywordController from "../../api/keyword.controller.js";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { keywordState } from "../../recoil/keywordState.js";
+import { imageState, keywordState } from "../../recoil/keywordState.js";
 import { canvasDrawingState } from "../../recoil/canvasDrawingState.js";
 
 const DiaryEdit = ({ isOpen }) => {
@@ -42,8 +42,9 @@ const DiaryEdit = ({ isOpen }) => {
     fetchData();
   };
 
-  //canvasState 초기화 시킴
+  //canvasState, imageState 초기화 시킴
   const resetCanvasState = useResetRecoilState(canvasDrawingState);
+  const resetImageState = useResetRecoilState(imageState);
 
   const toggleBtn = () => {
     setShowDiary(!showDiary);
@@ -53,6 +54,7 @@ const DiaryEdit = ({ isOpen }) => {
   useEffect(() => {
     resetKeywordState();
     resetCanvasState();
+    resetImageState();
     setShowDiary(false);
   }, [diaryId]);
 

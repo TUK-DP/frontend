@@ -13,11 +13,13 @@ import {
 import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
 import DiaryController from "../../api/diary.controller.js";
 import { SET_PAGENAME } from "../../redux/modules/PageName.js";
+import diaryController from "../../api/diary.controller.js";
 
 const Calendar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [mark, setMark] = useState([]);
 
   useEffect(() => {
     // 페이지 이름 설정
@@ -42,6 +44,7 @@ const Calendar = () => {
         day: currentDate.getDate(),
       });
     }
+    checkDiaryList();
   }, [location.state, dispatch]);
 
   const navigate = useNavigate();
@@ -68,6 +71,25 @@ const Calendar = () => {
     );
   };
 
+  //일기 유무 리스트 가져오기
+  const checkDiaryList = async () => {
+    try {
+      const response = await diaryController.checkDiaryList({
+        userId,
+        year: reduxYear,
+        month: reduxMonth,
+      });
+      const { result } = response.data;
+      const currentMonthData = result[`${reduxYear}-${reduxMonth}`];
+      const filteredDates = Object.keys(currentMonthData).filter(
+        (date) => currentMonthData[date].isExist
+      );
+      setMark(filteredDates);
+    } catch (error) {
+      console.error("일기 유무 리스트 가져오기 중 오류", error);
+      setMark([]);
+    }
+  };
   //선택한 날의 일기 가져오기
   const getDiary = async () => {
     setIsGetDiaryComplete(false);
@@ -89,7 +111,6 @@ const Calendar = () => {
         userId: userId,
         date: dateFormat(),
       });
-      console.log(res.data);
 
       //일기가 존재하지 않음
       if (res.data.result.length == 0) {
@@ -105,8 +126,9 @@ const Calendar = () => {
         type: CHANGE_DIARY,
         diaryId: diaryInfo.diaryId,
         content: diaryInfo.content,
-        imgUrl: diaryInfo.imgUrl,
         date: diaryInfo.createDate,
+        keywords: diaryInfo.keywords,
+        imgUrl: diaryInfo.imgUrl,
       });
       setIsDiaryExist(true);
     } catch (error) {
@@ -117,6 +139,10 @@ const Calendar = () => {
   };
 
   useEffect(() => {
+    // 첫 렌더링 시와 연도, 달이 변경될 때마다 일기 유무 리스트를 가져옵니다.
+    checkDiaryList();
+  }, [reduxYear, reduxMonth]);
+  useEffect(() => {
     // 일기 데이터 가져오기
     getDiary();
   }, [reduxYear, reduxMonth, reduxDay]);
@@ -124,11 +150,13 @@ const Calendar = () => {
   // 이전 달로 이동
   const prevMonth = () => {
     dispatch({ type: CHANGE_MONTH, number: -1 });
+    setMark([]);
   };
 
   // 다음 달로 이동
   const nextMonth = () => {
     dispatch({ type: CHANGE_MONTH, number: 1 });
+    setMark([]);
   };
 
   // 현재 달의 첫째 날의 요일을 반환합니다. (0: 일요일, 1: 월요일, ...)
@@ -176,33 +204,35 @@ const Calendar = () => {
     days.forEach((selectDay, index) => {
       const isSelected = selectDay !== "" && reduxDay === selectDay;
 
+      // 현재 선택한 날짜의 날짜 문자열을 생성합니다.
+      const dateStr = `${selectDay.toString()}`;
+
+      // mark 배열에 포함된 숫자들과 일치하는지 확인합니다.
+      const isDiaryExistForDay = mark.includes(dateStr);
+
+      let cellClassNames = "";
       if (index % 7 !== 0) {
-        cells.push(
-          <td
-            key={index}
-            className={`${selectDay === "" ? "empty" : ""} ${
-              isSelected ? "selected" : ""
-            }`}
-            onClick={() => handleDateClick(selectDay)}
-          >
-            {selectDay}
-          </td>
-        );
+        cellClassNames = `${selectDay === "" ? "empty" : ""} ${isSelected ? "selected" : ""}`;
       } else {
         rows.push(cells);
         cells = [];
-        cells.push(
-          <td
-            key={index}
-            className={`${selectDay === "" ? "empty" : ""} ${
-              isSelected ? "selected" : ""
-            }`}
-            onClick={() => handleDateClick(selectDay)}
-          >
-            {selectDay}
-          </td>
-        );
+        cellClassNames = `${selectDay === "" ? "empty" : ""} ${isSelected ? "selected" : ""}`;
       }
+
+      cells.push(
+        <td
+          key={index}
+          className={`relative p-2 ${cellClassNames}`}
+          onClick={() => handleDateClick(selectDay)}
+        >
+          {selectDay}
+          {isDiaryExistForDay && (
+            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
+              <div className="w-2 h-2 bg-[#82aae3] rounded-full"></div>
+            </div>
+          )}
+        </td>
+      );
 
       if (index === days.length - 1) {
         rows.push(cells);

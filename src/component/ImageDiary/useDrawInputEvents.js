@@ -1,7 +1,8 @@
 import { BRUSH_MODE, ERASER_MODE } from "./DrawTools";
 import { useRecoilState } from "recoil";
 import { brushSizeState, selectedColorState } from "../../recoil/canvasState";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { canvasDrawingState } from "../../recoil/canvasDrawingState";
 
 export const INPUT_START = "start";
 export const INPUT_MOVE = "move";
@@ -13,9 +14,11 @@ export const useDrawInputEvents = ({
   drawMode,
   setScreenInputMode,
   setHistory,
+  canvasKeyword,
 }) => {
   const [brushSize, _] = useRecoilState(brushSizeState); //브러쉬 크기
   const [selectedColor, __] = useRecoilState(selectedColorState); //선택된 색상
+  const [canvasState, setCanvasState] = useRecoilState(canvasDrawingState);
 
   //브러쉬 크기, 펜 색상 변경 시 호출됨
   useEffect(() => {
@@ -46,14 +49,37 @@ export const useDrawInputEvents = ({
     }
   };
 
+  const updateValueByKey = (targetKey, newValue) => {
+    return canvasState.map((item) => {
+      if (item.hasOwnProperty(targetKey)) {
+        return {
+          ...item,
+          [targetKey]: newValue,
+        };
+      }
+      return item;
+    });
+  };
+
   // 캔버스 상태를 히스토리에 업데이트하는 함수
+  // const updateCanvasState = () => {
+  //   let canvas = canvasRef.current;
+  //   let ctx = canvas.getContext("2d");
+  //   const currentState = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  //   setHistory((prevHistory) => [...prevHistory, currentState]);
+  //   const updatedState = updateValueByKey(canvasKeyword, currentState);
+  //   setCanvasState(updatedState);
+  // };
   const updateCanvasState = () => {
     let canvas = canvasRef.current;
     let ctx = canvas.getContext("2d");
     const currentState = ctx.getImageData(0, 0, canvas.width, canvas.height);
     setHistory((prevHistory) => [...prevHistory, currentState]);
-  };
 
+    const updatedState = { ...canvasState };
+    updatedState[canvasKeyword] = currentState;
+    setCanvasState(updatedState);
+  };
   // 터치 이벤트 핸들러 함수
   const handleTouchStart = (e) => {
     let canvas = canvasRef.current;

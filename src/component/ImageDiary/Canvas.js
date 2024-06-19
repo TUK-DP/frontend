@@ -12,6 +12,7 @@ import {
   UnDoButton,
 } from "./DrawTools";
 import { INPUT_END, useDrawInputEvents } from "./useDrawInputEvents";
+import { canvasDrawingState } from "../../recoil/canvasDrawingState";
 
 export const CanvasList = ({ Keywords, canvasRefs, canvasBgRefs, index }) => {
   return (
@@ -60,6 +61,7 @@ const Canvas = ({
         drawMode={drawMode}
         width={width}
         arrIdx={arrIdx}
+        canvasKeyword={canvasKeyword}
       />
       <BackGroundCanvas
         bgCanvasRef={canvasBgRef}
@@ -74,6 +76,7 @@ const Canvas = ({
           canvasRef={canvasRef}
           clearCanvas={clearCanvas}
           history={history}
+          canvasKeyword={canvasKeyword}
         />
         <SelectedColor />
         <BrushButton drawMode={drawMode} setDrawMode={setDrawMode} />
@@ -93,6 +96,7 @@ const DrawCanvas = ({
   drawMode,
   width,
   arrIdx,
+  canvasKeyword,
 }) => {
   const {
     handleTouchStart,
@@ -107,6 +111,7 @@ const DrawCanvas = ({
     screenInputMode,
     setScreenInputMode,
     setHistory,
+    canvasKeyword,
   });
 
   return (
@@ -164,6 +169,7 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
   const [brushSize, _] = useRecoilState(brushSizeState); //브러쉬 크기
   const [selectedColor, setSelectedColor] = useRecoilState(selectedColorState); //선택된 색상
   const aiImages = useRecoilValue(imageState);
+  const [canvasState, setCanvasState] = useRecoilState(canvasDrawingState);
 
   useEffect(() => {
     //드로잉 영역 초기 세팅
@@ -198,11 +204,30 @@ const useInitializeCanvas = ({ canvasRef, canvasBgRef, canvasKeyword }) => {
     }
   }, []);
 
+  // const updateValueByKey = (targetKey, newValue) => {
+  //   return canvasState.map((item) => {
+  //     if (item.hasOwnProperty(targetKey)) {
+  //       return {
+  //         ...item,
+  //         [targetKey]: newValue,
+  //       };
+  //     }
+  //     return item;
+  //   });
+  // };
   //canvas 화면 전체 지우기
   const clearCanvas = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const currentState = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const updatedState = {
+      ...canvasState,
+      [canvasKeyword]: currentState,
+    };
+    setCanvasState(updatedState);
+    // const updatedState = updateValueByKey(canvasKeyword, "");
+    // setCanvasState(updatedState);
   };
 
   return { clearCanvas };

@@ -28,7 +28,7 @@ const HelpForAi = () => {
         const res = await imgController.generateImage({
           password: apiKeyState.apiKey,
           prompt: prompt,
-          n: 2,
+          n: 3,
         });
         setAiImages(res.data.result.urls);
       } catch (error) {
@@ -83,7 +83,7 @@ const HelpForAi = () => {
     });
   };
   return (
-    <div className={"flex flex-col p-2 justify-center items-center"}>
+    <div className={"flex w-full flex-col p-2 justify-center items-center"}>
       <h1
         className={
           "flex items-center rounded-2xl h-16 w-full text-3xl justify-center"
@@ -102,17 +102,19 @@ const HelpForAi = () => {
         <h2 className={"justify-start w-full text-xl"}>
           키워드에 대한 설명을 적어주세요.
         </h2>
-        <div className={"h-12 flex flex-row text-xl w-full gap-1"}>
+        <div className={"h-12 flex w-full"}>
           <input
             placeholder="예) 바나나 먹는 원숭이"
             className={
-              "border-4 h-full border-[#D9D9D9] flex-1 outline-none p-4"
+              "border-4 px-2 h-full border-[#D9D9D9] outline-none w-full"
             }
             value={prompt}
             onChange={handlePromptChange}
           />
           <button
-            className={"bg-REMEMORY text-white font-semibold px-2"}
+            className={
+              "flex-shrink-0 bg-REMEMORY text-white font-semibold px-2"
+            }
             onClick={getImageForAI}
           >
             완료

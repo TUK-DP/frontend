@@ -131,7 +131,11 @@ const AISuggestionTextAndIconAndModal = ({ keywords, index }) => {
         />
       )}
       <div className={"flex flex-row justify-center items-center h-10"}>
-        <p className={"text-[#7D7D7D] font-bold text-2xl"}>
+        <p
+          className={
+            "text-[#7D7D7D] font-bold text-center text-[1.4rem] break-keep"
+          }
+        >
           혹시 그림 그리기 어려우신가요?
         </p>
         <AiOutlineExclamationCircle size={40} onClick={() => handleModal()} />

@@ -20,18 +20,6 @@ export const useGetNearByCenter = ({ latitude, longitude }) => {
 
   const [centers, setCenters] = useState(undefined); //주변 센터 목록
 
-  const getPositionSuccessCallback = (position) => {
-    setPosition({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-    });
-    setIsPositionFetchingDone(true);
-  };
-
-  const getPositionErrorCallback = (error) => {
-    console.log("위치를 가져오는데 실패함 :", error);
-  };
-
   const fetchNearbyCenters = async () => {
     if (!isPositionFetchingDone) {
       // 위치 정보를 가져오는 중이라면, fetchNearbyCenters 함수를 실행하지 않음
@@ -40,11 +28,18 @@ export const useGetNearByCenter = ({ latitude, longitude }) => {
 
     setIsCenterDataFetchingDone(false);
 
-    const response = await Center.searchCenter({
-      lat: position.latitude,
-      lon: position.longitude,
-      radius: parseInt(inputRadius),
-    });
+    let response;
+
+    try {
+      response = await Center.searchCenter({
+        lat: position.latitude,
+        lon: position.longitude,
+        radius: parseInt(inputRadius),
+      });
+    } catch (e) {
+      console.log("Error fetching nearby centers:", e.message);
+      return;
+    }
 
     setIsCenterDataFetchingDone(true);
 
@@ -68,18 +63,44 @@ export const useGetNearByCenter = ({ latitude, longitude }) => {
     setCenters(centerList);
   };
 
-  useEffect(() => {
+  const updatePosition = () => {
     setInputRadius("");
     setIsPositionFetchingDone(false);
+
+    if (window.position) {
+      let newPosition = {
+        latitude: Number(window.position.latitude),
+        longitude: Number(window.position.longitude),
+      };
+      console.log(newPosition);
+      // flutter web에서 위치 정보를 가져왔다면, 해당 위치 정보를 사용
+      setPosition(newPosition);
+      setIsPositionFetchingDone(true);
+      return;
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        getPositionSuccessCallback,
-        getPositionErrorCallback
+        (position) => {
+          setPosition({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+          setIsPositionFetchingDone(true);
+        },
+        (error) => {
+          console.log("위치를 가져오는데 실패함 :", error);
+          setIsPositionFetchingDone(true);
+        }
       );
     } else {
       console.log("지원되지 않는 브라우저 입니다.");
       setIsPositionFetchingDone(true);
     }
+  };
+
+  useEffect(() => {
+    updatePosition();
   }, []);
 
   return {

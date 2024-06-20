@@ -49,7 +49,9 @@ import {
 } from "./pages/MyPages/APIKeyInput";
 
 function App() {
+  useGetLocation();
   let { loading } = useAutoLogin();
+
   if (loading) return null;
   return (
     <div className={"h-full"}>

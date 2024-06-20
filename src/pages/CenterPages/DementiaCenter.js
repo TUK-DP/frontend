@@ -9,7 +9,7 @@ const InputComp = ({ loading, value, onChange }) => {
   return (
     <input
       disabled={loading}
-      className="border-none flex-1"
+      className="p-0 border-none flex-1"
       placeholder={
         loading
           ? "위치 정보를 가져오는 중입니다..."
@@ -33,12 +33,14 @@ const SearchIcon = ({ onClick, loading }) => {
     );
   }
   return (
-    <img
-      src={Search}
-      className={"h-9 w-9 cursor-pointer"}
-      onClick={onClick}
-      alt={""}
-    />
+    <div className={"flex justify-center items-center"}>
+      <img
+        src={Search}
+        className={"w-full h-full cursor-pointer"}
+        onClick={onClick}
+        alt={""}
+      />
+    </div>
   );
 };
 

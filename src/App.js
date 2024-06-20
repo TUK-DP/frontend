@@ -47,6 +47,7 @@ import {
   API_KEY_INPUT_PAGE_PATH,
   APIKeyInput,
 } from "./pages/MyPages/APIKeyInput";
+import useGetLocation from "./hooks/useGetLocation.js";
 
 function App() {
   useGetLocation();

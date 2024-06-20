@@ -2,40 +2,52 @@ import React from "react";
 import MainLayout from "./layout/MainLayout.js";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Games from "./pages/Games";
-import Calendar from "./pages/Calendar";
-import PhotoEdit from "./pages/PhotoEdit";
-import DiaryImageShow from "./pages/DiaryImageShow";
-import Draw from "./pages/Draw";
+import Games from "./pages/gamePages/Games.js";
+import Calendar from "./pages/Calendar/Calendar.js";
+import PhotoEdit from "./pages/Calendar/PhotoEdit.js";
+import DiaryImageShow from "./pages/Calendar/DiaryImageShow.js";
+import Draw from "./pages/Calendar/Draw.js";
 import Game1 from "./pages/gamePages/game1";
 import Game2 from "./pages/gamePages/game2";
 import Game3 from "./pages/gamePages/game3";
 import Game4 from "./pages/gamePages/game4";
 import Game5 from "./pages/gamePages/game5";
-import DiaryTest from "./pages/DiaryTest";
-import DiaryTestSubmit from "./pages/DiaryTestSubmit";
-import DiaryTestResult from "./pages/DiaryTestResult";
-import Survey from "./pages/Survey";
-import SurveyStart from "./pages/SurveyStart";
-import DementiaCenter from "./pages/DementiaCenter";
-import DiaryWrite from "./pages/DiaryWrite";
-import Error from "./pages/Error";
-import Surveyresult from "./pages/SurveyResult";
+import DiaryTest from "./pages/Test/DiaryTest.js";
+import DiaryTestSubmit from "./pages/Test/DiaryTestSubmit.js";
+import DiaryTestResult from "./pages/Test/DiaryTestResult";
+import Survey from "./pages/Survey/Survey.js";
+import SurveyStart from "./pages/Survey/SurveyStart.js";
+import DementiaCenter from "./pages/CenterPages/DementiaCenter.js";
+import DiaryWrite from "./pages/Calendar/DiaryWrite.js";
+import Error from "./pages/Test/Error.js";
+import Surveyresult from "./pages/Survey/SurveyResult.js";
 import BeforeGame from "./pages/gamePages/BeforeGame";
-import Gymnastics from "./pages/Gymnastics";
-import GymnasticsVideo from "./pages/GymnasticsVideo";
-import MyPage from "./pages/MyPage";
-import CenterMap from "./pages/CenterMap";
-import PrevSurveyResult from "./pages/PrevSurveyResult";
-import SurveyError from "./pages/SurveyError";
+import Gymnastics from "./pages/Gym/Gymnastics";
+import GymnasticsVideo from "./pages/Gym/GymnasticsVideo";
+import MyPage from "./pages/MyPages/MyPage";
+import CenterMap from "./pages/CenterPages/CenterMap";
+import PrevSurveyResult from "./pages/Survey/PrevSurveyResult";
+import SurveyError from "./pages/Survey/SurveyError";
 import Header from "./component/Header";
 import SubLayout from "./layout/SubLayout";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import useAutoLogin from "./hooks/useAutoLogin";
-import Explain from "./pages/Explain.js";
-import Keyword from "./pages/Keyword.js";
-import useGetLocation from "./hooks/useGetLocation";
+import Explain from "./pages/Keyword/Explain.js";
+import UserUpdate, {
+  USER_UPDATE_PAGE_PATH,
+} from "./pages/MyPages/UserUpdate.js";
+import DiaryManagement, {
+  DIARY_MANAGEMENT_PAGE_PATH,
+} from "./pages/MyPages/DiaryManagement.js";
+import HelpForAi from "./pages/ImageDiary/HelpForAi.js";
+import ShowAiResult from "./pages/ImageDiary/ShowAiResult.js";
+import Keyword from "./pages/Keyword/Keyword.js";
+import {
+  API_KEY_INPUT_PAGE_PATH,
+  APIKeyInput,
+} from "./pages/MyPages/APIKeyInput";
+import useGetLocation from "./hooks/useGetLocation.js";
 
 function App() {
   useGetLocation();
@@ -82,12 +94,25 @@ function App() {
           <Route exact path={"/centermap"} element={<CenterMap />} />
           <Route exact path={"/explain"} element={<Explain />} />
           <Route exact path={"/keyword"} element={<Keyword />} />
+          <Route exact path={USER_UPDATE_PAGE_PATH} element={<UserUpdate />} />
+          <Route
+            exact
+            path={DIARY_MANAGEMENT_PAGE_PATH}
+            element={<DiaryManagement />}
+          />
+          <Route
+            exact
+            path={API_KEY_INPUT_PAGE_PATH}
+            element={<APIKeyInput />}
+          />
           <Route
             exact
             path={"/prevsurveyresult"}
             element={<PrevSurveyResult />}
           />
           <Route exact path={"/surveyerror"} element={<SurveyError />} />
+          <Route exact path={"/draw/help"} element={<HelpForAi />} />
+          <Route exact path={"/draw/help/result"} element={<ShowAiResult />} />
         </Route>
         <Route element={<SubLayout />}>
           <Route path={"/login"} element={<Login />} />

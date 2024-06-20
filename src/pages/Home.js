@@ -39,7 +39,7 @@ const Home = () => {
   return (
     <div>
       <div
-        className="w-[22em] h-auto bg-[#e0f4ff] mx-auto mt-[2rem] rounded-3xl flex justify-evenly flex-col"
+        className="w-[90%] h-auto bg-[#e0f4ff] mx-auto mt-[2rem] rounded-3xl flex justify-evenly flex-col"
         style={{ boxShadow: "3px 3px 3px rgb(200, 200, 200)" }}
       >
         {record.yesCount != null ? (
@@ -67,7 +67,7 @@ const Home = () => {
         )}
         <div className="w-[95%] flex justify-end">
           <div
-            className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold text-lg mb-3"
+            className="bg-[#82aae3] text-white w-[14rem] h-10 rounded-lg flex justify-center items-center font-bold mb-3 text-xl"
             onClick={() => {
               navigate("/surveyStart", { state: { count: record.yesCount } });
             }}

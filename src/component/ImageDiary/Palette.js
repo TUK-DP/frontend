@@ -3,27 +3,29 @@ import Color from "./Color";
 
 const Palette = ({}) => {
   const colors = [
-    ["#FF0000", "#FF00B8", "#FF4C00", "#FFE500", "#11D800", "#9902F5"],
-    ["#010BFF", "#0D009F", "#550D0D", "#A1A1A1", "#FFFFFF", "#000000"],
+    "#FFFFFF",
+    "#000000",
+    "#FF1900",
+    "#FF8C00",
+    "#FFF200",
+    "#A6FF00",
+    "#00E6FF",
+    "#008CFF",
+    "#000DFF",
+    "#8000FF",
+    "#E500FF",
   ];
-
   return (
-    <div>
-      {colors.map((colors, setIndex) => (
-        <div
-          key={setIndex}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            margin: "5px",
-          }}
-        >
-          {colors.map((c, index) => (
-            <Color key={index} color={c} />
-          ))}
-        </div>
-      ))}
-    </div>
+    <>
+      <h2 className={"text-[#7D7D7D] pl-2 text-lg font-bold"}>
+        옆으로 넘겨서 더 많은 색상을 볼 수 있어요!
+      </h2>
+      <div className={"flex flex-row overflow-x-auto gap-2"}>
+        {colors.map((item, idx) => (
+          <Color key={idx} color={item} />
+        ))}
+      </div>
+    </>
   );
 };
 

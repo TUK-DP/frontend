@@ -44,12 +44,24 @@ class DiaryController extends Api {
   //그래프 데이터 가져오기
   getGraphData = async (diaryId) => {
     return await this.get(`/diary/${diaryId}/graph`);
-  }
+  };
   //일기 이미지 저장
   saveDiaryImg = async (diaryId, imgUrl) => {
     return await this.post(`/diary/${diaryId}/image`, {
       data: imgUrl,
     });
+  };
+  //기간별 일기 리스트 가져오기
+  searchDiaryList = async ({ userId, startDate, finishDate, sortBy }) => {
+    return await this.get(
+      `/diary/list?userId=${userId}&startDate=${startDate}&finishDate=${finishDate}&sortBy=${sortBy}`
+    );
+  };
+  //기간별 일기 유무 리스트 가져오기
+  checkDiaryList = async ({ userId, year, month }) => {
+    return await this.get(
+      `/diary/check?userId=${userId}&year=${year}&month=${month}`
+    );
   };
 }
 export default new DiaryController();

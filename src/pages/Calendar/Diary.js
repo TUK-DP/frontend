@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../component/Loading.js";
 import { CHANGE_DIARY } from "../../redux/modules/DiaryInfo.js";
 import SimpleImageSlider from "react-simple-image-slider";
+import TextareaAutosize from "react-textarea-autosize";
 
 const Diary = () => {
   const navigate = useNavigate();
@@ -23,25 +24,14 @@ const Diary = () => {
 
   const [newContent, setNewContent] = useState(content);
 
-  const handleResizeHeight = useCallback(() => {
-    const textarea = textRef.current;
-    textarea.style.height = "auto"; // Reset height to auto
-    textarea.style.height = textarea.scrollHeight + "px";
-  }, []);
-  useEffect(() => {
-    handleResizeHeight();
-  }, [handleResizeHeight]);
-
   const handleContentChange = (e) => {
-    // 내용이 변경될 때마다 높이 조정
-    handleResizeHeight();
     setNewContent(e.target.value);
   };
 
   // 다이어리 수정
   const updateDiary = async () => {
     try {
-      if (newContent == "") {
+      if (newContent === "") {
         return alert("내용을 작성해주세요.");
       }
       setIsSaving(true);
@@ -74,7 +64,6 @@ const Diary = () => {
     try {
       const res = await DiaryController.deleteDiary(diaryId);
       console.log("일기가 삭제되었습니다.");
-      // window.location.reload();
       navigate("/");
     } catch (error) {
       setIsSaving(false);
@@ -139,7 +128,7 @@ const Diary = () => {
         >
           오늘의 일기
         </div>
-        <textarea
+        <TextareaAutosize
           id="writeBox"
           className="text-lg"
           placeholder="일기를 작성해주세요."
